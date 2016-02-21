@@ -1,0 +1,36 @@
+const TAM = 10
+
+procedure quick(vet[], esq, dir)
+begin
+	var pivo = esq,i,ch,j;
+
+	for i = (esq+1) to dir do
+	begin
+		j = i
+		if (vet[j] < vet[pivo])
+		begin
+			ch = vet[j];
+			loop
+				exit when (!(j > pivo))    
+				vet[j] = vet[j-1];
+				j--
+			end
+            vet[j] = ch;
+            pivo++;        
+            end  
+	end
+	if (pivo-1 >= esq)
+	begin
+		quick(vet,esq,pivo-1)
+	end
+	if (pivo+1 <= dir)
+	begin
+		quick(vet,pivo+1,dir)
+	end
+end
+
+procedure main()
+begin
+	var vet[TAM] = {2,3,1,8,5,4,0,7,6,9}, i;        
+	quick(vet,0,TAM-1)
+end

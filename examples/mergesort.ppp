@@ -1,0 +1,59 @@
+procedure mergeSort(vetor[], posicaoInicio, posicaoFim)
+	var i, j, k, metadeTamanho, vetorTemp[ ];
+
+	if (posicaoInicio == posicaoFim)
+	begin
+		return
+	end
+
+	// ordenacao recursiva das duas metades
+	metadeTamanho = (posicaoInicio + posicaoFim ) / 2;
+	mergeSort(vetor, posicaoInicio, metadeTamanho);
+	mergeSort(vetor, metadeTamanho + 1, posicaoFim);
+
+	// intercalacao no vetor temporario t
+	i = posicaoInicio;
+	j = metadeTamanho + 1;
+	k = 0;
+	var vetorTemp[posicaoFim - posicaoInicio + 1];
+
+	loop
+		exit when (!(i < metadeTamanho + 1 || j  < posicaoFim + 1));
+		if (i == metadeTamanho + 1 ) // i passou do final da primeira metade, pegar v[j]
+		begin
+			vetorTemp[k] = vetor[j];
+			j++;
+			k++
+		end
+		else
+		begin
+			if (j == posicaoFim + 1) // j passou do final da segunda metade, pegar v[i]
+			begin
+				vetorTemp[k] = vetor[i];
+				i++;
+				k++
+			end
+			else
+			begin
+				if (vetor[i] < vetor[j])
+				begin
+					vetorTemp[k] = vetor[i];
+					i++;
+					k++
+				end
+				else
+				begin
+					vetorTemp[k] = vetor[j];
+					j++;
+					k++
+				end
+			end
+		end
+	end
+
+	// copia vetor intercalado para o vetor original
+	for i = posicaoInicio to posicaoFim do 
+	begin
+		vetor[i] = vetorTemp[i - posicaoInicio]
+	end
+end
