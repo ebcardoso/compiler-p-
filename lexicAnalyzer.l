@@ -10,6 +10,14 @@
 */
 %}
 
+LETTER				[a-zA-Z]
+DIGIT				[0-9]
+NUMBER_INT			{DIGIT}+
+NUMBER_REAL 		{NUMBER_INT}"."{DIGIT}+
+NUMBER 				{NUMBER_REAL}|{NUMBER_INT}
+
+ID	 				({LETTER}|_)({LETTER}|{DIGIT}|_)*
+
 %%
 [\t ]+ /* ignorar espaços em branco */;
 
@@ -25,6 +33,8 @@ string { printf("%s: token STRING\n", yytext); }
 
 true { printf("%s: token TRUE\n", yytext); }
 false { printf("%s: token FALSE\n", yytext); }
+
+null {printf("%s: token NULL \n", yytext); }
 
 begin { printf("%s: token BEGIN\n", yytext); }
 end { printf("%s: token END\n", yytext); }
@@ -45,7 +55,10 @@ loop { printf("%s: token LOOP\n", yytext); }
 exit { printf("%s: token EXIT\n", yytext); }
 when { printf("%s: token WHEN\n", yytext); }
 
-[a-zA-Z]+ { printf("%s: is not a valid token\n", yytext); }
+{ID} { printf("%s: token ID \n", yytext);}
+{NUMBER_INT} { printf("%s: token NUMBER_INT \n", yytext); }
+{NUMBER_REAL} { printf("%s: token NUMBER_REAL \n", yytext); }
+
 
 .|\n {ECHO; }
 %%
