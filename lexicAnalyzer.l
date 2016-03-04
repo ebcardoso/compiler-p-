@@ -20,6 +20,7 @@ ID	 				({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 %%
 [\t ]+ /* ignorar espaços em branco */;
+\"(\\.|[^\\"])*\" 	{ printf("%s: token STRING\n", yytext); } 
 
 procedure { printf("%s: token PROCEDURE\n", yytext); }
 function { printf("%s: token FUNCTION\n", yytext); }
@@ -85,7 +86,7 @@ when { printf("%s: token WHEN\n", yytext); }
 ">=" { printf("%s: token BIGGER EQUAL\n", yytext); }
 
 
-.|\n {ECHO; }
+.|\n { ECHO; }
 %%
 
 main() {
