@@ -59,6 +59,13 @@ when { printf("%s: token WHEN\n", yytext); }
 {NUMBER_INT} { printf("%s: token NUMBER_INT \n", yytext); }
 {NUMBER_REAL} { printf("%s: token NUMBER_REAL \n", yytext); }
 
+";" { printf("%s: token SEMICOLON\n ", yytext); }	
+"," { printf("%s: token COMMA \n", yytext); }		
+"."	{ printf("%s: token DOT\n", yytext); }		
+"(" { printf("%s: token OPEN_PARENTHESIS\n", yytext); }
+")"	{ printf("%s: token CLOSE_PARENTHESIS\n", yytext); }
+"[" { printf("%s: token OPEN_BRACKETS\n", yytext); }
+"]" { printf("%s: token CLOSE_BRACKETS\n", yytext); }
 
 .|\n {ECHO; }
 %%
