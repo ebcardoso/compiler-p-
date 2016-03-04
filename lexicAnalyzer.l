@@ -67,6 +67,24 @@ when { printf("%s: token WHEN\n", yytext); }
 "[" { printf("%s: token OPEN_BRACKETS\n", yytext); }
 "]" { printf("%s: token CLOSE_BRACKETS\n", yytext); }
 
+
+"+" { printf("%s: token ADD\n", yytext); }
+"-" { printf("%s: token SUB\n", yytext); }
+"*" { printf("%s: token MULT\n", yytext);}	
+"/" { printf("%s: token DIV\n", yytext); }
+"=" { printf("%s: token EQUAL\n", yytext); }
+"%" { printf("%s: token MOD\n", yytext); }
+"!" { printf("%s: token NEG\n", yytext); }
+"||" { printf("%s: token OR\n", yytext); }
+"&&" { printf("%s: token AND\n", yytext); }
+"<" { printf("%s: token LESS THEN\n", yytext); }
+">" { printf("%s: token BIGGER THEN\n", yytext); }
+"==" { printf("%s: token EQUAL LOGIC\n", yytext); }
+"!=" { printf("%s: token NOT EQUAL\n", yytext); }
+"<=" { printf("%s: token LESS EQUAL\n", yytext); }
+">=" { printf("%s: token BIGGER EQUAL\n", yytext); }
+
+
 .|\n {ECHO; }
 %%
 
