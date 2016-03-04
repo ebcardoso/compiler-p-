@@ -7,6 +7,8 @@
 	lex lexicAnalizer.l
 	cc lex.yy.c -ll -o lexicAnalizer
 	./lexicAnalizer
+
+	#include "y.tab.h"
 */
 %}
 
@@ -20,7 +22,7 @@ ID	 				({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 %%
 [\t ]+ /* ignorar espaços em branco */;
-\"(\\.|[^\\"])*\" 	{ printf("%s: token STRING\n", yytext); } 
+\"(\\.|[^\\"])*\" 	{ printf("%s: token VAL_STRING\n", yytext); } 
 
 procedure { printf("%s: token PROCEDURE\n", yytext); }
 function { printf("%s: token FUNCTION\n", yytext); }
@@ -31,6 +33,7 @@ const { printf("%s: token CONST\n", yytext); }
 int { printf("%s: token INT\n", yytext); }
 real { printf("%s: token REAL\n", yytext); }
 string { printf("%s: token STRING\n", yytext); }
+boolean { printf("%s: token BOOLEAN\n", yytext); }
 
 true { printf("%s: token TRUE\n", yytext); }
 false { printf("%s: token FALSE\n", yytext); }
@@ -80,12 +83,12 @@ when { printf("%s: token WHEN\n", yytext); }
 "!" { printf("%s: token NEG\n", yytext); }
 "||" { printf("%s: token OR\n", yytext); }
 "&&" { printf("%s: token AND\n", yytext); }
-"<" { printf("%s: token LESS THEN\n", yytext); }
-">" { printf("%s: token BIGGER THEN\n", yytext); }
-"==" { printf("%s: token EQUAL LOGIC\n", yytext); }
-"!=" { printf("%s: token NOT EQUAL\n", yytext); }
-"<=" { printf("%s: token LESS EQUAL\n", yytext); }
-">=" { printf("%s: token BIGGER EQUAL\n", yytext); }
+"<" { printf("%s: token LESS_THEN\n", yytext); }
+">" { printf("%s: token BIGGER_THEN\n", yytext); }
+"==" { printf("%s: token EQUAL_LOGIC\n", yytext); }
+"!=" { printf("%s: token NOT_EQUAL\n", yytext); }
+"<=" { printf("%s: token LESS_EQUAL\n", yytext); }
+">=" { printf("%s: token BIGGER_EQUAL\n", yytext); }
 "++" { printf("%s: token INCREMENT\n", yytext); }
 "--" { printf("%s: token DECREMENT\n", yytext); }
 
