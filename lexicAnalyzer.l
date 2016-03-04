@@ -67,6 +67,8 @@ when { printf("%s: token WHEN\n", yytext); }
 ")"	{ printf("%s: token CLOSE_PARENTHESIS\n", yytext); }
 "[" { printf("%s: token OPEN_BRACKETS\n", yytext); }
 "]" { printf("%s: token CLOSE_BRACKETS\n", yytext); }
+"{" { printf("%s: token OPEN_BRACES\n", yytext); }
+"}" { printf("%s: token CLOSE_BRACES\n", yytext); }
 
 
 "+" { printf("%s: token ADD\n", yytext); }
@@ -84,11 +86,34 @@ when { printf("%s: token WHEN\n", yytext); }
 "!=" { printf("%s: token NOT EQUAL\n", yytext); }
 "<=" { printf("%s: token LESS EQUAL\n", yytext); }
 ">=" { printf("%s: token BIGGER EQUAL\n", yytext); }
+"++" { printf("%s: token INCREMENT\n", yytext); }
+"--" { printf("%s: token DECREMENT\n", yytext); }
 
 
 .|\n { ECHO; }
 %%
 
-main() {
+int main(argc,argv)
+int argc;
+char **argv;
+{
+
+	if (argc > 1) {
+		FILE *file;
+
+		file = fopen(argv[1], "r");
+		if (!file) {
+			fprintf(stderr,"could not open %s\n",argv[1]);
+			exit(1);
+		}
+		yyin = file;
+	}
+
 	yylex();
+	return 0;
+}
+
+int yywrap()
+{
+	return(1);
 }
