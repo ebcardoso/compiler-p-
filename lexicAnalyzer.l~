@@ -10,37 +10,43 @@
 
 	#include "y.tab.h"
 */
+
+	int nchar, nline, nword;
+	#define ACCOUNTABLE nword++;nchar+=yyleng;
 %}
 
 LETTER				[a-zA-Z]
 DIGIT				[0-9]
 NUMBER_INT			{DIGIT}+
-NUMBER_REAL 			{NUMBER_INT}"."{NUMBER_INT}(e{NUMBER_INT})?s
+NUMBER_REAL 			{NUMBER_INT}"."{NUMBER_INT}(e{NUMBER_INT})?
 ID	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 
 %%
-[\t ]+ /* ignorar espaços em branco */;
-\"(\\.|[^\\"])*\" { printf("%s: token VAL_STRING\n", yytext); } 
 
-procedure { printf("%s: token PROCEDURE\n", yytext); }
-function { printf("%s: token FUNCTION\n", yytext); }
+\n		{nline++;nchar++;}
 
-ref { printf("%s: token REF\n", yytext); }
-var { printf("%s: token VAR\n", yytext); }
-const { printf("%s: token CONST\n", yytext); }
-int { printf("%s: token INT\n", yytext); }
-real { printf("%s: token REAL\n", yytext); }
-string { printf("%s: token STRING\n", yytext); }
-boolean { printf("%s: token BOOLEAN\n", yytext); }
 
-true { printf("%s: token TRUE\n", yytext); }
-false { printf("%s: token FALSE\n", yytext); }
+\"(\\.|[^\\"])*\" { printf("%s: token VAL_STRING\n", yytext); ACCOUNTABLE } 
 
-null {printf("%s: token NULL \n", yytext); }
+procedure { printf("%s: token PROCEDURE\n", yytext); ACCOUNTABLE }
+function { printf("%s: token FUNCTION\n", yytext); ACCOUNTABLE }
 
-begin { printf("%s: token BEGIN\n", yytext); }
-end { printf("%s: token END\n", yytext); }
+ref { printf("%s: token REF\n", yytext); ACCOUNTABLE }
+var { printf("%s: token VAR\n", yytext); ACCOUNTABLE }
+const { printf("%s: token CONST\n", yytext); ACCOUNTABLE }
+int { printf("%s: token INT\n", yytext); ACCOUNTABLE }
+real { printf("%s: token REAL\n", yytext); ACCOUNTABLE }
+string { printf("%s: token STRING\n", yytext); ACCOUNTABLE }
+boolean { printf("%s: token BOOLEAN\n", yytext); ACCOUNTABLE }
+
+true { printf("%s: token TRUE\n", yytext); ACCOUNTABLE }
+false { printf("%s: token FALSE\n", yytext); ACCOUNTABLE }
+
+null {printf("%s: token NULL \n", yytext); ACCOUNTABLE }
+ 
+begin { printf("%s: token BEGIN\n", yytext); ACCOUNTABLE }
+end { printf("%s: token END\n", yytext); ACCOUNTABLE }
 
 return { printf("%s: token RETURN\n", yytext); }
 break { printf("%s: token BREAK\n", yytext); }
@@ -92,7 +98,12 @@ when { printf("%s: token WHEN\n", yytext); }
 "--" { printf("%s: token DECREMENT\n", yytext); }
 
 
-.|\n { ECHO; }
+
+
+
+.		{nchar++;}
+
+
 %%
 
 int main(argc,argv)
@@ -112,6 +123,9 @@ char **argv;
 	}
 
 	yylex();
+
+	printf("\ncaracteres %d; linhas: %d; palavras: %d;",nchar, nline, nword);
+
 	return 0;
 }
 
