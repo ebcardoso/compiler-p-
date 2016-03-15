@@ -1,3 +1,4 @@
+%Start IN_COMMENT
 %{
 /*
 	Analizador Lexico da Linguagem P++
@@ -5,10 +6,8 @@
 
 	--Para compilar e executar
 	lex lexicAnalizer.l
-	cc lex.yy.c -ll -o lexicAnalizer
-	./lexicAnalizer examples/arquivo.ppp
-
-	#include "y.tab.h"
+	cc lex.yy.c -ll -o lexicAnalyzer
+	./lexicAnalyzer examples/arquivo.ppp
 */
 
 	int nchar, nline, nword;
@@ -24,8 +23,11 @@ ID	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 %%
 
+"/*"("*"|\n|[^"*/"])*"*/" { printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } //Checar a quantidade de linhas
+
 \n		{nline++;nchar++;}
 
+"//".* { printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } 
 
 \"(\\.|[^\\"])*\" { printf("%s: token VAL_STRING\n", yytext); ACCOUNTABLE } 
 
