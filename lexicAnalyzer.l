@@ -10,8 +10,10 @@
 	./lexicAnalyzer examples/arquivo.ppp
 */
 
+	#include "symbolTable.h"
 	int nchar, nline, nword;
 	#define ACCOUNTABLE nword++;nchar+=yyleng;
+
 %}
 
 LETTER				[a-zA-Z]
@@ -66,7 +68,7 @@ loop { printf("%s: token LOOP\n", yytext); ACCOUNTABLE }
 exit { printf("%s: token EXIT\n", yytext); ACCOUNTABLE }
 when { printf("%s: token WHEN\n", yytext); ACCOUNTABLE }
 
-{ID} { printf("%s: token ID \n", yytext); ACCOUNTABLE }
+{ID} { printf("%s: token ID \n", yytext); push(yytext, "indef", 0, 0, head); ACCOUNTABLE }
 {NUMBER_INT} { printf("%s: token NUMBER_INT \n", yytext); ACCOUNTABLE }
 {NUMBER_REAL} { printf("%s: token NUMBER_REAL \n", yytext); ACCOUNTABLE }
 
@@ -113,6 +115,7 @@ int argc;
 char **argv;
 {
 
+	head = (Tabela*) malloc(sizeof(Tabela));
 	if (argc > 1) {
 		FILE *file;
 
