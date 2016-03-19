@@ -8,7 +8,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_SUBMINOR_VERSION 39
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -161,7 +161,12 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-extern int yyleng;
+#ifndef YY_TYPEDEF_YY_SIZE_T
+#define YY_TYPEDEF_YY_SIZE_T
+typedef size_t yy_size_t;
+#endif
+
+extern yy_size_t yyleng;
 
 extern FILE *yyin, *yyout;
 
@@ -170,6 +175,7 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_LAST_MATCH 2
 
     #define YY_LESS_LINENO(n)
+    #define YY_LINENO_REWIND_TO(ptr)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -186,11 +192,6 @@ extern FILE *yyin, *yyout;
 	while ( 0 )
 
 #define unput(c) yyunput( c, (yytext_ptr)  )
-
-#ifndef YY_TYPEDEF_YY_SIZE_T
-#define YY_TYPEDEF_YY_SIZE_T
-typedef size_t yy_size_t;
-#endif
 
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
@@ -209,7 +210,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	int yy_n_chars;
+	yy_size_t yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -279,8 +280,8 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
-static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-int yyleng;
+static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
+yy_size_t yyleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = (char *) 0;
@@ -308,7 +309,7 @@ static void yy_init_buffer (YY_BUFFER_STATE b,FILE *file  );
 
 YY_BUFFER_STATE yy_scan_buffer (char *base,yy_size_t size  );
 YY_BUFFER_STATE yy_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,int len  );
+YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,yy_size_t len  );
 
 void *yyalloc (yy_size_t  );
 void *yyrealloc (void *,yy_size_t  );
@@ -571,15 +572,15 @@ char *yytext;
 
 	--Para compilar e executar
 	lex lexicAnalizer.l
-	cc lex.yy.c -ll -o lexicAnalizer
-	./lexicAnalizer examples/arquivo.ppp
-
-	#include "y.tab.h"
+	cc lex.yy.c -ll -o lexicAnalyzer
+	./lexicAnalyzer examples/arquivo.ppp
 */
 
+	#include "symbolTable.h"
 	int nchar, nline, nword;
 	#define ACCOUNTABLE nword++;nchar+=yyleng;
-#line 583 "lex.yy.c"
+
+#line 584 "lex.yy.c"
 
 #define INITIAL 0
 #define IN_COMMENT 1
@@ -619,7 +620,7 @@ FILE *yyget_out (void );
 
 void yyset_out  (FILE * out_str  );
 
-int yyget_leng (void );
+yy_size_t yyget_leng (void );
 
 char *yyget_text (void );
 
@@ -767,11 +768,6 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 26 "lexicAnalyzer.l"
-
-
-#line 774 "lex.yy.c"
-
 	if ( !(yy_init) )
 		{
 		(yy_init) = 1;
@@ -798,6 +794,12 @@ YY_DECL
 		yy_load_buffer_state( );
 		}
 
+	{
+#line 26 "lexicAnalyzer.l"
+
+
+#line 802 "lex.yy.c"
+
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
 		yy_cp = (yy_c_buf_p);
@@ -814,7 +816,7 @@ YY_DECL
 yy_match:
 		do
 			{
-			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)];
+			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)] ;
 			if ( yy_accept[yy_current_state] )
 				{
 				(yy_last_accepting_state) = yy_current_state;
@@ -857,7 +859,7 @@ case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
 #line 28 "lexicAnalyzer.l"
-{ printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } 
+{ printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } //Checar a quantidade de linhas
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
@@ -894,289 +896,302 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 40 "lexicAnalyzer.l"
-{ printf("%s: token VAR\n", yytext); ACCOUNTABLE }
+{
+	printf("%s: token VAR\n", yytext);
+	canInsert = 1;
+	ACCOUNTABLE
+}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 41 "lexicAnalyzer.l"
+#line 45 "lexicAnalyzer.l"
 { printf("%s: token CONST\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 42 "lexicAnalyzer.l"
+#line 46 "lexicAnalyzer.l"
 { printf("%s: token INT\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 43 "lexicAnalyzer.l"
+#line 47 "lexicAnalyzer.l"
 { printf("%s: token REAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 44 "lexicAnalyzer.l"
+#line 48 "lexicAnalyzer.l"
 { printf("%s: token STRING\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 45 "lexicAnalyzer.l"
+#line 49 "lexicAnalyzer.l"
 { printf("%s: token BOOLEAN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 47 "lexicAnalyzer.l"
+#line 51 "lexicAnalyzer.l"
 { printf("%s: token TRUE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 48 "lexicAnalyzer.l"
+#line 52 "lexicAnalyzer.l"
 { printf("%s: token FALSE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 50 "lexicAnalyzer.l"
+#line 54 "lexicAnalyzer.l"
 {printf("%s: token NULL \n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 52 "lexicAnalyzer.l"
+#line 56 "lexicAnalyzer.l"
 { printf("%s: token BEGIN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 53 "lexicAnalyzer.l"
+#line 57 "lexicAnalyzer.l"
 { printf("%s: token END\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 55 "lexicAnalyzer.l"
+#line 59 "lexicAnalyzer.l"
 { printf("%s: token RETURN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 56 "lexicAnalyzer.l"
+#line 60 "lexicAnalyzer.l"
 { printf("%s: token BREAK\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 57 "lexicAnalyzer.l"
+#line 61 "lexicAnalyzer.l"
 { printf("%s: token IF\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 58 "lexicAnalyzer.l"
+#line 62 "lexicAnalyzer.l"
 { printf("%s: token THEN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 59 "lexicAnalyzer.l"
+#line 63 "lexicAnalyzer.l"
 { printf("%s: token ELSE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 60 "lexicAnalyzer.l"
+#line 64 "lexicAnalyzer.l"
 { printf("%s: token SWITCH\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 61 "lexicAnalyzer.l"
+#line 65 "lexicAnalyzer.l"
 { printf("%s: token CASE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 62 "lexicAnalyzer.l"
+#line 66 "lexicAnalyzer.l"
 { printf("%s: token DEFAULT\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 63 "lexicAnalyzer.l"
+#line 67 "lexicAnalyzer.l"
 { printf("%s: token FOR\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 64 "lexicAnalyzer.l"
+#line 68 "lexicAnalyzer.l"
 { printf("%s: token DOWNTO\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 65 "lexicAnalyzer.l"
+#line 69 "lexicAnalyzer.l"
 { printf("%s: token TO\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 66 "lexicAnalyzer.l"
+#line 70 "lexicAnalyzer.l"
 { printf("%s: token DO\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 67 "lexicAnalyzer.l"
+#line 71 "lexicAnalyzer.l"
 { printf("%s: token LOOP\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 68 "lexicAnalyzer.l"
+#line 72 "lexicAnalyzer.l"
 { printf("%s: token EXIT\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 69 "lexicAnalyzer.l"
+#line 73 "lexicAnalyzer.l"
 { printf("%s: token WHEN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 71 "lexicAnalyzer.l"
-{ printf("%s: token ID \n", yytext); ACCOUNTABLE }
+#line 75 "lexicAnalyzer.l"
+{
+	printf("%s: token ID \n", yytext);
+	if (canInsert)
+		push(yytext, "", 0, 0, head); //consertar essa pate
+	ACCOUNTABLE
+}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 72 "lexicAnalyzer.l"
+#line 81 "lexicAnalyzer.l"
 { printf("%s: token NUMBER_INT \n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 73 "lexicAnalyzer.l"
+#line 82 "lexicAnalyzer.l"
 { printf("%s: token NUMBER_REAL \n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 75 "lexicAnalyzer.l"
-{ printf("%s: token SEMICOLON\n ", yytext); ACCOUNTABLE }	
+#line 84 "lexicAnalyzer.l"
+{
+	printf("%s: token SEMICOLON\n ", yytext);
+	canInsert = 0;
+	ACCOUNTABLE
+}	
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 76 "lexicAnalyzer.l"
+#line 89 "lexicAnalyzer.l"
 { printf("%s: token COMMA \n", yytext); ACCOUNTABLE }		
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 77 "lexicAnalyzer.l"
+#line 90 "lexicAnalyzer.l"
 { printf("%s: token DOT\n", yytext); ACCOUNTABLE }		
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 78 "lexicAnalyzer.l"
+#line 91 "lexicAnalyzer.l"
 { printf("%s: token OPEN_PARENTHESIS\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 79 "lexicAnalyzer.l"
+#line 92 "lexicAnalyzer.l"
 { printf("%s: token CLOSE_PARENTHESIS\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 80 "lexicAnalyzer.l"
+#line 93 "lexicAnalyzer.l"
 { printf("%s: token OPEN_BRACKETS\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 81 "lexicAnalyzer.l"
+#line 94 "lexicAnalyzer.l"
 { printf("%s: token CLOSE_BRACKETS\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 82 "lexicAnalyzer.l"
+#line 95 "lexicAnalyzer.l"
 { printf("%s: token OPEN_BRACES\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 83 "lexicAnalyzer.l"
+#line 96 "lexicAnalyzer.l"
 { printf("%s: token CLOSE_BRACES\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 86 "lexicAnalyzer.l"
+#line 99 "lexicAnalyzer.l"
 { printf("%s: token ADD\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 87 "lexicAnalyzer.l"
+#line 100 "lexicAnalyzer.l"
 { printf("%s: token SUB\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 88 "lexicAnalyzer.l"
+#line 101 "lexicAnalyzer.l"
 { printf("%s: token MULT\n", yytext); ACCOUNTABLE }	
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 89 "lexicAnalyzer.l"
+#line 102 "lexicAnalyzer.l"
 { printf("%s: token DIV\n", yytext); ACCOUNTABLE  }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 90 "lexicAnalyzer.l"
+#line 103 "lexicAnalyzer.l"
 { printf("%s: token EQUAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 91 "lexicAnalyzer.l"
+#line 104 "lexicAnalyzer.l"
 { printf("%s: token MOD\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 92 "lexicAnalyzer.l"
+#line 105 "lexicAnalyzer.l"
 { printf("%s: token NEG\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 93 "lexicAnalyzer.l"
+#line 106 "lexicAnalyzer.l"
 { printf("%s: token OR\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 94 "lexicAnalyzer.l"
+#line 107 "lexicAnalyzer.l"
 { printf("%s: token AND\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 95 "lexicAnalyzer.l"
+#line 108 "lexicAnalyzer.l"
 { printf("%s: token LESS_THEN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 96 "lexicAnalyzer.l"
+#line 109 "lexicAnalyzer.l"
 { printf("%s: token BIGGER_THEN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 97 "lexicAnalyzer.l"
+#line 110 "lexicAnalyzer.l"
 { printf("%s: token EQUAL_LOGIC\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 98 "lexicAnalyzer.l"
+#line 111 "lexicAnalyzer.l"
 { printf("%s: token NOT_EQUAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 99 "lexicAnalyzer.l"
+#line 112 "lexicAnalyzer.l"
 { printf("%s: token LESS_EQUAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 100 "lexicAnalyzer.l"
+#line 113 "lexicAnalyzer.l"
 { printf("%s: token BIGGER_EQUAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 101 "lexicAnalyzer.l"
+#line 114 "lexicAnalyzer.l"
 { printf("%s: token INCREMENT\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 102 "lexicAnalyzer.l"
+#line 115 "lexicAnalyzer.l"
 { printf("%s: token DECREMENT\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 108 "lexicAnalyzer.l"
+#line 121 "lexicAnalyzer.l"
 {nchar++;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 111 "lexicAnalyzer.l"
+#line 124 "lexicAnalyzer.l"
 ECHO;
 	YY_BREAK
-#line 1180 "lex.yy.c"
+#line 1195 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(IN_COMMENT):
 	yyterminate();
@@ -1308,6 +1323,7 @@ case YY_STATE_EOF(IN_COMMENT):
 			"fatal flex scanner internal error--no action found" );
 	} /* end of action switch */
 		} /* end of scanning one token */
+	} /* end of user's declarations */
 } /* end of yylex */
 
 /* yy_get_next_buffer - try to read in a new buffer
@@ -1363,21 +1379,21 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-			int num_to_read =
+			yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
 			{ /* Not enough room in the buffer - grow it. */
 
 			/* just a shorter name for the current buffer */
-			YY_BUFFER_STATE b = YY_CURRENT_BUFFER;
+			YY_BUFFER_STATE b = YY_CURRENT_BUFFER_LVALUE;
 
 			int yy_c_buf_p_offset =
 				(int) ((yy_c_buf_p) - b->yy_ch_buf);
 
 			if ( b->yy_is_our_buffer )
 				{
-				int new_size = b->yy_buf_size * 2;
+				yy_size_t new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
 					b->yy_buf_size += b->yy_buf_size / 8;
@@ -1408,7 +1424,7 @@ static int yy_get_next_buffer (void)
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), (size_t) num_to_read );
+			(yy_n_chars), num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
 		}
@@ -1503,7 +1519,7 @@ static int yy_get_next_buffer (void)
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 	yy_is_jam = (yy_current_state == 169);
 
-	return yy_is_jam ? 0 : yy_current_state;
+		return yy_is_jam ? 0 : yy_current_state;
 }
 
     static void yyunput (int c, register char * yy_bp )
@@ -1518,7 +1534,7 @@ static int yy_get_next_buffer (void)
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
 		{ /* need to shift things up to make room */
 		/* +2 for EOB chars. */
-		register int number_to_move = (yy_n_chars) + 2;
+		register yy_size_t number_to_move = (yy_n_chars) + 2;
 		register char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
 					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
 		register char *source =
@@ -1567,7 +1583,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-			int offset = (yy_c_buf_p) - (yytext_ptr);
+			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -1727,10 +1743,6 @@ static void yy_load_buffer_state  (void)
 	yyfree((void *) b  );
 }
 
-#ifndef __cplusplus
-extern int isatty (int );
-#endif /* __cplusplus */
-    
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a yyrestart() or at EOF.
@@ -1843,7 +1855,7 @@ void yypop_buffer_state (void)
  */
 static void yyensure_buffer_stack (void)
 {
-	int num_to_alloc;
+	yy_size_t num_to_alloc;
     
 	if (!(yy_buffer_stack)) {
 
@@ -1940,12 +1952,12 @@ YY_BUFFER_STATE yy_scan_string (yyconst char * yystr )
  * 
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE yy_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
+YY_BUFFER_STATE yy_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
 	yy_size_t n;
-	int i;
+	yy_size_t i;
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = _yybytes_len + 2;
@@ -2027,7 +2039,7 @@ FILE *yyget_out  (void)
 /** Get the length of the current token.
  * 
  */
-int yyget_leng  (void)
+yy_size_t yyget_leng  (void)
 {
         return yyleng;
 }
@@ -2175,7 +2187,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 111 "lexicAnalyzer.l"
+#line 123 "lexicAnalyzer.l"
 
 
 
@@ -2183,6 +2195,9 @@ int main(argc,argv)
 int argc;
 char **argv;
 {
+	//inicialização da pilha
+	head = (Tabela*) malloc(sizeof(Tabela));
+	canInsert = 0;
 
 	if (argc > 1) {
 		FILE *file;
@@ -2197,8 +2212,11 @@ char **argv;
 
 	yylex();
 
-	printf("\ncaracteres %d; linhas: %d; palavras: %d;",nchar, nline, nword);
+	printf("\ncaracteres %d; linhas: %d; palavras: %d;\n",nchar, nline, nword);
 
+	printf("\nNome | Tipo | Desloc | Nivel\n");
+	printSymbolTable(head);
+	
 	return 0;
 }
 

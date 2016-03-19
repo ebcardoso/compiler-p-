@@ -1,0 +1,8 @@
+procedure main ()
+begin
+	var a = 5, c, b;
+	var d;
+
+	if (a = b)
+		a = b + 2
+end

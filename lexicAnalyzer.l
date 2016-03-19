@@ -37,7 +37,11 @@ procedure { printf("%s: token PROCEDURE\n", yytext); ACCOUNTABLE }
 function { printf("%s: token FUNCTION\n", yytext); ACCOUNTABLE }
 
 ref { printf("%s: token REF\n", yytext); ACCOUNTABLE }
-var { printf("%s: token VAR\n", yytext); ACCOUNTABLE }
+var {
+	printf("%s: token VAR\n", yytext);
+	canInsert = 1;
+	ACCOUNTABLE
+}
 const { printf("%s: token CONST\n", yytext); ACCOUNTABLE }
 int { printf("%s: token INT\n", yytext); ACCOUNTABLE }
 real { printf("%s: token REAL\n", yytext); ACCOUNTABLE }
@@ -68,11 +72,20 @@ loop { printf("%s: token LOOP\n", yytext); ACCOUNTABLE }
 exit { printf("%s: token EXIT\n", yytext); ACCOUNTABLE }
 when { printf("%s: token WHEN\n", yytext); ACCOUNTABLE }
 
-{ID} { printf("%s: token ID \n", yytext); push(yytext, "indef", 0, 0, head); ACCOUNTABLE }
+{ID} {
+	printf("%s: token ID \n", yytext);
+	if (canInsert)
+		push(yytext, "", 0, 0, head); //consertar essa pate
+	ACCOUNTABLE
+}
 {NUMBER_INT} { printf("%s: token NUMBER_INT \n", yytext); ACCOUNTABLE }
 {NUMBER_REAL} { printf("%s: token NUMBER_REAL \n", yytext); ACCOUNTABLE }
 
-";" { printf("%s: token SEMICOLON\n ", yytext); ACCOUNTABLE }	
+";" {
+	printf("%s: token SEMICOLON\n ", yytext);
+	canInsert = 0;
+	ACCOUNTABLE
+}	
 "," { printf("%s: token COMMA \n", yytext); ACCOUNTABLE }		
 "."	{ printf("%s: token DOT\n", yytext); ACCOUNTABLE }		
 "(" { printf("%s: token OPEN_PARENTHESIS\n", yytext); ACCOUNTABLE }
@@ -114,8 +127,10 @@ int main(argc,argv)
 int argc;
 char **argv;
 {
-
+	//inicialização da pilha
 	head = (Tabela*) malloc(sizeof(Tabela));
+	canInsert = 0;
+
 	if (argc > 1) {
 		FILE *file;
 
@@ -129,8 +144,11 @@ char **argv;
 
 	yylex();
 
-	printf("\ncaracteres %d; linhas: %d; palavras: %d;",nchar, nline, nword);
+	printf("\ncaracteres %d; linhas: %d; palavras: %d;\n",nchar, nline, nword);
 
+	printf("\nNome | Tipo | Desloc | Nivel\n");
+	printSymbolTable(head);
+	
 	return 0;
 }
 

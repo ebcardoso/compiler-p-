@@ -1,23 +1,7 @@
-#ifndef _SYMTAB_
-#define _SYMTAB_
-
 //Arquivo que implementa as funções da tabela de símbolos
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-int i; //para contra lar o loop
-int verRepeticao; //para ser usada quando for ver repetição de símbolo no mesmo escopo
-int foiDeclarada; //para ser usada quando for ver se uma variável foi declarada antes de usada
-
-int op=1; //1 = deslocGlobal | 2 = deslocLocal
-int deslocamentoLocal=1;  //para quando for uma variável local ou parâmetro
-int deslocamentoGlobal=1; //para quando for uma variável global ou subprograma
-
-int nivel=1; //para ir armazendo o nível em que a variável está no escopo
-
-char *nome_provis; //para armazenar um nome de variável antes de inserir
-char *tipo_provis; //para armazenar um nome de tipo antes de inserir
 
 typedef struct tab {
 	char *nome;
@@ -29,7 +13,10 @@ typedef struct tab {
 
 Tabela *head;
 
-//função que insere elementos na tabela
+//para dizer quando uma variável pode ou não ser inserida na tabela
+int canInsert;
+
+//função que insere elementos na tabela, servirá para que duas variáveis não sejam declaradas com mesmo nome em um mesmo escopo
 void push(char *nome, char *tipo, int nivel, int desloc, Tabela *p) {
 	//declara nova célula e add seus valores
 	Tabela *nova = (Tabela *) malloc(sizeof (Tabela));
@@ -56,7 +43,8 @@ void pop(Tabela *t) {
 	};
 }
 
-int findRepeatedSymbol(char *nome, int nivel, Tabela *t) { //ainda não está pronta
+//procurar um símbolo que está em certo nível
+int findRepeatedSymbol(char *nome, int nivel, Tabela *t) {
 	if (t->prox == NULL) {
 		return(0);
 	} else if (strcmp(nome, t->prox->nome) == 0) {
@@ -70,7 +58,8 @@ int findRepeatedSymbol(char *nome, int nivel, Tabela *t) { //ainda não está pr
 	}
 }
 
-int findSymbol(char *nome, Tabela *t) { //ainda não está pronta
+//procurar qualquer símbolo na tabela de simbolos
+int findSymbol(char *nome, Tabela *t) {
 	if (t->prox == NULL) {
 		return(0);
 	} else if (strcmp(nome, t->prox->nome) == 0) {
@@ -80,9 +69,9 @@ int findSymbol(char *nome, Tabela *t) { //ainda não está pronta
 	}
 }
 
-void imprimir(Tabela *t) {
+void printSymbolTable(Tabela *t) {
 	if (t->prox != NULL) {
-		printf("\n------%s | %s | %i | %i\n", t->prox->nome, t->prox->tipo, t->prox->nivel, t->prox->deslocamento);
-		imprimir(t->prox);
+		printf("%s | %s | %i | %i\n", t->prox->nome, t->prox->tipo, t->prox->nivel, t->prox->deslocamento);
+		printSymbolTable(t->prox);
 	}
 }
