@@ -6,3 +6,11 @@ Breno Cardoso,
 Lucas Simonetti,
 Renato Nascimento,
 Sidemar Fideles.
+
+Comandos do Makefile:
+
+make
+make test
+make quick
+make merge
+make clean
