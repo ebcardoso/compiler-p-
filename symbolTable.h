@@ -75,3 +75,8 @@ void printSymbolTable(Tabela *t) {
 		printSymbolTable(t->prox);
 	}
 }
+
+void removeAllSymbolTable(Tabela *t) {
+	if (t->prox == NULL)
+		free(t);
+}

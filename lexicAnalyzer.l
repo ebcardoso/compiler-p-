@@ -152,6 +152,7 @@ char **argv;
 	printf("\n   Nome    |    Tipo    | Desloc | Nivel\n");
 	printf("------------------------------------------\n");
 	printSymbolTable(head);
+	removeAllSymbolTable(head);
 	
 	return 0;
 }
