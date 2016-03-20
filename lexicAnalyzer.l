@@ -74,8 +74,11 @@ when { printf("%s: token WHEN\n", yytext); ACCOUNTABLE }
 
 {ID} {
 	printf("%s: token ID \n", yytext);
+	char *p = (char*)malloc(  (strlen(yytext) + 1) * sizeof(char));
+	strcpy(p,yytext);
+	printf("%s: ppptoken ID \n", p);
 	if (canInsert)
-		push(yytext, "", 0, 0, head); //consertar essa pate
+		push(p, "", 0, 0, head); //consertar essa pate
 	ACCOUNTABLE
 }
 {NUMBER_INT} { printf("%s: token NUMBER_INT \n", yytext); ACCOUNTABLE }
