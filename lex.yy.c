@@ -285,28 +285,28 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 64
-#define YY_END_OF_BUFFER 65
+#define YY_NUM_RULES 66
+#define YY_END_OF_BUFFER 67
 static yyconst short int yy_accept[170] =
     {   0,
-        0,    0,    0,    0,   65,   63,    2,   52,   63,   51,
-       63,   40,   41,   48,   46,   38,   47,   39,   49,   35,
-       37,   55,   50,   56,   34,   42,   43,   34,   34,   34,
-       34,   34,   34,   34,   34,   34,   34,   34,   34,   34,
-       34,   44,   63,   45,   58,    0,    4,    0,   54,   61,
-       62,    0,    3,    0,   35,   59,   57,   60,   34,   34,
-       34,   34,   34,   34,   34,   30,   34,   34,   34,   34,
-       34,   34,   21,   34,   34,   34,   34,   34,   34,   34,
-       34,   29,   34,   34,   34,   53,    0,    0,    0,    3,
-       36,   34,   34,   34,   34,   34,   34,   34,   34,   18,
+        0,    0,    0,    0,   67,   65,    3,   54,    5,   53,
+       65,   42,   43,   50,   48,   40,   49,   41,   51,   37,
+       39,   57,   52,   58,   36,   44,   45,   36,   36,   36,
+       36,   36,   36,   36,   36,   36,   36,   36,   36,   36,
+       36,   46,   65,   47,   60,    5,    6,    0,   56,   63,
+       64,    1,    4,    0,   37,   61,   59,   62,   36,   36,
+       36,   36,   36,   36,   36,   32,   36,   36,   36,   36,
+       36,   36,   23,   36,   36,   36,   36,   36,   36,   36,
+       36,   31,   36,   36,   36,   55,    1,    1,    1,    4,
+       38,   36,   36,   36,   36,   36,   36,   36,   36,   20,
 
-       34,   34,   27,   34,   10,   34,   34,   34,   34,    7,
-       34,   34,   34,   34,   34,    8,   34,    1,    0,   34,
-       34,   34,   25,   34,   34,   34,   23,   32,   34,   34,
-       31,   16,   34,   11,   34,   34,   34,   22,   14,   33,
-       36,   17,   34,   20,    9,   34,   34,   15,   34,   34,
-       34,   34,   34,   34,   34,   28,   34,   34,   19,   12,
-       24,   13,   26,   34,   34,    6,   34,    5,    0
+       36,   36,   29,   36,   12,   36,   36,   36,   36,    9,
+       36,   36,   36,   36,   36,   10,   36,    2,    0,   36,
+       36,   36,   27,   36,   36,   36,   25,   34,   36,   36,
+       33,   18,   36,   13,   36,   36,   36,   24,   16,   35,
+       38,   19,   36,   22,   11,   36,   36,   17,   36,   36,
+       36,   36,   36,   36,   36,   30,   36,   36,   21,   14,
+       26,   15,   28,   36,   36,    8,   36,    7,    0
     } ;
 
 static yyconst int yy_ec[256] =
@@ -653,7 +653,8 @@ YY_DECL
 #line 26 "lexicAnalyzer.l"
 
 
-#line 657 "lex.yy.c"
+
+#line 658 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -738,176 +739,186 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 28 "lexicAnalyzer.l"
-{ printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } //Checar a quantidade de linhas
+#line 29 "lexicAnalyzer.l"
+{ printf("%s: unmatched comment error\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 30 "lexicAnalyzer.l"
-{nline++;nchar++;}
+#line 31 "lexicAnalyzer.l"
+{ printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } //Checar a quantidade de linhas
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 32 "lexicAnalyzer.l"
-{ printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } 
+#line 33 "lexicAnalyzer.l"
+{nline++;nchar++;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 34 "lexicAnalyzer.l"
-{ printf("%s: token VAL_STRING\n", yytext); ACCOUNTABLE } 
+#line 35 "lexicAnalyzer.l"
+{ printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } 
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 36 "lexicAnalyzer.l"
-{ printf("%s: token PROCEDURE\n", yytext); ACCOUNTABLE }
+#line 37 "lexicAnalyzer.l"
+{ printf("%s: unmatched string error\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 37 "lexicAnalyzer.l"
-{ printf("%s: token FUNCTION\n", yytext); ACCOUNTABLE }
+#line 39 "lexicAnalyzer.l"
+{ printf("%s: token VAL_STRING\n", yytext); ACCOUNTABLE } 
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 39 "lexicAnalyzer.l"
-{ printf("%s: token REF\n", yytext); ACCOUNTABLE }
+#line 41 "lexicAnalyzer.l"
+{ printf("%s: token PROCEDURE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 40 "lexicAnalyzer.l"
+#line 42 "lexicAnalyzer.l"
+{ printf("%s: token FUNCTION\n", yytext); ACCOUNTABLE }
+	YY_BREAK
+case 9:
+YY_RULE_SETUP
+#line 44 "lexicAnalyzer.l"
+{ printf("%s: token REF\n", yytext); ACCOUNTABLE }
+	YY_BREAK
+case 10:
+YY_RULE_SETUP
+#line 45 "lexicAnalyzer.l"
 {
 	printf("%s: token VAR\n", yytext);
 	canInsert = 1;
 	ACCOUNTABLE
 }
 	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 45 "lexicAnalyzer.l"
-{ printf("%s: token CONST\n", yytext); ACCOUNTABLE }
-	YY_BREAK
-case 10:
-YY_RULE_SETUP
-#line 46 "lexicAnalyzer.l"
-{ printf("%s: token INT\n", yytext); ACCOUNTABLE }
-	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 47 "lexicAnalyzer.l"
-{ printf("%s: token REAL\n", yytext); ACCOUNTABLE }
+#line 50 "lexicAnalyzer.l"
+{ printf("%s: token CONST\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 48 "lexicAnalyzer.l"
-{ printf("%s: token STRING\n", yytext); ACCOUNTABLE }
+#line 51 "lexicAnalyzer.l"
+{ printf("%s: token INT\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 49 "lexicAnalyzer.l"
-{ printf("%s: token BOOLEAN\n", yytext); ACCOUNTABLE }
+#line 52 "lexicAnalyzer.l"
+{ printf("%s: token REAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 51 "lexicAnalyzer.l"
-{ printf("%s: token TRUE\n", yytext); ACCOUNTABLE }
+#line 53 "lexicAnalyzer.l"
+{ printf("%s: token STRING\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 52 "lexicAnalyzer.l"
-{ printf("%s: token FALSE\n", yytext); ACCOUNTABLE }
+#line 54 "lexicAnalyzer.l"
+{ printf("%s: token BOOLEAN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 54 "lexicAnalyzer.l"
-{printf("%s: token NULL \n", yytext); ACCOUNTABLE }
+#line 56 "lexicAnalyzer.l"
+{ printf("%s: token TRUE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 56 "lexicAnalyzer.l"
-{ printf("%s: token BEGIN\n", yytext); ACCOUNTABLE }
+#line 57 "lexicAnalyzer.l"
+{ printf("%s: token FALSE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 57 "lexicAnalyzer.l"
-{ printf("%s: token END\n", yytext); ACCOUNTABLE }
+#line 59 "lexicAnalyzer.l"
+{printf("%s: token NULL \n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 59 "lexicAnalyzer.l"
-{ printf("%s: token RETURN\n", yytext); ACCOUNTABLE }
+#line 61 "lexicAnalyzer.l"
+{ printf("%s: token BEGIN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 60 "lexicAnalyzer.l"
-{ printf("%s: token BREAK\n", yytext); ACCOUNTABLE }
+#line 62 "lexicAnalyzer.l"
+{ printf("%s: token END\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 61 "lexicAnalyzer.l"
-{ printf("%s: token IF\n", yytext); ACCOUNTABLE }
+#line 64 "lexicAnalyzer.l"
+{ printf("%s: token RETURN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 62 "lexicAnalyzer.l"
-{ printf("%s: token THEN\n", yytext); ACCOUNTABLE }
+#line 65 "lexicAnalyzer.l"
+{ printf("%s: token BREAK\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 63 "lexicAnalyzer.l"
-{ printf("%s: token ELSE\n", yytext); ACCOUNTABLE }
+#line 66 "lexicAnalyzer.l"
+{ printf("%s: token IF\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 64 "lexicAnalyzer.l"
-{ printf("%s: token SWITCH\n", yytext); ACCOUNTABLE }
+#line 67 "lexicAnalyzer.l"
+{ printf("%s: token THEN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 65 "lexicAnalyzer.l"
-{ printf("%s: token CASE\n", yytext); ACCOUNTABLE }
+#line 68 "lexicAnalyzer.l"
+{ printf("%s: token ELSE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 66 "lexicAnalyzer.l"
-{ printf("%s: token DEFAULT\n", yytext); ACCOUNTABLE }
+#line 69 "lexicAnalyzer.l"
+{ printf("%s: token SWITCH\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 67 "lexicAnalyzer.l"
-{ printf("%s: token FOR\n", yytext); ACCOUNTABLE }
+#line 70 "lexicAnalyzer.l"
+{ printf("%s: token CASE\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 68 "lexicAnalyzer.l"
-{ printf("%s: token DOWNTO\n", yytext); ACCOUNTABLE }
+#line 71 "lexicAnalyzer.l"
+{ printf("%s: token DEFAULT\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 69 "lexicAnalyzer.l"
-{ printf("%s: token TO\n", yytext); ACCOUNTABLE }
+#line 72 "lexicAnalyzer.l"
+{ printf("%s: token FOR\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 70 "lexicAnalyzer.l"
-{ printf("%s: token DO\n", yytext); ACCOUNTABLE }
+#line 73 "lexicAnalyzer.l"
+{ printf("%s: token DOWNTO\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 71 "lexicAnalyzer.l"
-{ printf("%s: token LOOP\n", yytext); ACCOUNTABLE }
+#line 74 "lexicAnalyzer.l"
+{ printf("%s: token TO\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 72 "lexicAnalyzer.l"
-{ printf("%s: token EXIT\n", yytext); ACCOUNTABLE }
+#line 75 "lexicAnalyzer.l"
+{ printf("%s: token DO\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 73 "lexicAnalyzer.l"
-{ printf("%s: token WHEN\n", yytext); ACCOUNTABLE }
+#line 76 "lexicAnalyzer.l"
+{ printf("%s: token LOOP\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 75 "lexicAnalyzer.l"
+#line 77 "lexicAnalyzer.l"
+{ printf("%s: token EXIT\n", yytext); ACCOUNTABLE }
+	YY_BREAK
+case 35:
+YY_RULE_SETUP
+#line 78 "lexicAnalyzer.l"
+{ printf("%s: token WHEN\n", yytext); ACCOUNTABLE }
+	YY_BREAK
+case 36:
+YY_RULE_SETUP
+#line 80 "lexicAnalyzer.l"
 {
 	printf("%s: token ID \n", yytext);
 	char *p = (char*)malloc(  (strlen(yytext) + 1) * sizeof(char));
@@ -918,161 +929,161 @@ YY_RULE_SETUP
 	ACCOUNTABLE
 }
 	YY_BREAK
-case 35:
-YY_RULE_SETUP
-#line 84 "lexicAnalyzer.l"
-{ printf("%s: token NUMBER_INT \n", yytext); ACCOUNTABLE }
-	YY_BREAK
-case 36:
-YY_RULE_SETUP
-#line 85 "lexicAnalyzer.l"
-{ printf("%s: token NUMBER_REAL \n", yytext); ACCOUNTABLE }
-	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 87 "lexicAnalyzer.l"
+#line 89 "lexicAnalyzer.l"
+{ printf("%s: token NUMBER_INT \n", yytext); ACCOUNTABLE }
+	YY_BREAK
+case 38:
+YY_RULE_SETUP
+#line 90 "lexicAnalyzer.l"
+{ printf("%s: token NUMBER_REAL \n", yytext); ACCOUNTABLE }
+	YY_BREAK
+case 39:
+YY_RULE_SETUP
+#line 92 "lexicAnalyzer.l"
 {
 	printf("%s: token SEMICOLON\n ", yytext);
 	canInsert = 0;
 	ACCOUNTABLE
 }	
 	YY_BREAK
-case 38:
-YY_RULE_SETUP
-#line 92 "lexicAnalyzer.l"
-{ printf("%s: token COMMA \n", yytext); ACCOUNTABLE }		
-	YY_BREAK
-case 39:
-YY_RULE_SETUP
-#line 93 "lexicAnalyzer.l"
-{ printf("%s: token DOT\n", yytext); ACCOUNTABLE }		
-	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 94 "lexicAnalyzer.l"
-{ printf("%s: token OPEN_PARENTHESIS\n", yytext); ACCOUNTABLE }
+#line 97 "lexicAnalyzer.l"
+{ printf("%s: token COMMA \n", yytext); ACCOUNTABLE }		
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 95 "lexicAnalyzer.l"
-{ printf("%s: token CLOSE_PARENTHESIS\n", yytext); ACCOUNTABLE }
+#line 98 "lexicAnalyzer.l"
+{ printf("%s: token DOT\n", yytext); ACCOUNTABLE }		
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 96 "lexicAnalyzer.l"
-{ printf("%s: token OPEN_BRACKETS\n", yytext); ACCOUNTABLE }
+#line 99 "lexicAnalyzer.l"
+{ printf("%s: token OPEN_PARENTHESIS\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 97 "lexicAnalyzer.l"
-{ printf("%s: token CLOSE_BRACKETS\n", yytext); ACCOUNTABLE }
+#line 100 "lexicAnalyzer.l"
+{ printf("%s: token CLOSE_PARENTHESIS\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 98 "lexicAnalyzer.l"
-{ printf("%s: token OPEN_BRACES\n", yytext); ACCOUNTABLE }
+#line 101 "lexicAnalyzer.l"
+{ printf("%s: token OPEN_BRACKETS\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 99 "lexicAnalyzer.l"
-{ printf("%s: token CLOSE_BRACES\n", yytext); ACCOUNTABLE }
+#line 102 "lexicAnalyzer.l"
+{ printf("%s: token CLOSE_BRACKETS\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 102 "lexicAnalyzer.l"
-{ printf("%s: token ADD\n", yytext); ACCOUNTABLE }
+#line 103 "lexicAnalyzer.l"
+{ printf("%s: token OPEN_BRACES\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 103 "lexicAnalyzer.l"
-{ printf("%s: token SUB\n", yytext); ACCOUNTABLE }
+#line 104 "lexicAnalyzer.l"
+{ printf("%s: token CLOSE_BRACES\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 104 "lexicAnalyzer.l"
-{ printf("%s: token MULT\n", yytext); ACCOUNTABLE }	
+#line 107 "lexicAnalyzer.l"
+{ printf("%s: token ADD\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 105 "lexicAnalyzer.l"
-{ printf("%s: token DIV\n", yytext); ACCOUNTABLE  }
+#line 108 "lexicAnalyzer.l"
+{ printf("%s: token SUB\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 106 "lexicAnalyzer.l"
-{ printf("%s: token EQUAL\n", yytext); ACCOUNTABLE }
+#line 109 "lexicAnalyzer.l"
+{ printf("%s: token MULT\n", yytext); ACCOUNTABLE }	
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 107 "lexicAnalyzer.l"
-{ printf("%s: token MOD\n", yytext); ACCOUNTABLE }
+#line 110 "lexicAnalyzer.l"
+{ printf("%s: token DIV\n", yytext); ACCOUNTABLE  }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 108 "lexicAnalyzer.l"
-{ printf("%s: token NEG\n", yytext); ACCOUNTABLE }
+#line 111 "lexicAnalyzer.l"
+{ printf("%s: token EQUAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 109 "lexicAnalyzer.l"
-{ printf("%s: token OR\n", yytext); ACCOUNTABLE }
+#line 112 "lexicAnalyzer.l"
+{ printf("%s: token MOD\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 110 "lexicAnalyzer.l"
-{ printf("%s: token AND\n", yytext); ACCOUNTABLE }
+#line 113 "lexicAnalyzer.l"
+{ printf("%s: token NEG\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 111 "lexicAnalyzer.l"
-{ printf("%s: token LESS_THEN\n", yytext); ACCOUNTABLE }
+#line 114 "lexicAnalyzer.l"
+{ printf("%s: token OR\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 112 "lexicAnalyzer.l"
-{ printf("%s: token BIGGER_THEN\n", yytext); ACCOUNTABLE }
+#line 115 "lexicAnalyzer.l"
+{ printf("%s: token AND\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 113 "lexicAnalyzer.l"
-{ printf("%s: token EQUAL_LOGIC\n", yytext); ACCOUNTABLE }
+#line 116 "lexicAnalyzer.l"
+{ printf("%s: token LESS_THEN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 114 "lexicAnalyzer.l"
-{ printf("%s: token NOT_EQUAL\n", yytext); ACCOUNTABLE }
+#line 117 "lexicAnalyzer.l"
+{ printf("%s: token BIGGER_THEN\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 115 "lexicAnalyzer.l"
-{ printf("%s: token LESS_EQUAL\n", yytext); ACCOUNTABLE }
+#line 118 "lexicAnalyzer.l"
+{ printf("%s: token EQUAL_LOGIC\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 116 "lexicAnalyzer.l"
-{ printf("%s: token BIGGER_EQUAL\n", yytext); ACCOUNTABLE }
+#line 119 "lexicAnalyzer.l"
+{ printf("%s: token NOT_EQUAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 117 "lexicAnalyzer.l"
-{ printf("%s: token INCREMENT\n", yytext); ACCOUNTABLE }
+#line 120 "lexicAnalyzer.l"
+{ printf("%s: token LESS_EQUAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 118 "lexicAnalyzer.l"
-{ printf("%s: token DECREMENT\n", yytext); ACCOUNTABLE }
+#line 121 "lexicAnalyzer.l"
+{ printf("%s: token BIGGER_EQUAL\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 124 "lexicAnalyzer.l"
-{nchar++;}
+#line 122 "lexicAnalyzer.l"
+{ printf("%s: token INCREMENT\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 127 "lexicAnalyzer.l"
+#line 123 "lexicAnalyzer.l"
+{ printf("%s: token DECREMENT\n", yytext); ACCOUNTABLE }
+	YY_BREAK
+case 65:
+YY_RULE_SETUP
+#line 129 "lexicAnalyzer.l"
+{nchar++;}
+	YY_BREAK
+case 66:
+YY_RULE_SETUP
+#line 132 "lexicAnalyzer.l"
 ECHO;
 	YY_BREAK
-#line 1076 "lex.yy.c"
+#line 1087 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(IN_COMMENT):
 	yyterminate();
@@ -1963,7 +1974,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 127 "lexicAnalyzer.l"
+#line 132 "lexicAnalyzer.l"
 
 
 int main(argc,argv)

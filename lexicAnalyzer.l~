@@ -27,11 +27,15 @@ ID	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 "/*"("*"|\n|[^"*/"])*"*/" { printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } //Checar a quantidade de linhas
 
+"/*"("*"|\n|[^"*/"])* { printf("%s: unmatched comment error\n", yytext); ACCOUNTABLE }
+
 \n		{nline++;nchar++;}
 
 "//".* { printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } 
 
 \"(\\.|[^\\"])*\" { printf("%s: token VAL_STRING\n", yytext); ACCOUNTABLE } 
+
+\"(\\.|[^\\"])* { printf("%s: unmatched string error\n", yytext); ACCOUNTABLE }
 
 procedure { printf("%s: token PROCEDURE\n", yytext); ACCOUNTABLE }
 function { printf("%s: token FUNCTION\n", yytext); ACCOUNTABLE }
@@ -152,6 +156,7 @@ char **argv;
 	printf("\n   Nome    |    Tipo    | Desloc | Nivel\n");
 	printf("------------------------------------------\n");
 	printSymbolTable(head);
+	removeAllSymbolTable(head);
 	
 	return 0;
 }
