@@ -77,12 +77,8 @@ void printSymbolTable(Tabela *t) {
 }
 
 void removeAllSymbolTable(Tabela *t) {
-	if (t->prox == NULL) {
-		free(t);
-		return;
+	if (t->prox != NULL) {
+		removeAllSymbolTable(t->prox);	
 	}
-
-	removeAllSymbolTable(t->prox);
-	if (t->prox == NULL)
-		free(t);
+	free(t);
 }
