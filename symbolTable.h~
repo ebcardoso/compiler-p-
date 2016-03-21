@@ -69,6 +69,7 @@ int findSymbol(char *nome, Tabela *t) {
 	}
 }
 
+//imprimir a tabela de símbolos
 void printSymbolTable(Tabela *t) {
 	if (t->prox != NULL) {
 		printf("%-10s | %-10s | %-6i | %i\n", t->prox->nome, t->prox->tipo, t->prox->nivel, t->prox->deslocamento);
@@ -76,9 +77,10 @@ void printSymbolTable(Tabela *t) {
 	}
 }
 
+//remover todos os elementos da tabela de símbolos
 void removeAllSymbolTable(Tabela *t) {
 	if (t->prox != NULL) {
-		removeAllSymbolTable(t->prox);
-		free(t);
+		removeAllSymbolTable(t->prox);	
 	}
+	free(t);
 }
