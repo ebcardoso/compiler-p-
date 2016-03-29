@@ -1,10 +1,13 @@
 #ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#define YYTOKENTYPE
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    
 #endif
 /* Tokens.  */
+
+#define EOF 396
+#define COMMENT 397
 
 #define PROCEDURE 398
 #define FUNCTION 399
