@@ -3,11 +3,6 @@
 /*
 	Analizador Lexico da Linguagem P++
 	Equipe: Breno Cardoso, Lucas Simonetti, Renato Higor, Sidemar Fideles
-
-	--Para compilar e executar
-	lex lexicAnalizer.l
-	cc lex.yy.c -ll -o lexicAnalyzer
-	./lexicAnalyzer examples/arquivo.ppp
 */
 
 	#include "symbolTable.h"

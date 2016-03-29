@@ -24,6 +24,8 @@ ID	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 "/*"("*"|\n|[^"*/"])* { printf("%s: unmatched comment error\n", yytext); ACCOUNTABLE }
 
+("*"|\n|[^"*/"])*"*/" { printf("%s: unmatched comment error\n", yytext); ACCOUNTABLE }
+
 \n		{nline++;nchar++;}
 
 "//".* { printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } 
