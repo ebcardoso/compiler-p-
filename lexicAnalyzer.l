@@ -5,8 +5,8 @@
 	Equipe: Breno Cardoso, Lucas Simonetti, Renato Higor, Sidemar Fideles
 */
 
-	#include "symbolTable.h"
 	#include "parserTokens.h"
+	#include "symbolTable.h"
 	int nchar, nline, nword;
 	#define ACCOUNTABLE nword++;nchar+=yyleng;
 
@@ -53,9 +53,9 @@ boolean { return BOOLEAN; ACCOUNTABLE }
 true { return TRUE; ACCOUNTABLE }
 false { return FALSE; ACCOUNTABLE }
 
-null {return NULL ; ACCOUNTABLE }
+null {return NIL ; ACCOUNTABLE }
  
-begin { return BEGIN; ACCOUNTABLE }
+begin { return BEG; ACCOUNTABLE }
 end { return END; ACCOUNTABLE }
 
 return { return RETURN; ACCOUNTABLE }

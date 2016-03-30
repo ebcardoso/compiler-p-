@@ -6,79 +6,81 @@
 #endif
 /* Tokens.  */
 
-#define COMMENT 397
+#define COMMENT 100
 
-#define PROCEDURE 398
-#define FUNCTION 399
+#define PROCEDURE 200
+#define FUNCTION 201
 
-#define REF 400
-#define VAR 401
+#define REF 300
+#define VAR 301
 
-#define CONST 402 
-#define INT 403
-#define REAL 404
-#define STRING 405
-#define BOOLEAN 406
+#define CONST 310 
+#define INT 311
+#define REAL 312
+#define STRING 313
+#define BOOLEAN 314
 
-#define TRUE 407
-#define FALSE 408
-#define NULL 409
-#define VAL_STRING 410
+#define TRUE 320
+#define FALSE 321
+#define NIL 322
+#define VAL_STRING 323
 
-#define BEGIN 411
-#define END 412
+#define BEGIN 400
+#define END 401
 
-#define RETURN 413
-#define BREAK 414
+#define RETURN 410
+#define BREAK 411
 
-#define IF 415
-#define THEN 416
-#define ELSE 417
+#define IF 420
+#define THEN 421
+#define ELSE 422
 
-#define SWITCH 418
-#define CASE 419
-#define DEFAULT 420
+#define SWITCH 430
+#define CASE 431
+#define DEFAULT 432
 
-#define FOR 421
-#define DOWNTO 422
-#define TO 423
-#define DO 424
+#define FOR 440
+#define DOWNTO 441
+#define TO 442
+#define DO 443
 
-#define LOOP 425
-#define EXIT 426
-#define WHEN 427
+#define LOOP 450
+#define EXIT 451
+#define WHEN 452
 
-#define ID 428
-#define NUMBER_INT 429
-#define NUMBER_REAL 430
+#define ID 500
+#define NUMBER_INT 501
+#define NUMBER_REAL 501
 
-#define SEMICOLON 431 // ;
-#define COMMA 432 // ,
-#define DOT 433 // .
-#define OPEN_PARENTHESIS 434 // (
-#define CLOSE_PARENTHESIS 435 // )
-#define OPEN_BRACKETS 436 // [
-#define CLOSE_BRACKETS 437// ]
-#define OPEN_BRACES 438 
-#define CLOSE_BRACES 439
+#define SEMICOLON 600 // ;
+#define COMMA 601 // ,
+#define DOT 602 // .
 
-#define ADD 440
-#define SUB 441
-#define MULT 442
-#define DIV 443
-#define EQUAL 444
-#define MOD 445
-#define NEG 446
-#define OR 447
-#define AND 448
-#define LESS_THEN 449
-#define BIGGER_THEN 450
-#define EQUAL_LOGIC 451
-#define NOT_EQUAL 452
-#define LESS_EQUAL 453
-#define BIGGER_EQUAL 454
-#define INCREMENT 455
-#define DECREMENT 456
+#define OPEN_PARENTHESIS 610 // (
+#define CLOSE_PARENTHESIS 611 // )
+#define OPEN_BRACKETS 612 // [
+#define CLOSE_BRACKETS 613 // ]
+#define OPEN_BRACES 614 // {
+#define CLOSE_BRACES 615 // }
+
+#define ADD 700 //+
+#define SUB 701 //-
+#define MULT 702 //*
+#define DIV 703 // /
+#define MOD 704 // %
+#define INCREMENT 705 //++
+#define DECREMENT 706 //--
+
+#define EQUAL 710 //=
+#define NEG 711 // !
+#define OR 712 // ||
+#define AND 713 //&&
+#define LESS_THEN 714 // <
+#define BIGGER_THEN 715 // >
+#define EQUAL_LOGIC 716 // ==
+#define NOT_EQUAL 717 // !=
+#define LESS_EQUAL 718 // <=
+#define BIGGER_EQUAL 719 // >=
 
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
