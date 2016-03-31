@@ -986,7 +986,7 @@ YY_RULE_SETUP
 case 20:
 YY_RULE_SETUP
 #line 58 "lexicAnalyzer.l"
-{ return BEGIN; ACCOUNTABLE }
+{ return BEG; ACCOUNTABLE }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
@@ -1227,12 +1227,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 126 "lexicAnalyzer.l"
+#line 122 "lexicAnalyzer.l"
 {nchar++;}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 128 "lexicAnalyzer.l"
+#line 124 "lexicAnalyzer.l"
 ECHO;
 	YY_BREAK
 #line 1239 "lex.yy.c"
@@ -2231,11 +2231,11 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 127 "lexicAnalyzer.l"
+#line 123 "lexicAnalyzer.l"
 
 
 
-int main(argc,argv)
+/*int main(argc,argv)
 int argc;
 char **argv;
 {
@@ -2264,10 +2264,9 @@ char **argv;
 	removeAllSymbolTable(head);
 	
 	return 0;
-}
+}*/
 
-int yywrap()
-{
+int yywrap() {
 	return(1);
 }
 

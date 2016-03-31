@@ -1,4 +1,7 @@
-void emit (int t, char* tval)  {/*  generates output  */
+#include <stdio.h>
+#include "parserTokens.h"
+
+void emitter(int t, char* tval)  {
 	switch(t) {
 		case COMMENT:
 			printf("%s \n", tval); break;
@@ -109,7 +112,7 @@ void emit (int t, char* tval)  {/*  generates output  */
 		case DIV:
 			printf("/ "); break;
 		case MOD:
-			printf("% "); break;
+			printf("%% "); break;
 		case INCREMENT:
 			printf("++ "); break;
 		case DECREMENT:

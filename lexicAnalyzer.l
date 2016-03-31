@@ -119,15 +119,11 @@ when { return WHEN; ACCOUNTABLE }
 "++" { return INCREMENT; ACCOUNTABLE }
 "--" { return DECREMENT; ACCOUNTABLE }
 
-
-
-
-
 .		{nchar++;}
 
 %%
 
-int main(argc,argv)
+/*int main(argc,argv)
 int argc;
 char **argv;
 {
@@ -156,9 +152,8 @@ char **argv;
 	removeAllSymbolTable(head);
 	
 	return 0;
-}
+}*/
 
-int yywrap()
-{
+int yywrap() {
 	return(1);
 }

@@ -1,15 +1,24 @@
-#ifndef YYTOKENTYPE
+/*#ifndef YYTOKENTYPE
 #define YYTOKENTYPE
    /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
+      know about them.
    
 #endif
-/* Tokens.  */
+ Tokens.  */
 
-#define COMMENT 100 /* */
+#include <stdio.h>  /* include declarations for i/o routines */
+#include <ctype.h>  /* ... and for character test routines */
+#include <stdlib.h> /* ... and for some standard routines, such as exit */
+#include <string.h> /* ... and for string routines */
 
-#define PROCEDURE 200
-#define FUNCTION 201
+#define BSIZE 100  /* buffer size */
+#define NONE -1
+#define EOS '\0'
+
+#define COMMENT 200 /* */
+
+#define PROCEDURE 210
+#define FUNCTION 211
 
 #define REF 300
 #define VAR 301
@@ -82,9 +91,15 @@
 #define LESS_EQUAL 718 // <=
 #define BIGGER_EQUAL 719 // >=
 
+extern int yylineno;
+extern char *yytext;
+extern FILE *yyin;
 
-#if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
+//extern void error(char* m); /*  generates all error messages  */
+extern int yylex(); /*  lexical analyzer  */
+
+/*#if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
+# define yystype YYSTYPE /* obsolescent; will be withdrawn 
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
-#endif
+#endif*/

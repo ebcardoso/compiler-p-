@@ -1,16 +1,17 @@
 lexicAnalyzer: lexicAnalyzer.l
+	clear
 	lex lexicAnalyzer.l
-	cc lex.yy.c -ll -o lexicAnalyzer
+	cc main.c parserRecursivo.h parserEmitter.h parserTokens.h lex.yy.c -ll -o recursiveParser
 
 test: lexicAnalyzer
-	./lexicAnalyzer examples/test.ppp
+	./recursiveParser examples/test.ppp
 
 quick: lexicAnalyzer
-	./lexicAnalyzer examples/quicksort.ppp
+	./recursiveParser examples/quicksort.ppp
 
 merge: lexicAnalyzer
-	./lexicAnalyzer examples/mergesort.ppp
+	./recursiveParser examples/mergesort.ppp
 
 .PHONY: clean
 clean:
-	rm -f examples/*~ *~ lexicAnalyzer a.out lex.yy.c
+	rm -f examples/*~ *~ recursiveParser a.out lex.yy.c
