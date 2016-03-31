@@ -6,7 +6,7 @@
 #endif
 /* Tokens.  */
 
-#define COMMENT 100
+#define COMMENT 100 /* */
 
 #define PROCEDURE 200
 #define FUNCTION 201
@@ -25,7 +25,7 @@
 #define NIL 322
 #define VAL_STRING 323
 
-#define BEGIN 400
+#define BEG 400 // begin
 #define END 401
 
 #define RETURN 410
@@ -50,7 +50,7 @@
 
 #define ID 500
 #define NUMBER_INT 501
-#define NUMBER_REAL 501
+#define NUMBER_REAL 502
 
 #define SEMICOLON 600 // ;
 #define COMMA 601 // ,

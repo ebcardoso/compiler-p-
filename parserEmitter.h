@@ -1,102 +1,142 @@
-void emit (int t, char* tval)  /*  generates output  */
-{
-  switch(t) {
-    case COMMENT:
-      printf("%s\n", tval); break; 
-    case STRING:
-      printf("%s", tval); break; 
-    case INT:
-      printf("int "); break; 
-    case REAL:
-      printf("real "); break;
-    case DOUBLE:
-      printf("double "); break;
-    case CONST:
-      printf("const "); break;
-    case REF:
-      printf("ref "); break;
-    case IF:
-      printf("if "); break;
-    case ELSE:
-      printf("else "); break; 
-    case FOR:
-      printf("for "); break;
-    case SWITCH:
-      printf("switch "); break;
-    case BREAK:
-      printf("break"); break;
-    case FALSE:
-      printf("FALSE"); break;
-    case TRUE:
-      printf("TRUE"); break;
-    case PROCEDURE:
-      printf("\nPROCEDURE\n"); break;
-    case FUNCTION:
-      printf("\nfunction "); break;
-    case RETURN:
-      printf("return "); break;
-    case VARIABLES_SECTION:
-      printf("\n\nvariables"); break;
-    case SUBPROGRAMS_SECTION:
-      printf("\n\nsubprograms"); break;
-    case SEMICOLON:
-      printf(";\n"); break;      
-    case COMMA:
-      printf(", "); break;
-    case COLON:
-      printf(":\n"); break;        
-    case OPEN_PARENTHESIS:
-      printf("( "); break;
-    case CLOSE_PARENTHESIS:
-      printf(" )"); break;
-    case OPEN_BRACKETS:
-      printf("[ "); break;
-    case CLOSE_BRACKETS:
-      printf(" ]"); break;
-    case  ID:
-      printf("%s ", tval); break; 
+void emit (int t, char* tval)  {/*  generates output  */
+	switch(t) {
+		case COMMENT:
+			printf("%s \n", tval); break;
 
+		case PROCEDURE:
+			printf("\nprocedure "); break;
+		case FUNCTION:
+			printf("\nfunction "); break;
 
-    case INT_NUMBER:
-      printf("%s", tval); break;
-    case COMPLEX_NUMBER:
-      printf("%s", tval); break;
-    case REAL_NUMBER:
-      printf("%s", tval); break;
+		case REF:
+			printf("ref "); break;
+		case VAR:
+			printf("var "); break;
 
+		case CONST:
+			printf("const "); break;
+		case INT:
+			printf("int "); break; 
+		case REAL:
+			printf("real "); break;
+		case STRING:
+			printf("string "); break;
+		case BOOLEAN:
+			printf("boolean "); break;
 
-    case LEQ_OP:
-      printf("<= "); break;
-    case  BEQ_OP:
-      printf(">= "); break;
-    case  EQ_OP:
-      printf("== "); break;
-    case  NEQ_OP:
-      printf("!= "); break;
+		case TRUE:
+			printf("true "); break; 
+		case FALSE:
+			printf("false "); break;
+		case NIL:
+			printf("nil "); break;
+		case VAL_STRING:
+			printf("%s ", tval); break;
 
-    case ASSIGN_OP:
-      printf("= "); break;  
+		case BEG:
+			printf("begin "); break;
+		case END:
+			printf("end "); break;
 
+		case RETURN:
+			printf("return "); break;
+		case BREAK:
+			printf("break "); break;
 
+		case IF:
+			printf("if "); break;
+		case THEN:
+			printf("then "); break;
+		case ELSE:
+			printf("else "); break; 
 
-    case SUB_OP:
-      printf("- "); break;
-    case ADD_OP:
-      printf("+ "); break;
-    case MULT_OP:
-      printf("* "); break;
-    case DIV_OP:
-     printf("/ "); break;
-    case MOD_OP:
-      printf("%% "); break;
-    case LT_OP:
-      printf("< "); break;
-    case BT_OP:
-      printf("> "); break;
-    case EXPO_OP:
-      printf("ˆ "); break;
+		case SWITCH:
+			printf("switch "); break;
+		case CASE:
+			printf("case "); break;
+		case DEFAULT:
+			printf("default "); break;
 
-    default:     
-      printf("\ntoken %d, tokenval %s\n", t, tval);
-  }
+		case FOR:
+			printf("for "); break;
+		case DOWNTO:
+			printf("downto "); break;
+		case TO:
+			printf("to "); break;
+		case DO:
+			printf("do "); break;
+
+		case LOOP:
+			printf("loop "); break;
+		case EXIT:
+			printf("exit "); break;
+		case WHEN:
+			printf("when "); break;
+
+		case ID:
+			printf("%s ", tval); break; 
+		case NUMBER_INT:
+			printf("%s", tval); break;
+		case NUMBER_REAL:
+			printf("%s", tval); break;
+
+		case SEMICOLON:
+			printf(";\n"); break;      
+		case COMMA:
+			printf(", "); break;
+		case DOT:
+			printf(". "); break;
+        
+		case OPEN_PARENTHESIS:
+			printf("( "); break;
+		case CLOSE_PARENTHESIS:
+			printf(" )"); break;
+		case OPEN_BRACKETS:
+			printf("[ "); break;
+		case CLOSE_BRACKETS:
+			printf(" ]"); break;
+		case OPEN_BRACES:
+			printf("{ "); break;
+		case CLOSE_BRACES:
+			printf(" }"); break;
+
+		case ADD:
+			printf("+ "); break;
+		case SUB:
+			printf("- "); break;
+		case MULT:
+			printf("* "); break;
+		case DIV:
+			printf("/ "); break;
+		case MOD:
+			printf("% "); break;
+		case INCREMENT:
+			printf("++ "); break;
+		case DECREMENT:
+			printf("-- "); break;
+
+		case EQUAL:
+			printf("= "); break;
+		case NEG:
+			printf("! "); break;  
+		case OR:
+			printf("|| "); break;  
+		case AND:
+			printf("&& "); break;    
+		case LESS_THEN:
+			printf("< "); break;
+		case BIGGER_THEN:
+			printf("> "); break;
+		case EQUAL_LOGIC:
+			printf("== "); break;
+		case NOT_EQUAL:
+			printf("!= "); break;
+		case LESS_EQUAL:
+			printf("<= "); break;
+		case BIGGER_EQUAL:
+			printf(">= "); break;
+
+		default:     
+			printf("\ntoken %d, tokenval %s\n", t, tval);
+	}
 }
