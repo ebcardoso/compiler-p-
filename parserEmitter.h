@@ -88,7 +88,7 @@ void emitter(int t, char* tval)  {
 		case COMMA:
 			printf(", "); break;
 		case DOT:
-			printf(". "); break;
+			printf("."); break;
         
 		case OPEN_PARENTHESIS:
 			printf("( "); break;
