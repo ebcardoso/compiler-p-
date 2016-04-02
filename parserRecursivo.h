@@ -133,9 +133,91 @@ void term_bool_comparison() {
 }
 
 void term_arit_comparison_tail() {
-
+	switch (lookahead) {
+		case LESS_EQUAL:
+			eat(LESS_EQUAL); term_arit_comparison(); term_arit_comparison_tail();
+			break;
+		case BIGGER_EQUAL:
+			eat(BIGGER_EQUAL); term_arit_comparison(); term_arit_comparison_tail();
+			break;
+		case LESS_THEN:
+			eat(LESS_EQUAL); term_arit_comparison(); term_arit_comparison_tail();
+			break;
+		case BIGGER_THEN:
+			eat(BIGGER_EQUAL); term_arit_comparison(); term_arit_comparison_tail();
+			break;
+	}
 }
 
 void term_arit_comparison() {
+	term(); term_tail();
+}
 
+void term_tail() {
+	switch (lookahead) {
+		case ADD:
+			eat(ADD); term(); term_tail();
+			break;
+		case SUB:
+			eat(SUB); term(); term_tail();
+			break;
+	}
+}
+
+void term() {
+	factor(); factor_tail();
+}
+
+void factor_tail() {
+	switch (lookahead) {
+		case MULT:
+			eat(MULT); factor(); factor_tail();
+			break;
+		case DIV:
+			eat(DIV); factor(); factor_tail();
+			break;
+		case MOD:
+			eat(MOD); factor(); factor_tail();
+			break;
+	}
+}
+
+void factor() {
+	negation_unsub(); negation_unsub_tail();
+}
+
+/*
+	<negation_unsub> $\rightarrow$ <access> | <literal> | <subprogram_call> | \A{(}<expression>\A{)}
+*/
+
+void negation_unsub_tail() {
+	if (lookahead == NEG) {
+		eat(NEG); negation_unsub();
+	}
+}
+
+void negation_unsub() {
+	switch (lookahead) {
+		case ID:
+			access();
+			break;
+		case NUMBER_INT:
+			eat(NUMBER_INT);
+			break;
+		case NUMBER_REAL:
+			eat(NUMBER_REAL);
+			break;
+		case VAL_STRING:
+			eat(VAL_STRING);
+			break;
+		case OPEN_PARENTHESIS:
+			eat(OPEN_PARENTHESIS);
+			expression();
+			if (lookahead == CLOSE_PARENTHESIS) {
+				eat(CLOSE_PARENTHESIS);
+			} else {
+				error();
+			}
+			break;
+	}
 }
