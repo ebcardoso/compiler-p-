@@ -40,7 +40,7 @@ void program() {
 }
 
 void declaration() {
-	access();
+	attribuition();
 }
 
 void attribuition() {
