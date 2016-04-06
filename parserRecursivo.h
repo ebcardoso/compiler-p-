@@ -41,7 +41,97 @@ void program() {
 }
 
 void declaration() {
-	attribuition();
+	switch (lookahead) {
+		case VAR:
+			var();
+			declaration();
+			break;
+		case CONST:
+			Const();
+			declaration();
+			break;
+		case PROCEDURE:
+			break;
+		case FUNCTION:
+			break;
+		case EOF:
+			break;
+		default:
+			error();
+	}
+}
+
+void var() {
+	if (lookahead == VAR) {
+		eat(VAR);
+		if (lookahead == ID) {
+			eat(ID);
+			ids_exp();
+			ids_exps();
+		} else {
+			error();
+		}
+	} else {
+		error();
+	}
+}
+
+void ids_exp() {
+	if (lookahead == EQUAL) {
+		eat(EQUAL);
+		expression();
+	}
+}
+
+void ids_exps() {
+	if (lookahead == COMMA) {
+		eat(COMMA);
+		if (lookahead == ID) {
+			eat(ID);
+			ids_exp();
+			ids_exps();
+		} else {
+			error();
+		}
+	}
+}
+
+void Const() {
+	if (lookahead == CONST) {
+		eat(CONST);
+		if (lookahead == ID) {
+			eat(ID);
+			if (lookahead == EQUAL) {
+				eat(EQUAL);
+				expression();
+				const_aux();
+			} else {
+				error();
+			}
+		} else {
+			error();
+		}
+	} else {
+		error();
+	}
+}
+
+void const_aux() {
+	if (lookahead == COMMA) {
+		eat(COMMA);
+		if (lookahead == ID) {
+			eat(ID);	
+			if (lookahead == EQUAL) {
+				eat(EQUAL);
+				expression();
+				const_aux();
+			} else {
+				error();
+			}
+		} else {
+			error();
+		}
+	}
 }
 
 void attribuition() {

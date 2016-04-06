@@ -14,10 +14,10 @@ void emitter(int t, char* tval)  {
 		case REF:
 			printf("ref "); break;
 		case VAR:
-			printf("var "); break;
+			printf("\nvar "); break;
 
 		case CONST:
-			printf("const "); break;
+			printf("\nconst "); break;
 		case INT:
 			printf("int "); break; 
 		case REAL:
