@@ -11,12 +11,13 @@ void eat(int t) {
 	} else {
 		printf("\n---------------------\n");
 		printf("RECEBIDO: %d  ESPERADO: %d\n", lookahead, t);
-		error ();//"syntax error in match");
+		error();
 	}
 }
 
 void error () {
-
+	printf("\nSyntax Error\n");
+	exit(1);
 }
 
 void parse(char *src) {  /*  parses and translates expression list  */
@@ -44,7 +45,7 @@ void declaration() {
 }
 
 void attribuition() {
-	access();
+	access_n_call();
 	if (lookahead == EQUAL) {
 		eat(EQUAL);	expression();
 	} else {
@@ -52,35 +53,49 @@ void attribuition() {
 	}
 }
 
-void access() {
+void access_n_call() {
 	if (lookahead == ID) {
-		eat(ID); access_aux();
+		eat(ID); access_n_call_aux();
 	} else {
 		error();
 	}
 }
 
-void access_aux() {
+void access_n_call_aux() {
+	switch (lookahead) {
+		case OPEN_PARENTHESIS:
+			//subprogram_call();
+			break;
+		case DOT:
+			access();
+			break;
+		case OPEN_BRACKETS:
+			access();
+			break;
+		/*default:
+			error();
+			break;*/
+	}
+}
+
+void access() {
 	switch (lookahead) {
 		case DOT:
 			eat(DOT);
 			if (lookahead == ID) {
-				eat(ID);
-				access_aux();
+				eat(ID); access();
 			} else {
 				error();
 			}
-			break;
+		break;
 		case OPEN_BRACKETS:
-			eat(OPEN_BRACKETS);
-			l_exp();
+			eat(OPEN_BRACKETS); l_exp();
 			if (lookahead == CLOSE_BRACKETS) {
-				eat(CLOSE_BRACKETS);
-				access_aux();
+				eat(CLOSE_BRACKETS); access();
 			} else {
 				error();
 			}
-			break;
+		break;
 	}
 }
 
@@ -90,7 +105,7 @@ void l_exp() {
 
 void l_exp_aux() {
 	if (lookahead == COMMA) {
-		eat(CLOSE_BRACKETS); access_aux();
+		eat(CLOSE_BRACKETS); access();
 	}
 }
 
@@ -186,10 +201,6 @@ void factor() {
 	negation_unsub(); negation_unsub_tail();
 }
 
-/*
-	<negation_unsub> $\rightarrow$ <access> | <literal> | <subprogram_call> | \A{(}<expression>\A{)}
-*/
-
 void negation_unsub_tail() {
 	if (lookahead == NEG) {
 		eat(NEG); negation_unsub();
@@ -199,7 +210,7 @@ void negation_unsub_tail() {
 void negation_unsub() {
 	switch (lookahead) {
 		case ID:
-			access();
+			access_n_call();
 			break;
 		case NUMBER_INT:
 			eat(NUMBER_INT);

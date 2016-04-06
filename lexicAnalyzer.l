@@ -119,6 +119,8 @@ when { return WHEN; ACCOUNTABLE }
 "++" { return INCREMENT; ACCOUNTABLE }
 "--" { return DECREMENT; ACCOUNTABLE }
 
+<<EOF>> { return EOF; ACCOUNTABLE }
+
 .		{nchar++;}
 
 %%

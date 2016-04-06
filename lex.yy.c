@@ -1225,20 +1225,22 @@ YY_RULE_SETUP
 #line 120 "lexicAnalyzer.l"
 { return DECREMENT; ACCOUNTABLE }
 	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(IN_COMMENT):
+#line 122 "lexicAnalyzer.l"
+{ return EOF; ACCOUNTABLE }
+	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 122 "lexicAnalyzer.l"
+#line 124 "lexicAnalyzer.l"
 {nchar++;}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 124 "lexicAnalyzer.l"
+#line 126 "lexicAnalyzer.l"
 ECHO;
 	YY_BREAK
-#line 1239 "lex.yy.c"
-case YY_STATE_EOF(INITIAL):
-case YY_STATE_EOF(IN_COMMENT):
-	yyterminate();
+#line 1244 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2231,7 +2233,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 123 "lexicAnalyzer.l"
+#line 125 "lexicAnalyzer.l"
 
 
 
