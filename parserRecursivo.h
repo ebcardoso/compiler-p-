@@ -93,7 +93,7 @@ void const_aux() {
 void block() {
 	declaration();
 	eat(BEG);
-		//command();
+		command();
 	eat(END);
 }
 
@@ -124,8 +124,31 @@ void parameter_list_aux() {
 	}
 }
 
-void attribuition() {
-	access_n_call(); eat(EQUAL); expression();
+/* 
+<command> $\rightarrow$ <block> <command> | <access_n_call> <command_aux> | <return> <command_aux> | <break> <command_aux> | <if> <command> | <switch> <command> | <loop> <command> | <exit> <command_aux> | <for> <command> | $\lambda$
+
+<command_aux> $\rightarrow$  \A{;} <command> | $\lambda$
+*/
+
+void command() {
+	switch (lookahead) {
+		case BEG:
+			block(); command();
+			break;
+		case ID:
+			printf("\n");
+			access_n_call(); command_aux();
+			break;
+		/*case RETURN:
+			return_(); command_aux();
+			break;*/
+	}
+}
+
+void command_aux() {
+	if (lookahead == SEMICOLON) {
+		eat(SEMICOLON); command();
+	}
 }
 
 void access_n_call() {
@@ -134,13 +157,16 @@ void access_n_call() {
 
 void access_n_call_aux() {
 	switch (lookahead) {
-		case OPEN_PARENTHESIS:
-			//subprogram_call();
+		case EQUAL:
+			attribuition();
 			break;
-		case DOT:
-			access();
+		case OPEN_PARENTHESIS:
+			subprogram_call();
 			break;
 		case OPEN_BRACKETS:
+			access();
+			break;
+		case DOT:
 			access();
 			break;
 		/*default:
@@ -158,6 +184,14 @@ void access() {
 			eat(OPEN_BRACKETS); l_exp(); eat(CLOSE_BRACKETS); access();
 			break;
 	}
+}
+
+void attribuition() {
+	eat(EQUAL); expression();
+}
+
+void subprogram_call() {
+	eat(OPEN_PARENTHESIS); parameter_list(); eat(CLOSE_PARENTHESIS);
 }
 
 void l_exp() {
