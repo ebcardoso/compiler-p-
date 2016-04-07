@@ -89,13 +89,30 @@ void const_aux() {
 }
 
 void procedure () {
-	eat(PROCEDURE); eat(ID); eat(OPEN_PARENTHESIS); /*parameter_list();*/ eat(CLOSE_PARENTHESIS);
+	eat(PROCEDURE); eat(ID); eat(OPEN_PARENTHESIS); parameter_list(); eat(CLOSE_PARENTHESIS);
 		//block();
 }
 
 void function () {
-	eat(FUNCTION); eat(ID); eat(OPEN_PARENTHESIS); /*parameter_list();*/ eat(CLOSE_PARENTHESIS);
+	eat(FUNCTION); eat(ID); eat(OPEN_PARENTHESIS); parameter_list(); eat(CLOSE_PARENTHESIS);
 		//block();
+}
+
+void parameter_list() {
+	switch (lookahead) {
+		case ID:
+			eat(ID); parameter_list_aux();
+			break;
+		case REF:
+			eat(REF); eat(ID); parameter_list_aux();
+			break;
+	}
+}
+
+void parameter_list_aux() {
+	if (lookahead == COMMA) {
+		eat(COMMA); parameter_list();
+	}
 }
 
 void attribuition() {
