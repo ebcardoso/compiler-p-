@@ -50,8 +50,10 @@ void declaration() {
 			Const(); declaration();
 			break;
 		case PROCEDURE:
+			procedure(); declaration();
 			break;
 		case FUNCTION:
+			function(); declaration();
 			break;
 		case EOF:
 			break;
@@ -84,6 +86,16 @@ void const_aux() {
 	if (lookahead == COMMA) {
 		eat(COMMA);	eat(ID); eat(EQUAL); expression(); const_aux();
 	}
+}
+
+void procedure () {
+	eat(PROCEDURE); eat(ID); eat(OPEN_PARENTHESIS); /*parameter_list();*/ eat(CLOSE_PARENTHESIS);
+		//block();
+}
+
+void function () {
+	eat(FUNCTION); eat(ID); eat(OPEN_PARENTHESIS); /*parameter_list();*/ eat(CLOSE_PARENTHESIS);
+		//block();
 }
 
 void attribuition() {
