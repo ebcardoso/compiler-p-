@@ -37,9 +37,9 @@ void emitter(int t, char* tval)  {
 			printf("%s ", tval); break;
 
 		case BEG:
-			printf("begin "); break;
+			printf("\nbegin "); break;
 		case END:
-			printf("end "); break;
+			printf("\nend "); break;
 
 		case RETURN:
 			printf("return "); break;

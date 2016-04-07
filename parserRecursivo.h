@@ -57,6 +57,8 @@ void declaration() {
 			break;
 		case EOF:
 			break;
+		case BEG:
+			break;
 		default:
 			error();
 	}
@@ -88,14 +90,21 @@ void const_aux() {
 	}
 }
 
+void block() {
+	declaration();
+	eat(BEG);
+		//command();
+	eat(END);
+}
+
 void procedure () {
 	eat(PROCEDURE); eat(ID); eat(OPEN_PARENTHESIS); parameter_list(); eat(CLOSE_PARENTHESIS);
-		//block();
+		block();
 }
 
 void function () {
 	eat(FUNCTION); eat(ID); eat(OPEN_PARENTHESIS); parameter_list(); eat(CLOSE_PARENTHESIS);
-		//block();
+		block();
 }
 
 void parameter_list() {
