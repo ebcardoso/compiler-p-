@@ -37,18 +37,17 @@ void parse(char *src) {  /*  parses and translates expression list  */
 
 void program() {
 	declaration();
-	eat(EOF);
+	printf("\n");
+	//eat(EOF);
 }
 
 void declaration() {
 	switch (lookahead) {
 		case VAR:
-			var();
-			declaration();
+			var(); declaration();
 			break;
 		case CONST:
-			Const();
-			declaration();
+			Const(); declaration();
 			break;
 		case PROCEDURE:
 			break;
@@ -62,93 +61,37 @@ void declaration() {
 }
 
 void var() {
-	if (lookahead == VAR) {
-		eat(VAR);
-		if (lookahead == ID) {
-			eat(ID);
-			ids_exp();
-			ids_exps();
-		} else {
-			error();
-		}
-	} else {
-		error();
-	}
+	eat(VAR); eat(ID); ids_exp(); ids_exps();
 }
 
 void ids_exp() {
 	if (lookahead == EQUAL) {
-		eat(EQUAL);
-		expression();
+		eat(EQUAL);	expression();
 	}
 }
 
 void ids_exps() {
 	if (lookahead == COMMA) {
-		eat(COMMA);
-		if (lookahead == ID) {
-			eat(ID);
-			ids_exp();
-			ids_exps();
-		} else {
-			error();
-		}
+		eat(COMMA); eat(ID); ids_exp();	ids_exps();
 	}
 }
 
 void Const() {
-	if (lookahead == CONST) {
-		eat(CONST);
-		if (lookahead == ID) {
-			eat(ID);
-			if (lookahead == EQUAL) {
-				eat(EQUAL);
-				expression();
-				const_aux();
-			} else {
-				error();
-			}
-		} else {
-			error();
-		}
-	} else {
-		error();
-	}
+	eat(CONST); eat(ID); eat(EQUAL); expression(); const_aux();
 }
 
 void const_aux() {
 	if (lookahead == COMMA) {
-		eat(COMMA);
-		if (lookahead == ID) {
-			eat(ID);	
-			if (lookahead == EQUAL) {
-				eat(EQUAL);
-				expression();
-				const_aux();
-			} else {
-				error();
-			}
-		} else {
-			error();
-		}
+		eat(COMMA);	eat(ID); eat(EQUAL); expression(); const_aux();
 	}
 }
 
 void attribuition() {
-	access_n_call();
-	if (lookahead == EQUAL) {
-		eat(EQUAL);	expression();
-	} else {
-		error();
-	}
+	access_n_call(); eat(EQUAL); expression();
 }
 
 void access_n_call() {
-	if (lookahead == ID) {
-		eat(ID); access_n_call_aux();
-	} else {
-		error();
-	}
+	eat(ID); access_n_call_aux();
 }
 
 void access_n_call_aux() {
@@ -171,21 +114,11 @@ void access_n_call_aux() {
 void access() {
 	switch (lookahead) {
 		case DOT:
-			eat(DOT);
-			if (lookahead == ID) {
-				eat(ID); access();
-			} else {
-				error();
-			}
-		break;
+			eat(DOT); eat(ID); access();
+			break;
 		case OPEN_BRACKETS:
-			eat(OPEN_BRACKETS); l_exp();
-			if (lookahead == CLOSE_BRACKETS) {
-				eat(CLOSE_BRACKETS); access();
-			} else {
-				error();
-			}
-		break;
+			eat(OPEN_BRACKETS); l_exp(); eat(CLOSE_BRACKETS); access();
+			break;
 	}
 }
 
@@ -312,13 +245,7 @@ void negation_unsub() {
 			eat(VAL_STRING);
 			break;
 		case OPEN_PARENTHESIS:
-			eat(OPEN_PARENTHESIS);
-			expression();
-			if (lookahead == CLOSE_PARENTHESIS) {
-				eat(CLOSE_PARENTHESIS);
-			} else {
-				error();
-			}
+			eat(OPEN_PARENTHESIS); expression(); eat(CLOSE_PARENTHESIS);
 			break;
 	}
 }
