@@ -18,7 +18,8 @@ procedure varrer()
 		loop
 			fat = fat * x;
 			x = x - 1;
-		exit when(x == 1);
+		exit when(x == 1)
+		end
 		return x
 	end
 begin
