@@ -47,7 +47,7 @@ void emitter(int t, char* tval)  {
 			printf("\nbreak "); break;
 
 		case IF:
-			printf("if "); break;
+			printf("\nif "); break;
 		case THEN:
 			printf("then "); break;
 		case ELSE:

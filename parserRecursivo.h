@@ -124,15 +124,21 @@ void parameter_list_aux() {
 	}
 }
 
-/* 
-<command> $\rightarrow$ <block> <command> | <access_n_call> <command_aux> | <return> <command_aux> | <break> <command_aux> | <if> <command> | <switch> <command> | <loop> <command> | <exit> <command_aux> | <for> <command> | $\lambda$
-
-<command_aux> $\rightarrow$  \A{;} <command> | $\lambda$
-*/
-
 void command() {
 	switch (lookahead) {
 		case BEG:
+			block(); command();
+			break;
+		case VAR:
+			block(); command();
+			break;
+		case CONST:
+			block(); command();
+			break;
+		case PROCEDURE:
+			block(); command();
+			break;
+		case FUNCTION:
 			block(); command();
 			break;
 		case ID:
@@ -197,10 +203,10 @@ void access_n_call_aux() {
 void access() {
 	switch (lookahead) {
 		case DOT:
-			eat(DOT); eat(ID); access();
+			eat(DOT); eat(ID); access_n_call_aux();
 			break;
 		case OPEN_BRACKETS:
-			eat(OPEN_BRACKETS); l_exp(); eat(CLOSE_BRACKETS); access();
+			eat(OPEN_BRACKETS); l_exp(); eat(CLOSE_BRACKETS); access_n_call_aux();
 			break;
 	}
 }
@@ -210,7 +216,36 @@ void attribuition() {
 }
 
 void subprogram_call() {
-	eat(OPEN_PARENTHESIS); parameter_list(); eat(CLOSE_PARENTHESIS);
+	eat(OPEN_PARENTHESIS); real_parameter_list(); eat(CLOSE_PARENTHESIS);
+}
+
+void real_parameter_list() {
+	switch (lookahead) {
+		case REF:
+			eat(REF); eat(ID); real_parameter_list_aux();
+			break;
+		case ID:
+			expression(); real_parameter_list_aux();
+			break;
+		case NUMBER_INT:
+			expression(); real_parameter_list_aux();
+			break;
+		case NUMBER_REAL:
+			expression(); real_parameter_list_aux();
+			break;
+		case VAL_STRING:
+			expression(); real_parameter_list_aux();
+			break;
+		case OPEN_PARENTHESIS:
+			expression(); real_parameter_list_aux();
+			break;
+	}
+}
+
+void real_parameter_list_aux() {
+	if (lookahead == COMMA) {
+		eat(COMMA); real_parameter_list();
+	}
 }
 
 void l_exp() {
@@ -238,8 +273,10 @@ void if_() {
 }
 
 void else_() {
-	eat(ELSE);
-		command();
+	if (lookahead == ELSE) {
+		eat(ELSE);
+			command();
+	}
 }
 
 void switch_() {
@@ -282,6 +319,7 @@ void default_() {
 void loop() {
 	eat(LOOP);
 		command();
+	eat(END);
 }
 
 void exit_() {
