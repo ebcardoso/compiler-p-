@@ -62,6 +62,7 @@
 #define NUMBER_REAL 502
 
 #define SEMICOLON 600 // ;
+#define COLON 603 // :
 #define COMMA 601 // ,
 #define DOT 602 // .
 

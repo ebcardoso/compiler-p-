@@ -139,9 +139,28 @@ void command() {
 			printf("\n");
 			access_n_call(); command_aux();
 			break;
-		/*case RETURN:
+		case BREAK:
+			break_(); command_aux();
+			break;
+		case RETURN:
 			return_(); command_aux();
-			break;*/
+			break;
+		case IF:
+			if_(); command();
+			break;
+		case SWITCH:
+			switch_(); command();
+			break;
+		case LOOP:
+			loop(); command();
+			break;
+		case EXIT:
+			exit_(); command_aux();
+			break;
+		case FOR:
+			for_(); command();
+			break;
+			
 	}
 }
 
@@ -204,11 +223,95 @@ void l_exp_aux() {
 	}
 }
 
+void break_() {
+	eat(BREAK);
+}
+
+void return_() {
+	eat(RETURN); expression();
+}
+
+void if_() {
+	eat(IF); eat(OPEN_PARENTHESIS); expression(); eat(CLOSE_PARENTHESIS); eat(THEN);
+		command();
+	else_();
+}
+
+void else_() {
+	eat(ELSE);
+		command();
+}
+
+void switch_() {
+	eat(SWITCH); eat(OPEN_PARENTHESIS); access_n_call(); eat(CLOSE_PARENTHESIS);
+	eat(BEG);
+		caselist();
+		default_();
+	eat(END);	
+}
+
+void caselist() {
+	if (lookahead == CASE) {
+		eat(CASE);
+		switch (lookahead) {
+			case NUMBER_INT:
+				eat(NUMBER_INT);
+				break;
+			case NUMBER_REAL:
+				eat(NUMBER_REAL);
+				break;
+			case VAL_STRING:
+				eat(VAL_STRING);
+				break;
+			default:
+				error();
+		}
+		eat(COLON);
+		command();
+		caselist();
+	}
+}
+
+void default_() {
+	if (lookahead == DEFAULT) {
+		eat(DEFAULT); eat(COLON);
+			command();
+	}
+}
+
+void loop() {
+	eat(LOOP);
+		command();
+}
+
+void exit_() {
+	eat(EXIT); eat(WHEN); expression();
+}
+
+void for_() {
+	eat(FOR); /*access_n_call();*/ eat(ID); eat(EQUAL); expression(); for_aux(); expression(); eat(DO);
+		command();
+}
+
+void for_aux() {
+	switch (lookahead) {
+		case TO:
+			eat(TO);
+			break;
+		case DOWNTO:
+			eat(DOWNTO);
+			break;
+		default:
+			error();
+	}
+}
+
 void term_or_tail() {
 	if (lookahead == OR) {
 		eat(OR); term_or();	term_or_tail();
 	}
 }
+
 void expression() {
 	term_or(); term_or_tail();
 }
@@ -251,10 +354,10 @@ void term_arit_comparison_tail() {
 			eat(BIGGER_EQUAL); term_arit_comparison(); term_arit_comparison_tail();
 			break;
 		case LESS_THEN:
-			eat(LESS_EQUAL); term_arit_comparison(); term_arit_comparison_tail();
+			eat(LESS_THEN); term_arit_comparison(); term_arit_comparison_tail();
 			break;
 		case BIGGER_THEN:
-			eat(BIGGER_EQUAL); term_arit_comparison(); term_arit_comparison_tail();
+			eat(BIGGER_THEN); term_arit_comparison(); term_arit_comparison_tail();
 			break;
 	}
 }
