@@ -127,19 +127,19 @@ void parameter_list_aux() {
 void command() {
 	switch (lookahead) {
 		case BEG:
-			block(); command_aux();
+			block(); command();
 			break;
 		case VAR:
-			block(); command_aux();
+			block(); command();
 			break;
 		case CONST:
-			block(); command_aux();
+			block(); command();
 			break;
 		case PROCEDURE:
-			block(); command_aux();
+			block(); command();
 			break;
 		case FUNCTION:
-			block(); command_aux();
+			block(); command();
 			break;
 		case ID:
 			printf("\n");
@@ -152,19 +152,19 @@ void command() {
 			return_(); command_aux();
 			break;
 		case IF:
-			if_(); command_aux();
+			if_(); command();
 			break;
 		case SWITCH:
-			switch_(); command_aux();
+			switch_(); command();
 			break;
 		case LOOP:
-			loop(); command_aux();
+			loop(); command();
 			break;
 		case EXIT:
 			exit_(); command_aux();
 			break;
 		case FOR:
-			for_(); command_aux();
+			for_(); command();
 			break;
 			
 	}
