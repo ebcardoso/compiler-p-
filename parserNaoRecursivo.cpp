@@ -11,7 +11,8 @@ void eat(int t) {
 	else {
 		printf("\n---------------------\n");
 		printf("RECEBIDO: %d  ESPERADO: %d\n", lookahead, t);
-		error ("syntax error in match");
+		printf ("syntax error in match");
+		exit(0);
 	}
 }
 
