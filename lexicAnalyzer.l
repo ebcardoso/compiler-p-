@@ -90,7 +90,8 @@ when { return WHEN; ACCOUNTABLE }
 	return SEMICOLON;
 	canInsert = 0;
 	ACCOUNTABLE
-}	
+}
+":" { return COLON ; ACCOUNTABLE }		
 "," { return COMMA ; ACCOUNTABLE }		
 "."	{ return DOT; ACCOUNTABLE }		
 "(" { return OPEN_PARENTHESIS; ACCOUNTABLE }
@@ -118,6 +119,8 @@ when { return WHEN; ACCOUNTABLE }
 ">=" { return BIGGER_EQUAL; ACCOUNTABLE }
 "++" { return INCREMENT; ACCOUNTABLE }
 "--" { return DECREMENT; ACCOUNTABLE }
+
+<<EOF>> { return EOF; ACCOUNTABLE }
 
 .		{nchar++;}
 

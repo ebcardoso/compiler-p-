@@ -14,10 +14,10 @@ void emitter(int t, char* tval)  {
 		case REF:
 			printf("ref "); break;
 		case VAR:
-			printf("var "); break;
+			printf("\nvar "); break;
 
 		case CONST:
-			printf("const "); break;
+			printf("\nconst "); break;
 		case INT:
 			printf("int "); break; 
 		case REAL:
@@ -37,31 +37,31 @@ void emitter(int t, char* tval)  {
 			printf("%s ", tval); break;
 
 		case BEG:
-			printf("begin "); break;
+			printf("\nbegin "); break;
 		case END:
-			printf("end "); break;
+			printf("\nend "); break;
 
 		case RETURN:
-			printf("return "); break;
+			printf("\nreturn "); break;
 		case BREAK:
-			printf("break "); break;
+			printf("\nbreak "); break;
 
 		case IF:
-			printf("if "); break;
+			printf("\nif "); break;
 		case THEN:
 			printf("then "); break;
 		case ELSE:
-			printf("else "); break; 
+			printf("\nelse "); break; 
 
 		case SWITCH:
-			printf("switch "); break;
+			printf("\nswitch "); break;
 		case CASE:
-			printf("case "); break;
+			printf("\ncase "); break;
 		case DEFAULT:
-			printf("default "); break;
+			printf("\ndefault "); break;
 
 		case FOR:
-			printf("for "); break;
+			printf("\nfor "); break;
 		case DOWNTO:
 			printf("downto "); break;
 		case TO:
@@ -70,9 +70,9 @@ void emitter(int t, char* tval)  {
 			printf("do "); break;
 
 		case LOOP:
-			printf("loop "); break;
+			printf("\nloop "); break;
 		case EXIT:
-			printf("exit "); break;
+			printf("\nexit "); break;
 		case WHEN:
 			printf("when "); break;
 
@@ -85,10 +85,12 @@ void emitter(int t, char* tval)  {
 
 		case SEMICOLON:
 			printf(";\n"); break;      
+		case COLON:
+			printf(":\n"); break;      
 		case COMMA:
 			printf(", "); break;
 		case DOT:
-			printf(". "); break;
+			printf("."); break;
         
 		case OPEN_PARENTHESIS:
 			printf("( "); break;

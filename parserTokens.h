@@ -11,9 +11,9 @@
 #include <stdlib.h> /* ... and for some standard routines, such as exit */
 #include <string.h> /* ... and for string routines */
 
-#define BSIZE 100  /* buffer size */
-#define NONE -1
-#define EOS '\0'
+//#define BSIZE 100  /* buffer size */
+//#define NONE -1
+//#define EOS '\0'
 
 #define COMMENT 200 /* */
 
@@ -62,6 +62,7 @@
 #define NUMBER_REAL 502
 
 #define SEMICOLON 600 // ;
+#define COLON 603 // :
 #define COMMA 601 // ,
 #define DOT 602 // .
 
