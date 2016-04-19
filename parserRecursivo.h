@@ -60,6 +60,8 @@ void declaration() {
 		case BEG:
 			break;
 		default:
+			printf("\n---------------------\n");
+			printf("RECEBIDO: %d  ESPERADO: {VAR, CONST, PROCEDURE ou BEGIN}", lookahead);
 			error();
 	}
 }
@@ -301,6 +303,8 @@ void caselist() {
 				eat(VAL_STRING);
 				break;
 			default:
+				printf("\n---------------------\n");
+				printf("RECEBIDO: %d  ESPERADO: {NUMBER ou STRING}\n", lookahead);
 				error();
 		}
 		eat(COLON);
@@ -340,6 +344,8 @@ void for_aux() {
 			eat(DOWNTO);
 			break;
 		default:
+			printf("\n---------------------\n");
+			printf("RECEBIDO: %d  ESPERADO: {TO ou DOWNTO}\n", lookahead);
 			error();
 	}
 }
