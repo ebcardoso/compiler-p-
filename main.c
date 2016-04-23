@@ -1,5 +1,5 @@
 #include "parserTokens.h"
-#include "parserNaoRecursivo.cpp"
+#include "parserNaoRecursivo.h"
 
 int main(int argc, char* argv[])
 {
