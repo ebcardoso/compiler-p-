@@ -1,7 +1,7 @@
 lexicAnalyzer: lexicAnalyzer.l
 	clear
 	lex lexicAnalyzer.l
-	g++ main.c parserNaoRecursivo.h parserEmitter.h parserTokens.h lex.yy.c -ll -o recursiveParser -Wno-write-strings
+	g++ -std=c++11 main.c parserNaoRecursivo.h parserEmitter.h parserTokens.h lex.yy.c -ll -o recursiveParser -Wno-write-strings
 
 test: lexicAnalyzer
 	./recursiveParser examples/test.ppp
