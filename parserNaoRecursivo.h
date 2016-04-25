@@ -26,61 +26,62 @@ int lookahead;
 
 //nao terminais com da gramática real
 
-#define NT_PROGRAM -1
-#define NT_DECLARATION -2
-#define NT_VAR -3
-#define NT_CONST -4
-#define NT_SUBPROGRAM -5
-#define NT_ID_EXP -6
-#define NT_ID_EXPS -7
-#define NT_EXPRESSION -8
-#define NT_CONST_AUX -9
-#define NT_FUNCTION -10
-#define NT_PROCEDURE -11
-#define NT_BLOCK -12
-#define NT_PARAMETER_LIST -13 
-#define NT_PARAMETER_LIST_AUX -14 
-#define NT_COMMAND_AUX -15
-#define NT_ACCESS_N_CALL -16
-#define NT_RETURN -17
-#define NT_BREAK -18
-#define NT_IF -19
-#define NT_SWITCH -20
-#define NT_LOOP -21
-#define NT_EXIT -22
-#define NT_FOR -23
-#define NT_COMMAND -24
-#define NT_ACCESS_N_CALL_AUX -25
-#define NT_ACCESS -26
-#define NT_ATTRIBUTION -27
-#define NT_SUBPROGRAM_CALL -28 
-#define NT_L_EXP -29
-#define NT_EXPRESSION_DEPRECATED -30 
-#define NT_REAL_PARAMETER_LIST -31
-#define NT_REAL_PARAMETER_LIST_AUX -32 
-#define NT_LITERAL -33
-#define NT_L_EXP_AUX -34
-#define NT_RETURN_AUX -35
-#define NT_ELSE -36
-#define NT_CASELIST -37
-#define NT_DEFAULT -38
-#define NT_FOR_AUX -39
-#define NT_TERM_OR -40
-#define NT_TERM_OR_TAIL -41
-#define NT_TERM_AND -42
-#define NT_TERM_AND_TAIL -43
-#define NT_TERM_BOOL_COMPARISON -44
-#define NT_TERM_BOOL_COMPARISON_TAIL -45
-#define NT_TERM_ARIT_COMPARISON -46
-#define NT_TERM_ARIT_COMPARISON_TAIL -47
-#define NT_TERM -48
-#define NT_TERM_TAIL -49
-#define NT_FACTOR -50
-#define NT_FACTOR_TAIL -51
-#define NT_NEGATION_UNSUB -52
-#define NT_NEGATION_UNSUB_TAIL -53
 
-int predict_table[1000][1000];
+#define nt_program -1
+#define nt_declaration -2
+#define nt_var -3
+#define nt_id_exp -4
+#define nt_ids_exps -5
+#define nt_const -6
+#define nt_const_aux -7
+#define nt_block -8
+#define nt_commands_aux -9
+#define nt_procedure -10
+#define nt_function -11
+#define nt_parameter_list -12
+#define nt_parameter_list_aux -13
+#define nt_access_n_call -14
+#define nt_access -15
+#define nt_attribuition -16
+#define nt_subprogram_call -17
+#define nt_real_parameter_list -18
+#define nt_real_parameter_list_aux -19
+#define nt_l_exp_aux -20
+#define nt_return -21
+#define nt_return_aux -22
+#define nt_break -23
+#define nt_if -24
+#define nt_else -25
+#define nt_switch -26
+#define nt_caselist -27
+#define nt_default -28
+#define nt_for -29
+#define nt_for_aux -30
+#define nt_loop -31
+#define nt_exit -32
+#define nt_term_or_tail -33
+#define nt_term_and_tail -34
+#define nt_term_bool_comparison_tail -35
+#define nt_term_arit_comparison_tail -36
+#define nt_term_tail -37
+#define nt_factor_tail -38
+#define nt_negation_unsub_tail -39
+#define nt_negation_unsub -40
+#define nt_subprogram -41
+#define nt_command -42
+#define nt_access_n_call_aux -43
+#define nt_factor -44
+#define nt_term -45
+#define nt_term_arit_comparison -46
+#define nt_term_bool_comparison -47
+#define nt_cb -48
+#define nt_commands -49
+#define nt_term_and -50
+#define nt_term_or -51
+#define nt_expression -52
+#define nt_l_exp -53
+
+int predict_table[100][1000];
 vector<int> productions[120];
 
 
