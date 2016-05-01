@@ -4,13 +4,13 @@ lexicAnalyzer: lexicAnalyzer.l
 	cc main.c parserRecursivo.h parserEmitter.h parserTokens.h lex.yy.c -ll -o recursiveParser
 
 test: lexicAnalyzer
-	./recursiveParser examples/test.pas
+	./recursiveParser examples/test.ppp
 
 quick: lexicAnalyzer
-	./recursiveParser examples/quicksort.pas
+	./recursiveParser examples/quicksort.ppp
 
 merge: lexicAnalyzer
-	./recursiveParser examples/mergesort.pas
+	./recursiveParser examples/mergesort.ppp
 
 .PHONY: clean
 clean:

@@ -5,6 +5,7 @@
 	Equipe: Breno Cardoso, Lucas Simonetti, Renato Higor, Sidemar Fideles
 */
 
+	#include "parserTokens.h"
 	#include "symbolTable.h"
 	int nchar, nline, nword;
 	#define ACCOUNTABLE nword++;nchar+=yyleng;
@@ -20,59 +21,61 @@ ID	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 %%
 
-"/*"("*"|\n|[^"*/"])*"*/" { printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } //Checar a quantidade de linhas
+"/*"("*"|\n|[^"*/"])*"*/" { return COMMENT; ACCOUNTABLE } //Checar a quantidade de linhas
 
 "/*"("*"|\n|[^"*/"])* { printf("%s: unmatched comment error\n", yytext); ACCOUNTABLE }
 
+("*"|\n|[^"*/"])*"*/" { printf("%s: unmatched comment error", yytext); ACCOUNTABLE }
+
 \n		{nline++;nchar++;}
 
-"//".* { printf("%s: token COMMENT\n", yytext); ACCOUNTABLE } 
+"//".* { return COMMENT; ACCOUNTABLE } 
 
-\"(\\.|[^\\"])*\" { printf("%s: token VAL_STRING\n", yytext); ACCOUNTABLE } 
+\"(\\.|[^\\"])*\" { return VAL_STRING; ACCOUNTABLE } 
 
 \"(\\.|[^\\"])* { printf("%s: unmatched string error\n", yytext); ACCOUNTABLE }
 
-procedure { printf("%s: token PROCEDURE\n", yytext); ACCOUNTABLE }
-function { printf("%s: token FUNCTION\n", yytext); ACCOUNTABLE }
+procedure { return PROCEDURE; ACCOUNTABLE }
+function { return FUNCTION; ACCOUNTABLE }
 
-ref { printf("%s: token REF\n", yytext); ACCOUNTABLE }
+ref { return REF; ACCOUNTABLE }
 var {
-	printf("%s: token VAR\n", yytext);
+	return VAR;
 	canInsert = 1;
 	ACCOUNTABLE
 }
-const { printf("%s: token CONST\n", yytext); ACCOUNTABLE }
-int { printf("%s: token INT\n", yytext); ACCOUNTABLE }
-real { printf("%s: token REAL\n", yytext); ACCOUNTABLE }
-string { printf("%s: token STRING\n", yytext); ACCOUNTABLE }
-boolean { printf("%s: token BOOLEAN\n", yytext); ACCOUNTABLE }
+const { return CONST; ACCOUNTABLE }
+int { return INT; ACCOUNTABLE }
+real { return REAL; ACCOUNTABLE }
+string { return STRING; ACCOUNTABLE }
+boolean { return BOOLEAN; ACCOUNTABLE }
 
-true { printf("%s: token TRUE\n", yytext); ACCOUNTABLE }
-false { printf("%s: token FALSE\n", yytext); ACCOUNTABLE }
+true { return TRUE; ACCOUNTABLE }
+false { return FALSE; ACCOUNTABLE }
 
-null {printf("%s: token NULL \n", yytext); ACCOUNTABLE }
+null {return NIL ; ACCOUNTABLE }
  
-begin { printf("%s: token BEGIN\n", yytext); ACCOUNTABLE }
-end { printf("%s: token END\n", yytext); ACCOUNTABLE }
+begin { return BEG; ACCOUNTABLE }
+end { return END; ACCOUNTABLE }
 
-return { printf("%s: token RETURN\n", yytext); ACCOUNTABLE }
-break { printf("%s: token BREAK\n", yytext); ACCOUNTABLE }
-if { printf("%s: token IF\n", yytext); ACCOUNTABLE }
-then { printf("%s: token THEN\n", yytext); ACCOUNTABLE }
-else { printf("%s: token ELSE\n", yytext); ACCOUNTABLE }
-switch { printf("%s: token SWITCH\n", yytext); ACCOUNTABLE }
-case { printf("%s: token CASE\n", yytext); ACCOUNTABLE }
-default { printf("%s: token DEFAULT\n", yytext); ACCOUNTABLE }
-for { printf("%s: token FOR\n", yytext); ACCOUNTABLE }
-downto { printf("%s: token DOWNTO\n", yytext); ACCOUNTABLE }
-to { printf("%s: token TO\n", yytext); ACCOUNTABLE }
-do { printf("%s: token DO\n", yytext); ACCOUNTABLE }
-loop { printf("%s: token LOOP\n", yytext); ACCOUNTABLE }
-exit { printf("%s: token EXIT\n", yytext); ACCOUNTABLE }
-when { printf("%s: token WHEN\n", yytext); ACCOUNTABLE }
+return { return RETURN; ACCOUNTABLE }
+break { return BREAK; ACCOUNTABLE }
+if { return IF; ACCOUNTABLE }
+then { return THEN; ACCOUNTABLE }
+else { return ELSE; ACCOUNTABLE }
+switch { return SWITCH; ACCOUNTABLE }
+case { return CASE; ACCOUNTABLE }
+default { return DEFAULT; ACCOUNTABLE }
+for { return FOR; ACCOUNTABLE }
+downto { return DOWNTO; ACCOUNTABLE }
+to { return TO; ACCOUNTABLE }
+do { return DO; ACCOUNTABLE }
+loop { return LOOP; ACCOUNTABLE }
+exit { return EXIT; ACCOUNTABLE }
+when { return WHEN; ACCOUNTABLE }
 
 {ID} {
-	printf("%s: token ID \n", yytext);
+	return ID ;
 	char *p = (char*)malloc(  (strlen(yytext) + 1) * sizeof(char));
 	strcpy(p,yytext);
 	printf("%s: ppptoken ID \n", p);
@@ -80,52 +83,50 @@ when { printf("%s: token WHEN\n", yytext); ACCOUNTABLE }
 		push(p, "", 0, 0, head); //consertar essa pate
 	ACCOUNTABLE
 }
-{NUMBER_INT} { printf("%s: token NUMBER_INT \n", yytext); ACCOUNTABLE }
-{NUMBER_REAL} { printf("%s: token NUMBER_REAL \n", yytext); ACCOUNTABLE }
+{NUMBER_INT} { return NUMBER_INT ; ACCOUNTABLE }
+{NUMBER_REAL} { return NUMBER_REAL ; ACCOUNTABLE }
 
 ";" {
-	printf("%s: token SEMICOLON\n ", yytext);
+	return SEMICOLON;
 	canInsert = 0;
 	ACCOUNTABLE
-}	
-"," { printf("%s: token COMMA \n", yytext); ACCOUNTABLE }		
-"."	{ printf("%s: token DOT\n", yytext); ACCOUNTABLE }		
-"(" { printf("%s: token OPEN_PARENTHESIS\n", yytext); ACCOUNTABLE }
-")"	{ printf("%s: token CLOSE_PARENTHESIS\n", yytext); ACCOUNTABLE }
-"[" { printf("%s: token OPEN_BRACKETS\n", yytext); ACCOUNTABLE }
-"]" { printf("%s: token CLOSE_BRACKETS\n", yytext); ACCOUNTABLE }
-"{" { printf("%s: token OPEN_BRACES\n", yytext); ACCOUNTABLE }
-"}" { printf("%s: token CLOSE_BRACES\n", yytext); ACCOUNTABLE }
+}
+":" { return COLON ; ACCOUNTABLE }		
+"," { return COMMA ; ACCOUNTABLE }		
+"."	{ return DOT; ACCOUNTABLE }		
+"(" { return OPEN_PARENTHESIS; ACCOUNTABLE }
+")"	{ return CLOSE_PARENTHESIS; ACCOUNTABLE }
+"[" { return OPEN_BRACKETS; ACCOUNTABLE }
+"]" { return CLOSE_BRACKETS; ACCOUNTABLE }
+"{" { return OPEN_BRACES; ACCOUNTABLE }
+"}" { return CLOSE_BRACES; ACCOUNTABLE }
 
 
-"+" { printf("%s: token ADD\n", yytext); ACCOUNTABLE }
-"-" { printf("%s: token SUB\n", yytext); ACCOUNTABLE }
-"*" { printf("%s: token MULT\n", yytext); ACCOUNTABLE }	
-"/" { printf("%s: token DIV\n", yytext); ACCOUNTABLE  }
-"=" { printf("%s: token EQUAL\n", yytext); ACCOUNTABLE }
-"%" { printf("%s: token MOD\n", yytext); ACCOUNTABLE }
-"!" { printf("%s: token NEG\n", yytext); ACCOUNTABLE }
-"||" { printf("%s: token OR\n", yytext); ACCOUNTABLE }
-"&&" { printf("%s: token AND\n", yytext); ACCOUNTABLE }
-"<" { printf("%s: token LESS_THEN\n", yytext); ACCOUNTABLE }
-">" { printf("%s: token BIGGER_THEN\n", yytext); ACCOUNTABLE }
-"==" { printf("%s: token EQUAL_LOGIC\n", yytext); ACCOUNTABLE }
-"!=" { printf("%s: token NOT_EQUAL\n", yytext); ACCOUNTABLE }
-"<=" { printf("%s: token LESS_EQUAL\n", yytext); ACCOUNTABLE }
-">=" { printf("%s: token BIGGER_EQUAL\n", yytext); ACCOUNTABLE }
-"++" { printf("%s: token INCREMENT\n", yytext); ACCOUNTABLE }
-"--" { printf("%s: token DECREMENT\n", yytext); ACCOUNTABLE }
+"+" { return ADD; ACCOUNTABLE }
+"-" { return SUB; ACCOUNTABLE }
+"*" { return MULT; ACCOUNTABLE }	
+"/" { return DIV; ACCOUNTABLE  }
+"=" { return EQUAL; ACCOUNTABLE }
+"%" { return MOD; ACCOUNTABLE }
+"!" { return NEG; ACCOUNTABLE }
+"||" { return OR; ACCOUNTABLE }
+"&&" { return AND; ACCOUNTABLE }
+"<" { return LESS_THEN; ACCOUNTABLE }
+">" { return BIGGER_THEN; ACCOUNTABLE }
+"==" { return EQUAL_LOGIC; ACCOUNTABLE }
+"!=" { return NOT_EQUAL; ACCOUNTABLE }
+"<=" { return LESS_EQUAL; ACCOUNTABLE }
+">=" { return BIGGER_EQUAL; ACCOUNTABLE }
+"++" { return INCREMENT; ACCOUNTABLE }
+"--" { return DECREMENT; ACCOUNTABLE }
 
-
-
-
+<<EOF>> { return EOF; ACCOUNTABLE }
 
 .		{nchar++;}
 
-
 %%
 
-int main(argc,argv)
+/*int main(argc,argv)
 int argc;
 char **argv;
 {
@@ -154,9 +155,8 @@ char **argv;
 	removeAllSymbolTable(head);
 	
 	return 0;
-}
+}*/
 
-int yywrap()
-{
+int yywrap() {
 	return(1);
 }
