@@ -183,7 +183,6 @@ void access_n_call_aux() {
 			attribuition();
 			break;
 		case OPEN_PARENTHESIS:
-			subprogram_call();
 			break;
 		case OPEN_BRACKETS:
 			access();

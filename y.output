@@ -21,149 +21,155 @@
   13  subprogram : procedure
   14             | function
 
-  15  block : declaration BEG command END
+  15  procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block
 
-  16  procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block
+  16  function : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block
 
-  17  function : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block
+  17  parameter_list : IDENTIFIER parameter_list_aux
+  18                 | REF IDENTIFIER parameter_list_aux
+  19                 |
 
-  18  parameter_list : IDENTIFIER parameter_list_aux
-  19                 | REF IDENTIFIER parameter_list_aux
-  20                 |
+  20  parameter_list_aux : COMMA parameter_list
+  21                     |
 
-  21  parameter_list_aux : COMMA parameter_list
-  22                     |
+  22  cb : command
+  23     | block
 
-  23  cb : command
-  24     | block
+  24  command : access_n_call
+  25          | return
+  26          | break
+  27          | if
+  28          | switch
+  29          | loop
+  30          | exit
+  31          | for
 
-  25  command : access_n_call
-  26          | return
-  27          | break
-  28          | if
-  29          | switch
-  30          | loop
-  31          | exit
-  32          | for
+  32  block : declaration BEG commands END
 
-  33  block : declaration BEG commands END
+  33  commands : command commands_aux
 
-  34  commands : command commands_aux
+  34  commands_aux : SEMICOLON commands
+  35               |
 
-  35  commands_aux : SEMICOLON commands
-  36               |
+  36  access_n_call : IDENTIFIER access_n_call_aux
 
-  37  access_n_call : IDENTIFIER access_n_call_aux
+  37  access_n_call_aux : access
+  38                    | attribuition
+  39                    | subprogram_call
 
-  38  access_n_call_aux : access
-  39                    | attribuition
-  40                    | subprogram_call
+  40  access : DOT IDENTIFIER access_n_call_aux
+  41         | OPEN_BRACKETS l_exp CLOSE_BRACKETS access_n_call_aux
+  42         |
 
-  41  access : DOT IDENTIFIER access_n_call_aux
-  42         | OPEN_BRACKETS l_exp CLOSE_BRACKETS access_n_call_aux
-  43         |
+  43  attribuition : EQUAL expression
 
-  44  attribuition : EQUAL expression
+  44  subprogram_call : OPEN_PARENTHESIS real_parameter_list CLOSE_PARENTHESIS
 
-  45  subprogram_call : OPEN_PARENTHESIS real_parameter_list CLOSE_PARENTHESIS
+  45  real_parameter_list : REF IDENTIFIER real_parameter_list_aux
+  46                      | expression real_parameter_list_aux
+  47                      |
 
-  46  real_parameter_list : REF IDENTIFIER real_parameter_list_aux
-  47                      | expression real_parameter_list_aux
-  48                      |
+  48  real_parameter_list_aux : COMMA real_parameter_list
+  49                          |
 
-  49  real_parameter_list_aux : COMMA real_parameter_list
-  50                          |
+  50  l_exp : expression l_exp_aux
 
-  51  l_exp : expression l_exp_aux
+  51  l_exp_aux : COMMA l_exp
+  52            |
 
-  52  l_exp_aux : COMMA l_exp
-  53            |
+  53  return : RETURN return_aux
 
-  54  return : RETURN return_aux
+  54  return_aux : expression
+  55             |
 
-  55  return_aux : expression
-  56             |
+  56  break : BREAK
 
-  57  break : BREAK
+  57  $$1 :
 
-  58  if : IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS THEN cb else
+  58  $$2 :
 
-  59  else : ELSE cb
-  60       |
+  59  $$3 :
 
-  61  switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist default END
+  60  $$4 :
 
-  62  caselist : CASE expression COLON cb caselist
-  63           |
+  61  if : IF $$1 OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS $$3 THEN $$4 cb else
 
-  64  default : DEFAULT COLON cb
+  62  else : ELSE_ cb
+  63       |
 
-  65  for : FOR IDENTIFIER EQUAL expression for_aux expression DO cb
+  64  switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist default END
 
-  66  for_aux : TO
-  67          | DOWNTO
+  65  caselist : CASE expression COLON cb caselist
+  66           |
 
-  68  loop : LOOP commands END
+  67  default : DEFAULT COLON cb
 
-  69  exit : EXIT WHEN OPEN_PARENTHESIS expression CLOSE_PARENTHESIS
+  68  for : FOR IDENTIFIER EQUAL expression for_aux expression DO cb
 
-  70  expression : term_or term_or_tail
+  69  for_aux : TO
+  70          | DOWNTO
 
-  71  term_or_tail : OR term_or term_or_tail
-  72               |
+  71  loop : LOOP commands END
 
-  73  term_or : term_and term_and_tail
+  72  exit : EXIT WHEN OPEN_PARENTHESIS expression CLOSE_PARENTHESIS
 
-  74  term_and_tail : AND term_and term_and_tail
-  75                |
+  73  expression : term_or term_or_tail
 
-  76  term_and : term_bool_comparison term_bool_comparison_tail
+  74  term_or_tail : OR term_or term_or_tail
+  75               |
 
-  77  term_bool_comparison_tail : EQUAL_LOGIC term_bool_comparison term_bool_comparison_tail
-  78                            | NOT_EQUAL term_bool_comparison term_bool_comparison_tail
-  79                            |
+  76  term_or : term_and term_and_tail
 
-  80  term_bool_comparison : term_arit_comparison term_arit_comparison_tail
+  77  term_and_tail : AND term_and term_and_tail
+  78                |
 
-  81  term_arit_comparison_tail : LESS_THEN term_arit_comparison term_arit_comparison_tail
-  82                            | BIGGER_THEN term_arit_comparison term_arit_comparison_tail
-  83                            | LESS_EQUAL term_arit_comparison term_arit_comparison_tail
-  84                            | BIGGER_EQUAL term_arit_comparison term_arit_comparison_tail
-  85                            |
+  79  term_and : term_bool_comparison term_bool_comparison_tail
 
-  86  term_arit_comparison : term term_tail
+  80  term_bool_comparison_tail : EQUAL_LOGIC term_bool_comparison term_bool_comparison_tail
+  81                            | NOT_EQUAL term_bool_comparison term_bool_comparison_tail
+  82                            |
 
-  87  term_tail : ADD term term_tail
-  88            | SUB term term_tail
-  89            |
+  83  term_bool_comparison : term_arit_comparison term_arit_comparison_tail
 
-  90  term : factor factor_tail
+  84  term_arit_comparison_tail : LESS_THEN term_arit_comparison term_arit_comparison_tail
+  85                            | BIGGER_THEN term_arit_comparison term_arit_comparison_tail
+  86                            | LESS_EQUAL term_arit_comparison term_arit_comparison_tail
+  87                            | BIGGER_EQUAL term_arit_comparison term_arit_comparison_tail
+  88                            |
 
-  91  factor_tail : MULT factor factor_tail
-  92              | DIV factor factor_tail
-  93              | MOD factor factor_tail
-  94              |
+  89  term_arit_comparison : term term_tail
 
-  95  factor : negation_unsub negation_unsub_tail
+  90  term_tail : ADD term term_tail
+  91            | SUB term term_tail
+  92            |
 
-  96  negation_unsub_tail : NEG negation_unsub
-  97                      |
+  93  term : factor factor_tail
 
-  98  negation_unsub : IDENTIFIER
-  99                 | arr_exp
- 100                 | literal
- 101                 | OPEN_PARENTHESIS expression CLOSE_PARENTHESIS
+  94  factor_tail : MULT factor factor_tail
+  95              | DIV factor factor_tail
+  96              | MOD factor factor_tail
+  97              |
 
- 102  arr_exp : OPEN_BRACES literal arr_exp_aux CLOSE_BRACES
+  98  factor : negation_unsub negation_unsub_tail
 
- 103  arr_exp_aux : COMMA literal arr_exp_aux
- 104              |
+  99  negation_unsub_tail : NEG negation_unsub
+ 100                      |
 
- 105  literal : STRING_LIT
- 106          | NUMBER_INT
- 107          | NUMBER_REAL
- 108          | TRUE
- 109          | FALSE
+ 101  negation_unsub : IDENTIFIER
+ 102                 | arr_exp
+ 103                 | literal
+ 104                 | OPEN_PARENTHESIS expression CLOSE_PARENTHESIS
+
+ 105  arr_exp : OPEN_BRACES literal arr_exp_aux CLOSE_BRACES
+
+ 106  arr_exp_aux : COMMA literal arr_exp_aux
+ 107              |
+
+ 108  literal : STRING_LIT
+ 109          | NUMBER_INT
+ 110          | NUMBER_REAL
+ 111          | TRUE
+ 112          | FALSE
 
 state 0
 	$accept : . declaration $end  (0)
@@ -184,14 +190,14 @@ state 0
 
 
 state 1
-	procedure : PROCEDURE . IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block  (16)
+	procedure : PROCEDURE . IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block  (15)
 
 	IDENTIFIER  shift 11
 	.  error
 
 
 state 2
-	function : FUNCTION . IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block  (17)
+	function : FUNCTION . IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block  (16)
 
 	IDENTIFIER  shift 12
 	.  error
@@ -287,14 +293,14 @@ state 10
 
 
 state 11
-	procedure : PROCEDURE IDENTIFIER . OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block  (16)
+	procedure : PROCEDURE IDENTIFIER . OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block  (15)
 
 	OPEN_PARENTHESIS  shift 18
 	.  error
 
 
 state 12
-	function : FUNCTION IDENTIFIER . OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block  (17)
+	function : FUNCTION IDENTIFIER . OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block  (16)
 
 	OPEN_PARENTHESIS  shift 19
 	.  error
@@ -342,23 +348,23 @@ state 17
 
 
 state 18
-	procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS . parameter_list CLOSE_PARENTHESIS block  (16)
-	parameter_list : .  (20)
+	procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS . parameter_list CLOSE_PARENTHESIS block  (15)
+	parameter_list : .  (19)
 
 	IDENTIFIER  shift 23
 	REF  shift 24
-	CLOSE_PARENTHESIS  reduce 20
+	CLOSE_PARENTHESIS  reduce 19
 
 	parameter_list  goto 25
 
 
 state 19
-	function : FUNCTION IDENTIFIER OPEN_PARENTHESIS . parameter_list CLOSE_PARENTHESIS block  (17)
-	parameter_list : .  (20)
+	function : FUNCTION IDENTIFIER OPEN_PARENTHESIS . parameter_list CLOSE_PARENTHESIS block  (16)
+	parameter_list : .  (19)
 
 	IDENTIFIER  shift 23
 	REF  shift 24
-	CLOSE_PARENTHESIS  reduce 20
+	CLOSE_PARENTHESIS  reduce 19
 
 	parameter_list  goto 26
 
@@ -429,74 +435,74 @@ state 22
 
 
 state 23
-	parameter_list : IDENTIFIER . parameter_list_aux  (18)
-	parameter_list_aux : .  (22)
+	parameter_list : IDENTIFIER . parameter_list_aux  (17)
+	parameter_list_aux : .  (21)
 
 	COMMA  shift 48
-	CLOSE_PARENTHESIS  reduce 22
+	CLOSE_PARENTHESIS  reduce 21
 
 	parameter_list_aux  goto 49
 
 
 state 24
-	parameter_list : REF . IDENTIFIER parameter_list_aux  (19)
+	parameter_list : REF . IDENTIFIER parameter_list_aux  (18)
 
 	IDENTIFIER  shift 50
 	.  error
 
 
 state 25
-	procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list . CLOSE_PARENTHESIS block  (16)
+	procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list . CLOSE_PARENTHESIS block  (15)
 
 	CLOSE_PARENTHESIS  shift 51
 	.  error
 
 
 state 26
-	function : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list . CLOSE_PARENTHESIS block  (17)
+	function : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list . CLOSE_PARENTHESIS block  (16)
 
 	CLOSE_PARENTHESIS  shift 52
 	.  error
 
 
 state 27
-	negation_unsub : IDENTIFIER .  (98)
+	negation_unsub : IDENTIFIER .  (101)
 
-	.  reduce 98
+	.  reduce 101
 
 
 state 28
-	literal : STRING_LIT .  (105)
-
-	.  reduce 105
-
-
-state 29
-	literal : NUMBER_INT .  (106)
-
-	.  reduce 106
-
-
-state 30
-	literal : NUMBER_REAL .  (107)
-
-	.  reduce 107
-
-
-state 31
-	literal : TRUE .  (108)
+	literal : STRING_LIT .  (108)
 
 	.  reduce 108
 
 
-state 32
-	literal : FALSE .  (109)
+state 29
+	literal : NUMBER_INT .  (109)
 
 	.  reduce 109
 
 
+state 30
+	literal : NUMBER_REAL .  (110)
+
+	.  reduce 110
+
+
+state 31
+	literal : TRUE .  (111)
+
+	.  reduce 111
+
+
+state 32
+	literal : FALSE .  (112)
+
+	.  reduce 112
+
+
 state 33
-	negation_unsub : OPEN_PARENTHESIS . expression CLOSE_PARENTHESIS  (101)
+	negation_unsub : OPEN_PARENTHESIS . expression CLOSE_PARENTHESIS  (104)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -521,7 +527,7 @@ state 33
 
 
 state 34
-	arr_exp : OPEN_BRACES . literal arr_exp_aux CLOSE_BRACES  (102)
+	arr_exp : OPEN_BRACES . literal arr_exp_aux CLOSE_BRACES  (105)
 
 	STRING_LIT  shift 28
 	NUMBER_INT  shift 29
@@ -540,37 +546,10 @@ state 35
 
 
 state 36
-	expression : term_or . term_or_tail  (70)
-	term_or_tail : .  (72)
+	expression : term_or . term_or_tail  (73)
+	term_or_tail : .  (75)
 
 	OR  shift 55
-	$end  reduce 72
-	PROCEDURE  reduce 72
-	FUNCTION  reduce 72
-	VAR  reduce 72
-	CONST  reduce 72
-	BEG  reduce 72
-	END  reduce 72
-	ELSE  reduce 72
-	CASE  reduce 72
-	DEFAULT  reduce 72
-	DOWNTO  reduce 72
-	TO  reduce 72
-	DO  reduce 72
-	SEMICOLON  reduce 72
-	COLON  reduce 72
-	COMMA  reduce 72
-	CLOSE_PARENTHESIS  reduce 72
-	CLOSE_BRACKETS  reduce 72
-
-	term_or_tail  goto 56
-
-
-state 37
-	term_or : term_and . term_and_tail  (73)
-	term_and_tail : .  (75)
-
-	AND  shift 57
 	$end  reduce 75
 	PROCEDURE  reduce 75
 	FUNCTION  reduce 75
@@ -578,7 +557,7 @@ state 37
 	CONST  reduce 75
 	BEG  reduce 75
 	END  reduce 75
-	ELSE  reduce 75
+	ELSE_  reduce 75
 	CASE  reduce 75
 	DEFAULT  reduce 75
 	DOWNTO  reduce 75
@@ -589,155 +568,145 @@ state 37
 	COMMA  reduce 75
 	CLOSE_PARENTHESIS  reduce 75
 	CLOSE_BRACKETS  reduce 75
-	OR  reduce 75
+
+	term_or_tail  goto 56
+
+
+state 37
+	term_or : term_and . term_and_tail  (76)
+	term_and_tail : .  (78)
+
+	AND  shift 57
+	$end  reduce 78
+	PROCEDURE  reduce 78
+	FUNCTION  reduce 78
+	VAR  reduce 78
+	CONST  reduce 78
+	BEG  reduce 78
+	END  reduce 78
+	ELSE_  reduce 78
+	CASE  reduce 78
+	DEFAULT  reduce 78
+	DOWNTO  reduce 78
+	TO  reduce 78
+	DO  reduce 78
+	SEMICOLON  reduce 78
+	COLON  reduce 78
+	COMMA  reduce 78
+	CLOSE_PARENTHESIS  reduce 78
+	CLOSE_BRACKETS  reduce 78
+	OR  reduce 78
 
 	term_and_tail  goto 58
 
 
 state 38
-	term_and : term_bool_comparison . term_bool_comparison_tail  (76)
-	term_bool_comparison_tail : .  (79)
+	term_and : term_bool_comparison . term_bool_comparison_tail  (79)
+	term_bool_comparison_tail : .  (82)
 
 	EQUAL_LOGIC  shift 59
 	NOT_EQUAL  shift 60
-	$end  reduce 79
-	PROCEDURE  reduce 79
-	FUNCTION  reduce 79
-	VAR  reduce 79
-	CONST  reduce 79
-	BEG  reduce 79
-	END  reduce 79
-	ELSE  reduce 79
-	CASE  reduce 79
-	DEFAULT  reduce 79
-	DOWNTO  reduce 79
-	TO  reduce 79
-	DO  reduce 79
-	SEMICOLON  reduce 79
-	COLON  reduce 79
-	COMMA  reduce 79
-	CLOSE_PARENTHESIS  reduce 79
-	CLOSE_BRACKETS  reduce 79
-	OR  reduce 79
-	AND  reduce 79
+	$end  reduce 82
+	PROCEDURE  reduce 82
+	FUNCTION  reduce 82
+	VAR  reduce 82
+	CONST  reduce 82
+	BEG  reduce 82
+	END  reduce 82
+	ELSE_  reduce 82
+	CASE  reduce 82
+	DEFAULT  reduce 82
+	DOWNTO  reduce 82
+	TO  reduce 82
+	DO  reduce 82
+	SEMICOLON  reduce 82
+	COLON  reduce 82
+	COMMA  reduce 82
+	CLOSE_PARENTHESIS  reduce 82
+	CLOSE_BRACKETS  reduce 82
+	OR  reduce 82
+	AND  reduce 82
 
 	term_bool_comparison_tail  goto 61
 
 
 state 39
-	term_bool_comparison : term_arit_comparison . term_arit_comparison_tail  (80)
-	term_arit_comparison_tail : .  (85)
+	term_bool_comparison : term_arit_comparison . term_arit_comparison_tail  (83)
+	term_arit_comparison_tail : .  (88)
 
 	LESS_THEN  shift 62
 	BIGGER_THEN  shift 63
 	LESS_EQUAL  shift 64
 	BIGGER_EQUAL  shift 65
-	$end  reduce 85
-	PROCEDURE  reduce 85
-	FUNCTION  reduce 85
-	VAR  reduce 85
-	CONST  reduce 85
-	BEG  reduce 85
-	END  reduce 85
-	ELSE  reduce 85
-	CASE  reduce 85
-	DEFAULT  reduce 85
-	DOWNTO  reduce 85
-	TO  reduce 85
-	DO  reduce 85
-	SEMICOLON  reduce 85
-	COLON  reduce 85
-	COMMA  reduce 85
-	CLOSE_PARENTHESIS  reduce 85
-	CLOSE_BRACKETS  reduce 85
-	OR  reduce 85
-	AND  reduce 85
-	EQUAL_LOGIC  reduce 85
-	NOT_EQUAL  reduce 85
+	$end  reduce 88
+	PROCEDURE  reduce 88
+	FUNCTION  reduce 88
+	VAR  reduce 88
+	CONST  reduce 88
+	BEG  reduce 88
+	END  reduce 88
+	ELSE_  reduce 88
+	CASE  reduce 88
+	DEFAULT  reduce 88
+	DOWNTO  reduce 88
+	TO  reduce 88
+	DO  reduce 88
+	SEMICOLON  reduce 88
+	COLON  reduce 88
+	COMMA  reduce 88
+	CLOSE_PARENTHESIS  reduce 88
+	CLOSE_BRACKETS  reduce 88
+	OR  reduce 88
+	AND  reduce 88
+	EQUAL_LOGIC  reduce 88
+	NOT_EQUAL  reduce 88
 
 	term_arit_comparison_tail  goto 66
 
 
 state 40
-	term_arit_comparison : term . term_tail  (86)
-	term_tail : .  (89)
+	term_arit_comparison : term . term_tail  (89)
+	term_tail : .  (92)
 
 	ADD  shift 67
 	SUB  shift 68
-	$end  reduce 89
-	PROCEDURE  reduce 89
-	FUNCTION  reduce 89
-	VAR  reduce 89
-	CONST  reduce 89
-	BEG  reduce 89
-	END  reduce 89
-	ELSE  reduce 89
-	CASE  reduce 89
-	DEFAULT  reduce 89
-	DOWNTO  reduce 89
-	TO  reduce 89
-	DO  reduce 89
-	SEMICOLON  reduce 89
-	COLON  reduce 89
-	COMMA  reduce 89
-	CLOSE_PARENTHESIS  reduce 89
-	CLOSE_BRACKETS  reduce 89
-	OR  reduce 89
-	AND  reduce 89
-	LESS_THEN  reduce 89
-	BIGGER_THEN  reduce 89
-	EQUAL_LOGIC  reduce 89
-	NOT_EQUAL  reduce 89
-	LESS_EQUAL  reduce 89
-	BIGGER_EQUAL  reduce 89
+	$end  reduce 92
+	PROCEDURE  reduce 92
+	FUNCTION  reduce 92
+	VAR  reduce 92
+	CONST  reduce 92
+	BEG  reduce 92
+	END  reduce 92
+	ELSE_  reduce 92
+	CASE  reduce 92
+	DEFAULT  reduce 92
+	DOWNTO  reduce 92
+	TO  reduce 92
+	DO  reduce 92
+	SEMICOLON  reduce 92
+	COLON  reduce 92
+	COMMA  reduce 92
+	CLOSE_PARENTHESIS  reduce 92
+	CLOSE_BRACKETS  reduce 92
+	OR  reduce 92
+	AND  reduce 92
+	LESS_THEN  reduce 92
+	BIGGER_THEN  reduce 92
+	EQUAL_LOGIC  reduce 92
+	NOT_EQUAL  reduce 92
+	LESS_EQUAL  reduce 92
+	BIGGER_EQUAL  reduce 92
 
 	term_tail  goto 69
 
 
 state 41
-	term : factor . factor_tail  (90)
-	factor_tail : .  (94)
+	term : factor . factor_tail  (93)
+	factor_tail : .  (97)
 
 	MULT  shift 70
 	DIV  shift 71
 	MOD  shift 72
-	$end  reduce 94
-	PROCEDURE  reduce 94
-	FUNCTION  reduce 94
-	VAR  reduce 94
-	CONST  reduce 94
-	BEG  reduce 94
-	END  reduce 94
-	ELSE  reduce 94
-	CASE  reduce 94
-	DEFAULT  reduce 94
-	DOWNTO  reduce 94
-	TO  reduce 94
-	DO  reduce 94
-	SEMICOLON  reduce 94
-	COLON  reduce 94
-	COMMA  reduce 94
-	CLOSE_PARENTHESIS  reduce 94
-	CLOSE_BRACKETS  reduce 94
-	ADD  reduce 94
-	SUB  reduce 94
-	OR  reduce 94
-	AND  reduce 94
-	LESS_THEN  reduce 94
-	BIGGER_THEN  reduce 94
-	EQUAL_LOGIC  reduce 94
-	NOT_EQUAL  reduce 94
-	LESS_EQUAL  reduce 94
-	BIGGER_EQUAL  reduce 94
-
-	factor_tail  goto 73
-
-
-state 42
-	factor : negation_unsub . negation_unsub_tail  (95)
-	negation_unsub_tail : .  (97)
-
-	NEG  shift 74
 	$end  reduce 97
 	PROCEDURE  reduce 97
 	FUNCTION  reduce 97
@@ -745,7 +714,7 @@ state 42
 	CONST  reduce 97
 	BEG  reduce 97
 	END  reduce 97
-	ELSE  reduce 97
+	ELSE_  reduce 97
 	CASE  reduce 97
 	DEFAULT  reduce 97
 	DOWNTO  reduce 97
@@ -758,9 +727,6 @@ state 42
 	CLOSE_BRACKETS  reduce 97
 	ADD  reduce 97
 	SUB  reduce 97
-	MULT  reduce 97
-	DIV  reduce 97
-	MOD  reduce 97
 	OR  reduce 97
 	AND  reduce 97
 	LESS_THEN  reduce 97
@@ -770,19 +736,59 @@ state 42
 	LESS_EQUAL  reduce 97
 	BIGGER_EQUAL  reduce 97
 
+	factor_tail  goto 73
+
+
+state 42
+	factor : negation_unsub . negation_unsub_tail  (98)
+	negation_unsub_tail : .  (100)
+
+	NEG  shift 74
+	$end  reduce 100
+	PROCEDURE  reduce 100
+	FUNCTION  reduce 100
+	VAR  reduce 100
+	CONST  reduce 100
+	BEG  reduce 100
+	END  reduce 100
+	ELSE_  reduce 100
+	CASE  reduce 100
+	DEFAULT  reduce 100
+	DOWNTO  reduce 100
+	TO  reduce 100
+	DO  reduce 100
+	SEMICOLON  reduce 100
+	COLON  reduce 100
+	COMMA  reduce 100
+	CLOSE_PARENTHESIS  reduce 100
+	CLOSE_BRACKETS  reduce 100
+	ADD  reduce 100
+	SUB  reduce 100
+	MULT  reduce 100
+	DIV  reduce 100
+	MOD  reduce 100
+	OR  reduce 100
+	AND  reduce 100
+	LESS_THEN  reduce 100
+	BIGGER_THEN  reduce 100
+	EQUAL_LOGIC  reduce 100
+	NOT_EQUAL  reduce 100
+	LESS_EQUAL  reduce 100
+	BIGGER_EQUAL  reduce 100
+
 	negation_unsub_tail  goto 75
 
 
 state 43
-	negation_unsub : arr_exp .  (99)
+	negation_unsub : arr_exp .  (102)
 
-	.  reduce 99
+	.  reduce 102
 
 
 state 44
-	negation_unsub : literal .  (100)
+	negation_unsub : literal .  (103)
 
-	.  reduce 100
+	.  reduce 103
 
 
 state 45
@@ -814,34 +820,34 @@ state 47
 
 
 state 48
-	parameter_list_aux : COMMA . parameter_list  (21)
-	parameter_list : .  (20)
+	parameter_list_aux : COMMA . parameter_list  (20)
+	parameter_list : .  (19)
 
 	IDENTIFIER  shift 23
 	REF  shift 24
-	CLOSE_PARENTHESIS  reduce 20
+	CLOSE_PARENTHESIS  reduce 19
 
 	parameter_list  goto 79
 
 
 state 49
-	parameter_list : IDENTIFIER parameter_list_aux .  (18)
+	parameter_list : IDENTIFIER parameter_list_aux .  (17)
 
-	.  reduce 18
+	.  reduce 17
 
 
 state 50
-	parameter_list : REF IDENTIFIER . parameter_list_aux  (19)
-	parameter_list_aux : .  (22)
+	parameter_list : REF IDENTIFIER . parameter_list_aux  (18)
+	parameter_list_aux : .  (21)
 
 	COMMA  shift 48
-	CLOSE_PARENTHESIS  reduce 22
+	CLOSE_PARENTHESIS  reduce 21
 
 	parameter_list_aux  goto 80
 
 
 state 51
-	procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS . block  (16)
+	procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS . block  (15)
 	declaration : .  (4)
 
 	PROCEDURE  shift 1
@@ -860,7 +866,7 @@ state 51
 
 
 state 52
-	function : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS . block  (17)
+	function : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS . block  (16)
 	declaration : .  (4)
 
 	PROCEDURE  shift 1
@@ -879,24 +885,24 @@ state 52
 
 
 state 53
-	negation_unsub : OPEN_PARENTHESIS expression . CLOSE_PARENTHESIS  (101)
+	negation_unsub : OPEN_PARENTHESIS expression . CLOSE_PARENTHESIS  (104)
 
 	CLOSE_PARENTHESIS  shift 84
 	.  error
 
 
 state 54
-	arr_exp : OPEN_BRACES literal . arr_exp_aux CLOSE_BRACES  (102)
-	arr_exp_aux : .  (104)
+	arr_exp : OPEN_BRACES literal . arr_exp_aux CLOSE_BRACES  (105)
+	arr_exp_aux : .  (107)
 
 	COMMA  shift 85
-	CLOSE_BRACES  reduce 104
+	CLOSE_BRACES  reduce 107
 
 	arr_exp_aux  goto 86
 
 
 state 55
-	term_or_tail : OR . term_or term_or_tail  (71)
+	term_or_tail : OR . term_or term_or_tail  (74)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -920,13 +926,13 @@ state 55
 
 
 state 56
-	expression : term_or term_or_tail .  (70)
+	expression : term_or term_or_tail .  (73)
 
-	.  reduce 70
+	.  reduce 73
 
 
 state 57
-	term_and_tail : AND . term_and term_and_tail  (74)
+	term_and_tail : AND . term_and term_and_tail  (77)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -949,13 +955,13 @@ state 57
 
 
 state 58
-	term_or : term_and term_and_tail .  (73)
+	term_or : term_and term_and_tail .  (76)
 
-	.  reduce 73
+	.  reduce 76
 
 
 state 59
-	term_bool_comparison_tail : EQUAL_LOGIC . term_bool_comparison term_bool_comparison_tail  (77)
+	term_bool_comparison_tail : EQUAL_LOGIC . term_bool_comparison term_bool_comparison_tail  (80)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -977,7 +983,7 @@ state 59
 
 
 state 60
-	term_bool_comparison_tail : NOT_EQUAL . term_bool_comparison term_bool_comparison_tail  (78)
+	term_bool_comparison_tail : NOT_EQUAL . term_bool_comparison term_bool_comparison_tail  (81)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -999,13 +1005,13 @@ state 60
 
 
 state 61
-	term_and : term_bool_comparison term_bool_comparison_tail .  (76)
+	term_and : term_bool_comparison term_bool_comparison_tail .  (79)
 
-	.  reduce 76
+	.  reduce 79
 
 
 state 62
-	term_arit_comparison_tail : LESS_THEN . term_arit_comparison term_arit_comparison_tail  (81)
+	term_arit_comparison_tail : LESS_THEN . term_arit_comparison term_arit_comparison_tail  (84)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1026,7 +1032,7 @@ state 62
 
 
 state 63
-	term_arit_comparison_tail : BIGGER_THEN . term_arit_comparison term_arit_comparison_tail  (82)
+	term_arit_comparison_tail : BIGGER_THEN . term_arit_comparison term_arit_comparison_tail  (85)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1047,7 +1053,7 @@ state 63
 
 
 state 64
-	term_arit_comparison_tail : LESS_EQUAL . term_arit_comparison term_arit_comparison_tail  (83)
+	term_arit_comparison_tail : LESS_EQUAL . term_arit_comparison term_arit_comparison_tail  (86)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1068,7 +1074,7 @@ state 64
 
 
 state 65
-	term_arit_comparison_tail : BIGGER_EQUAL . term_arit_comparison term_arit_comparison_tail  (84)
+	term_arit_comparison_tail : BIGGER_EQUAL . term_arit_comparison term_arit_comparison_tail  (87)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1089,13 +1095,13 @@ state 65
 
 
 state 66
-	term_bool_comparison : term_arit_comparison term_arit_comparison_tail .  (80)
+	term_bool_comparison : term_arit_comparison term_arit_comparison_tail .  (83)
 
-	.  reduce 80
+	.  reduce 83
 
 
 state 67
-	term_tail : ADD . term term_tail  (87)
+	term_tail : ADD . term term_tail  (90)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1115,7 +1121,7 @@ state 67
 
 
 state 68
-	term_tail : SUB . term term_tail  (88)
+	term_tail : SUB . term term_tail  (91)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1135,13 +1141,13 @@ state 68
 
 
 state 69
-	term_arit_comparison : term term_tail .  (86)
+	term_arit_comparison : term term_tail .  (89)
 
-	.  reduce 86
+	.  reduce 89
 
 
 state 70
-	factor_tail : MULT . factor factor_tail  (91)
+	factor_tail : MULT . factor factor_tail  (94)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1160,7 +1166,7 @@ state 70
 
 
 state 71
-	factor_tail : DIV . factor factor_tail  (92)
+	factor_tail : DIV . factor factor_tail  (95)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1179,7 +1185,7 @@ state 71
 
 
 state 72
-	factor_tail : MOD . factor factor_tail  (93)
+	factor_tail : MOD . factor factor_tail  (96)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1198,13 +1204,13 @@ state 72
 
 
 state 73
-	term : factor factor_tail .  (90)
+	term : factor factor_tail .  (93)
 
-	.  reduce 90
+	.  reduce 93
 
 
 state 74
-	negation_unsub_tail : NEG . negation_unsub  (96)
+	negation_unsub_tail : NEG . negation_unsub  (99)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1222,9 +1228,9 @@ state 74
 
 
 state 75
-	factor : negation_unsub negation_unsub_tail .  (95)
+	factor : negation_unsub negation_unsub_tail .  (98)
 
-	.  reduce 95
+	.  reduce 98
 
 
 state 76
@@ -1257,45 +1263,44 @@ state 78
 
 
 state 79
-	parameter_list_aux : COMMA parameter_list .  (21)
+	parameter_list_aux : COMMA parameter_list .  (20)
 
-	.  reduce 21
+	.  reduce 20
 
 
 state 80
-	parameter_list : REF IDENTIFIER parameter_list_aux .  (19)
+	parameter_list : REF IDENTIFIER parameter_list_aux .  (18)
 
-	.  reduce 19
+	.  reduce 18
 
 
 state 81
-	block : declaration . BEG command END  (15)
-	block : declaration . BEG commands END  (33)
+	block : declaration . BEG commands END  (32)
 
 	BEG  shift 103
 	.  error
 
 
 state 82
-	procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block .  (16)
+	procedure : PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block .  (15)
+
+	.  reduce 15
+
+
+state 83
+	function : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block .  (16)
 
 	.  reduce 16
 
 
-state 83
-	function : FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS block .  (17)
-
-	.  reduce 17
-
-
 state 84
-	negation_unsub : OPEN_PARENTHESIS expression CLOSE_PARENTHESIS .  (101)
+	negation_unsub : OPEN_PARENTHESIS expression CLOSE_PARENTHESIS .  (104)
 
-	.  reduce 101
+	.  reduce 104
 
 
 state 85
-	arr_exp_aux : COMMA . literal arr_exp_aux  (103)
+	arr_exp_aux : COMMA . literal arr_exp_aux  (106)
 
 	STRING_LIT  shift 28
 	NUMBER_INT  shift 29
@@ -1308,44 +1313,17 @@ state 85
 
 
 state 86
-	arr_exp : OPEN_BRACES literal arr_exp_aux . CLOSE_BRACES  (102)
+	arr_exp : OPEN_BRACES literal arr_exp_aux . CLOSE_BRACES  (105)
 
 	CLOSE_BRACES  shift 105
 	.  error
 
 
 state 87
-	term_or_tail : OR term_or . term_or_tail  (71)
-	term_or_tail : .  (72)
+	term_or_tail : OR term_or . term_or_tail  (74)
+	term_or_tail : .  (75)
 
 	OR  shift 55
-	$end  reduce 72
-	PROCEDURE  reduce 72
-	FUNCTION  reduce 72
-	VAR  reduce 72
-	CONST  reduce 72
-	BEG  reduce 72
-	END  reduce 72
-	ELSE  reduce 72
-	CASE  reduce 72
-	DEFAULT  reduce 72
-	DOWNTO  reduce 72
-	TO  reduce 72
-	DO  reduce 72
-	SEMICOLON  reduce 72
-	COLON  reduce 72
-	COMMA  reduce 72
-	CLOSE_PARENTHESIS  reduce 72
-	CLOSE_BRACKETS  reduce 72
-
-	term_or_tail  goto 106
-
-
-state 88
-	term_and_tail : AND term_and . term_and_tail  (74)
-	term_and_tail : .  (75)
-
-	AND  shift 57
 	$end  reduce 75
 	PROCEDURE  reduce 75
 	FUNCTION  reduce 75
@@ -1353,7 +1331,7 @@ state 88
 	CONST  reduce 75
 	BEG  reduce 75
 	END  reduce 75
-	ELSE  reduce 75
+	ELSE_  reduce 75
 	CASE  reduce 75
 	DEFAULT  reduce 75
 	DOWNTO  reduce 75
@@ -1364,400 +1342,427 @@ state 88
 	COMMA  reduce 75
 	CLOSE_PARENTHESIS  reduce 75
 	CLOSE_BRACKETS  reduce 75
-	OR  reduce 75
+
+	term_or_tail  goto 106
+
+
+state 88
+	term_and_tail : AND term_and . term_and_tail  (77)
+	term_and_tail : .  (78)
+
+	AND  shift 57
+	$end  reduce 78
+	PROCEDURE  reduce 78
+	FUNCTION  reduce 78
+	VAR  reduce 78
+	CONST  reduce 78
+	BEG  reduce 78
+	END  reduce 78
+	ELSE_  reduce 78
+	CASE  reduce 78
+	DEFAULT  reduce 78
+	DOWNTO  reduce 78
+	TO  reduce 78
+	DO  reduce 78
+	SEMICOLON  reduce 78
+	COLON  reduce 78
+	COMMA  reduce 78
+	CLOSE_PARENTHESIS  reduce 78
+	CLOSE_BRACKETS  reduce 78
+	OR  reduce 78
 
 	term_and_tail  goto 107
 
 
 state 89
-	term_bool_comparison_tail : EQUAL_LOGIC term_bool_comparison . term_bool_comparison_tail  (77)
-	term_bool_comparison_tail : .  (79)
+	term_bool_comparison_tail : EQUAL_LOGIC term_bool_comparison . term_bool_comparison_tail  (80)
+	term_bool_comparison_tail : .  (82)
 
 	EQUAL_LOGIC  shift 59
 	NOT_EQUAL  shift 60
-	$end  reduce 79
-	PROCEDURE  reduce 79
-	FUNCTION  reduce 79
-	VAR  reduce 79
-	CONST  reduce 79
-	BEG  reduce 79
-	END  reduce 79
-	ELSE  reduce 79
-	CASE  reduce 79
-	DEFAULT  reduce 79
-	DOWNTO  reduce 79
-	TO  reduce 79
-	DO  reduce 79
-	SEMICOLON  reduce 79
-	COLON  reduce 79
-	COMMA  reduce 79
-	CLOSE_PARENTHESIS  reduce 79
-	CLOSE_BRACKETS  reduce 79
-	OR  reduce 79
-	AND  reduce 79
+	$end  reduce 82
+	PROCEDURE  reduce 82
+	FUNCTION  reduce 82
+	VAR  reduce 82
+	CONST  reduce 82
+	BEG  reduce 82
+	END  reduce 82
+	ELSE_  reduce 82
+	CASE  reduce 82
+	DEFAULT  reduce 82
+	DOWNTO  reduce 82
+	TO  reduce 82
+	DO  reduce 82
+	SEMICOLON  reduce 82
+	COLON  reduce 82
+	COMMA  reduce 82
+	CLOSE_PARENTHESIS  reduce 82
+	CLOSE_BRACKETS  reduce 82
+	OR  reduce 82
+	AND  reduce 82
 
 	term_bool_comparison_tail  goto 108
 
 
 state 90
-	term_bool_comparison_tail : NOT_EQUAL term_bool_comparison . term_bool_comparison_tail  (78)
-	term_bool_comparison_tail : .  (79)
+	term_bool_comparison_tail : NOT_EQUAL term_bool_comparison . term_bool_comparison_tail  (81)
+	term_bool_comparison_tail : .  (82)
 
 	EQUAL_LOGIC  shift 59
 	NOT_EQUAL  shift 60
-	$end  reduce 79
-	PROCEDURE  reduce 79
-	FUNCTION  reduce 79
-	VAR  reduce 79
-	CONST  reduce 79
-	BEG  reduce 79
-	END  reduce 79
-	ELSE  reduce 79
-	CASE  reduce 79
-	DEFAULT  reduce 79
-	DOWNTO  reduce 79
-	TO  reduce 79
-	DO  reduce 79
-	SEMICOLON  reduce 79
-	COLON  reduce 79
-	COMMA  reduce 79
-	CLOSE_PARENTHESIS  reduce 79
-	CLOSE_BRACKETS  reduce 79
-	OR  reduce 79
-	AND  reduce 79
+	$end  reduce 82
+	PROCEDURE  reduce 82
+	FUNCTION  reduce 82
+	VAR  reduce 82
+	CONST  reduce 82
+	BEG  reduce 82
+	END  reduce 82
+	ELSE_  reduce 82
+	CASE  reduce 82
+	DEFAULT  reduce 82
+	DOWNTO  reduce 82
+	TO  reduce 82
+	DO  reduce 82
+	SEMICOLON  reduce 82
+	COLON  reduce 82
+	COMMA  reduce 82
+	CLOSE_PARENTHESIS  reduce 82
+	CLOSE_BRACKETS  reduce 82
+	OR  reduce 82
+	AND  reduce 82
 
 	term_bool_comparison_tail  goto 109
 
 
 state 91
-	term_arit_comparison_tail : LESS_THEN term_arit_comparison . term_arit_comparison_tail  (81)
-	term_arit_comparison_tail : .  (85)
+	term_arit_comparison_tail : LESS_THEN term_arit_comparison . term_arit_comparison_tail  (84)
+	term_arit_comparison_tail : .  (88)
 
 	LESS_THEN  shift 62
 	BIGGER_THEN  shift 63
 	LESS_EQUAL  shift 64
 	BIGGER_EQUAL  shift 65
-	$end  reduce 85
-	PROCEDURE  reduce 85
-	FUNCTION  reduce 85
-	VAR  reduce 85
-	CONST  reduce 85
-	BEG  reduce 85
-	END  reduce 85
-	ELSE  reduce 85
-	CASE  reduce 85
-	DEFAULT  reduce 85
-	DOWNTO  reduce 85
-	TO  reduce 85
-	DO  reduce 85
-	SEMICOLON  reduce 85
-	COLON  reduce 85
-	COMMA  reduce 85
-	CLOSE_PARENTHESIS  reduce 85
-	CLOSE_BRACKETS  reduce 85
-	OR  reduce 85
-	AND  reduce 85
-	EQUAL_LOGIC  reduce 85
-	NOT_EQUAL  reduce 85
+	$end  reduce 88
+	PROCEDURE  reduce 88
+	FUNCTION  reduce 88
+	VAR  reduce 88
+	CONST  reduce 88
+	BEG  reduce 88
+	END  reduce 88
+	ELSE_  reduce 88
+	CASE  reduce 88
+	DEFAULT  reduce 88
+	DOWNTO  reduce 88
+	TO  reduce 88
+	DO  reduce 88
+	SEMICOLON  reduce 88
+	COLON  reduce 88
+	COMMA  reduce 88
+	CLOSE_PARENTHESIS  reduce 88
+	CLOSE_BRACKETS  reduce 88
+	OR  reduce 88
+	AND  reduce 88
+	EQUAL_LOGIC  reduce 88
+	NOT_EQUAL  reduce 88
 
 	term_arit_comparison_tail  goto 110
 
 
 state 92
-	term_arit_comparison_tail : BIGGER_THEN term_arit_comparison . term_arit_comparison_tail  (82)
-	term_arit_comparison_tail : .  (85)
+	term_arit_comparison_tail : BIGGER_THEN term_arit_comparison . term_arit_comparison_tail  (85)
+	term_arit_comparison_tail : .  (88)
 
 	LESS_THEN  shift 62
 	BIGGER_THEN  shift 63
 	LESS_EQUAL  shift 64
 	BIGGER_EQUAL  shift 65
-	$end  reduce 85
-	PROCEDURE  reduce 85
-	FUNCTION  reduce 85
-	VAR  reduce 85
-	CONST  reduce 85
-	BEG  reduce 85
-	END  reduce 85
-	ELSE  reduce 85
-	CASE  reduce 85
-	DEFAULT  reduce 85
-	DOWNTO  reduce 85
-	TO  reduce 85
-	DO  reduce 85
-	SEMICOLON  reduce 85
-	COLON  reduce 85
-	COMMA  reduce 85
-	CLOSE_PARENTHESIS  reduce 85
-	CLOSE_BRACKETS  reduce 85
-	OR  reduce 85
-	AND  reduce 85
-	EQUAL_LOGIC  reduce 85
-	NOT_EQUAL  reduce 85
+	$end  reduce 88
+	PROCEDURE  reduce 88
+	FUNCTION  reduce 88
+	VAR  reduce 88
+	CONST  reduce 88
+	BEG  reduce 88
+	END  reduce 88
+	ELSE_  reduce 88
+	CASE  reduce 88
+	DEFAULT  reduce 88
+	DOWNTO  reduce 88
+	TO  reduce 88
+	DO  reduce 88
+	SEMICOLON  reduce 88
+	COLON  reduce 88
+	COMMA  reduce 88
+	CLOSE_PARENTHESIS  reduce 88
+	CLOSE_BRACKETS  reduce 88
+	OR  reduce 88
+	AND  reduce 88
+	EQUAL_LOGIC  reduce 88
+	NOT_EQUAL  reduce 88
 
 	term_arit_comparison_tail  goto 111
 
 
 state 93
-	term_arit_comparison_tail : LESS_EQUAL term_arit_comparison . term_arit_comparison_tail  (83)
-	term_arit_comparison_tail : .  (85)
+	term_arit_comparison_tail : LESS_EQUAL term_arit_comparison . term_arit_comparison_tail  (86)
+	term_arit_comparison_tail : .  (88)
 
 	LESS_THEN  shift 62
 	BIGGER_THEN  shift 63
 	LESS_EQUAL  shift 64
 	BIGGER_EQUAL  shift 65
-	$end  reduce 85
-	PROCEDURE  reduce 85
-	FUNCTION  reduce 85
-	VAR  reduce 85
-	CONST  reduce 85
-	BEG  reduce 85
-	END  reduce 85
-	ELSE  reduce 85
-	CASE  reduce 85
-	DEFAULT  reduce 85
-	DOWNTO  reduce 85
-	TO  reduce 85
-	DO  reduce 85
-	SEMICOLON  reduce 85
-	COLON  reduce 85
-	COMMA  reduce 85
-	CLOSE_PARENTHESIS  reduce 85
-	CLOSE_BRACKETS  reduce 85
-	OR  reduce 85
-	AND  reduce 85
-	EQUAL_LOGIC  reduce 85
-	NOT_EQUAL  reduce 85
+	$end  reduce 88
+	PROCEDURE  reduce 88
+	FUNCTION  reduce 88
+	VAR  reduce 88
+	CONST  reduce 88
+	BEG  reduce 88
+	END  reduce 88
+	ELSE_  reduce 88
+	CASE  reduce 88
+	DEFAULT  reduce 88
+	DOWNTO  reduce 88
+	TO  reduce 88
+	DO  reduce 88
+	SEMICOLON  reduce 88
+	COLON  reduce 88
+	COMMA  reduce 88
+	CLOSE_PARENTHESIS  reduce 88
+	CLOSE_BRACKETS  reduce 88
+	OR  reduce 88
+	AND  reduce 88
+	EQUAL_LOGIC  reduce 88
+	NOT_EQUAL  reduce 88
 
 	term_arit_comparison_tail  goto 112
 
 
 state 94
-	term_arit_comparison_tail : BIGGER_EQUAL term_arit_comparison . term_arit_comparison_tail  (84)
-	term_arit_comparison_tail : .  (85)
+	term_arit_comparison_tail : BIGGER_EQUAL term_arit_comparison . term_arit_comparison_tail  (87)
+	term_arit_comparison_tail : .  (88)
 
 	LESS_THEN  shift 62
 	BIGGER_THEN  shift 63
 	LESS_EQUAL  shift 64
 	BIGGER_EQUAL  shift 65
-	$end  reduce 85
-	PROCEDURE  reduce 85
-	FUNCTION  reduce 85
-	VAR  reduce 85
-	CONST  reduce 85
-	BEG  reduce 85
-	END  reduce 85
-	ELSE  reduce 85
-	CASE  reduce 85
-	DEFAULT  reduce 85
-	DOWNTO  reduce 85
-	TO  reduce 85
-	DO  reduce 85
-	SEMICOLON  reduce 85
-	COLON  reduce 85
-	COMMA  reduce 85
-	CLOSE_PARENTHESIS  reduce 85
-	CLOSE_BRACKETS  reduce 85
-	OR  reduce 85
-	AND  reduce 85
-	EQUAL_LOGIC  reduce 85
-	NOT_EQUAL  reduce 85
+	$end  reduce 88
+	PROCEDURE  reduce 88
+	FUNCTION  reduce 88
+	VAR  reduce 88
+	CONST  reduce 88
+	BEG  reduce 88
+	END  reduce 88
+	ELSE_  reduce 88
+	CASE  reduce 88
+	DEFAULT  reduce 88
+	DOWNTO  reduce 88
+	TO  reduce 88
+	DO  reduce 88
+	SEMICOLON  reduce 88
+	COLON  reduce 88
+	COMMA  reduce 88
+	CLOSE_PARENTHESIS  reduce 88
+	CLOSE_BRACKETS  reduce 88
+	OR  reduce 88
+	AND  reduce 88
+	EQUAL_LOGIC  reduce 88
+	NOT_EQUAL  reduce 88
 
 	term_arit_comparison_tail  goto 113
 
 
 state 95
-	term_tail : ADD term . term_tail  (87)
-	term_tail : .  (89)
+	term_tail : ADD term . term_tail  (90)
+	term_tail : .  (92)
 
 	ADD  shift 67
 	SUB  shift 68
-	$end  reduce 89
-	PROCEDURE  reduce 89
-	FUNCTION  reduce 89
-	VAR  reduce 89
-	CONST  reduce 89
-	BEG  reduce 89
-	END  reduce 89
-	ELSE  reduce 89
-	CASE  reduce 89
-	DEFAULT  reduce 89
-	DOWNTO  reduce 89
-	TO  reduce 89
-	DO  reduce 89
-	SEMICOLON  reduce 89
-	COLON  reduce 89
-	COMMA  reduce 89
-	CLOSE_PARENTHESIS  reduce 89
-	CLOSE_BRACKETS  reduce 89
-	OR  reduce 89
-	AND  reduce 89
-	LESS_THEN  reduce 89
-	BIGGER_THEN  reduce 89
-	EQUAL_LOGIC  reduce 89
-	NOT_EQUAL  reduce 89
-	LESS_EQUAL  reduce 89
-	BIGGER_EQUAL  reduce 89
+	$end  reduce 92
+	PROCEDURE  reduce 92
+	FUNCTION  reduce 92
+	VAR  reduce 92
+	CONST  reduce 92
+	BEG  reduce 92
+	END  reduce 92
+	ELSE_  reduce 92
+	CASE  reduce 92
+	DEFAULT  reduce 92
+	DOWNTO  reduce 92
+	TO  reduce 92
+	DO  reduce 92
+	SEMICOLON  reduce 92
+	COLON  reduce 92
+	COMMA  reduce 92
+	CLOSE_PARENTHESIS  reduce 92
+	CLOSE_BRACKETS  reduce 92
+	OR  reduce 92
+	AND  reduce 92
+	LESS_THEN  reduce 92
+	BIGGER_THEN  reduce 92
+	EQUAL_LOGIC  reduce 92
+	NOT_EQUAL  reduce 92
+	LESS_EQUAL  reduce 92
+	BIGGER_EQUAL  reduce 92
 
 	term_tail  goto 114
 
 
 state 96
-	term_tail : SUB term . term_tail  (88)
-	term_tail : .  (89)
+	term_tail : SUB term . term_tail  (91)
+	term_tail : .  (92)
 
 	ADD  shift 67
 	SUB  shift 68
-	$end  reduce 89
-	PROCEDURE  reduce 89
-	FUNCTION  reduce 89
-	VAR  reduce 89
-	CONST  reduce 89
-	BEG  reduce 89
-	END  reduce 89
-	ELSE  reduce 89
-	CASE  reduce 89
-	DEFAULT  reduce 89
-	DOWNTO  reduce 89
-	TO  reduce 89
-	DO  reduce 89
-	SEMICOLON  reduce 89
-	COLON  reduce 89
-	COMMA  reduce 89
-	CLOSE_PARENTHESIS  reduce 89
-	CLOSE_BRACKETS  reduce 89
-	OR  reduce 89
-	AND  reduce 89
-	LESS_THEN  reduce 89
-	BIGGER_THEN  reduce 89
-	EQUAL_LOGIC  reduce 89
-	NOT_EQUAL  reduce 89
-	LESS_EQUAL  reduce 89
-	BIGGER_EQUAL  reduce 89
+	$end  reduce 92
+	PROCEDURE  reduce 92
+	FUNCTION  reduce 92
+	VAR  reduce 92
+	CONST  reduce 92
+	BEG  reduce 92
+	END  reduce 92
+	ELSE_  reduce 92
+	CASE  reduce 92
+	DEFAULT  reduce 92
+	DOWNTO  reduce 92
+	TO  reduce 92
+	DO  reduce 92
+	SEMICOLON  reduce 92
+	COLON  reduce 92
+	COMMA  reduce 92
+	CLOSE_PARENTHESIS  reduce 92
+	CLOSE_BRACKETS  reduce 92
+	OR  reduce 92
+	AND  reduce 92
+	LESS_THEN  reduce 92
+	BIGGER_THEN  reduce 92
+	EQUAL_LOGIC  reduce 92
+	NOT_EQUAL  reduce 92
+	LESS_EQUAL  reduce 92
+	BIGGER_EQUAL  reduce 92
 
 	term_tail  goto 115
 
 
 state 97
-	factor_tail : MULT factor . factor_tail  (91)
-	factor_tail : .  (94)
+	factor_tail : MULT factor . factor_tail  (94)
+	factor_tail : .  (97)
 
 	MULT  shift 70
 	DIV  shift 71
 	MOD  shift 72
-	$end  reduce 94
-	PROCEDURE  reduce 94
-	FUNCTION  reduce 94
-	VAR  reduce 94
-	CONST  reduce 94
-	BEG  reduce 94
-	END  reduce 94
-	ELSE  reduce 94
-	CASE  reduce 94
-	DEFAULT  reduce 94
-	DOWNTO  reduce 94
-	TO  reduce 94
-	DO  reduce 94
-	SEMICOLON  reduce 94
-	COLON  reduce 94
-	COMMA  reduce 94
-	CLOSE_PARENTHESIS  reduce 94
-	CLOSE_BRACKETS  reduce 94
-	ADD  reduce 94
-	SUB  reduce 94
-	OR  reduce 94
-	AND  reduce 94
-	LESS_THEN  reduce 94
-	BIGGER_THEN  reduce 94
-	EQUAL_LOGIC  reduce 94
-	NOT_EQUAL  reduce 94
-	LESS_EQUAL  reduce 94
-	BIGGER_EQUAL  reduce 94
+	$end  reduce 97
+	PROCEDURE  reduce 97
+	FUNCTION  reduce 97
+	VAR  reduce 97
+	CONST  reduce 97
+	BEG  reduce 97
+	END  reduce 97
+	ELSE_  reduce 97
+	CASE  reduce 97
+	DEFAULT  reduce 97
+	DOWNTO  reduce 97
+	TO  reduce 97
+	DO  reduce 97
+	SEMICOLON  reduce 97
+	COLON  reduce 97
+	COMMA  reduce 97
+	CLOSE_PARENTHESIS  reduce 97
+	CLOSE_BRACKETS  reduce 97
+	ADD  reduce 97
+	SUB  reduce 97
+	OR  reduce 97
+	AND  reduce 97
+	LESS_THEN  reduce 97
+	BIGGER_THEN  reduce 97
+	EQUAL_LOGIC  reduce 97
+	NOT_EQUAL  reduce 97
+	LESS_EQUAL  reduce 97
+	BIGGER_EQUAL  reduce 97
 
 	factor_tail  goto 116
 
 
 state 98
-	factor_tail : DIV factor . factor_tail  (92)
-	factor_tail : .  (94)
+	factor_tail : DIV factor . factor_tail  (95)
+	factor_tail : .  (97)
 
 	MULT  shift 70
 	DIV  shift 71
 	MOD  shift 72
-	$end  reduce 94
-	PROCEDURE  reduce 94
-	FUNCTION  reduce 94
-	VAR  reduce 94
-	CONST  reduce 94
-	BEG  reduce 94
-	END  reduce 94
-	ELSE  reduce 94
-	CASE  reduce 94
-	DEFAULT  reduce 94
-	DOWNTO  reduce 94
-	TO  reduce 94
-	DO  reduce 94
-	SEMICOLON  reduce 94
-	COLON  reduce 94
-	COMMA  reduce 94
-	CLOSE_PARENTHESIS  reduce 94
-	CLOSE_BRACKETS  reduce 94
-	ADD  reduce 94
-	SUB  reduce 94
-	OR  reduce 94
-	AND  reduce 94
-	LESS_THEN  reduce 94
-	BIGGER_THEN  reduce 94
-	EQUAL_LOGIC  reduce 94
-	NOT_EQUAL  reduce 94
-	LESS_EQUAL  reduce 94
-	BIGGER_EQUAL  reduce 94
+	$end  reduce 97
+	PROCEDURE  reduce 97
+	FUNCTION  reduce 97
+	VAR  reduce 97
+	CONST  reduce 97
+	BEG  reduce 97
+	END  reduce 97
+	ELSE_  reduce 97
+	CASE  reduce 97
+	DEFAULT  reduce 97
+	DOWNTO  reduce 97
+	TO  reduce 97
+	DO  reduce 97
+	SEMICOLON  reduce 97
+	COLON  reduce 97
+	COMMA  reduce 97
+	CLOSE_PARENTHESIS  reduce 97
+	CLOSE_BRACKETS  reduce 97
+	ADD  reduce 97
+	SUB  reduce 97
+	OR  reduce 97
+	AND  reduce 97
+	LESS_THEN  reduce 97
+	BIGGER_THEN  reduce 97
+	EQUAL_LOGIC  reduce 97
+	NOT_EQUAL  reduce 97
+	LESS_EQUAL  reduce 97
+	BIGGER_EQUAL  reduce 97
 
 	factor_tail  goto 117
 
 
 state 99
-	factor_tail : MOD factor . factor_tail  (93)
-	factor_tail : .  (94)
+	factor_tail : MOD factor . factor_tail  (96)
+	factor_tail : .  (97)
 
 	MULT  shift 70
 	DIV  shift 71
 	MOD  shift 72
-	$end  reduce 94
-	PROCEDURE  reduce 94
-	FUNCTION  reduce 94
-	VAR  reduce 94
-	CONST  reduce 94
-	BEG  reduce 94
-	END  reduce 94
-	ELSE  reduce 94
-	CASE  reduce 94
-	DEFAULT  reduce 94
-	DOWNTO  reduce 94
-	TO  reduce 94
-	DO  reduce 94
-	SEMICOLON  reduce 94
-	COLON  reduce 94
-	COMMA  reduce 94
-	CLOSE_PARENTHESIS  reduce 94
-	CLOSE_BRACKETS  reduce 94
-	ADD  reduce 94
-	SUB  reduce 94
-	OR  reduce 94
-	AND  reduce 94
-	LESS_THEN  reduce 94
-	BIGGER_THEN  reduce 94
-	EQUAL_LOGIC  reduce 94
-	NOT_EQUAL  reduce 94
-	LESS_EQUAL  reduce 94
-	BIGGER_EQUAL  reduce 94
+	$end  reduce 97
+	PROCEDURE  reduce 97
+	FUNCTION  reduce 97
+	VAR  reduce 97
+	CONST  reduce 97
+	BEG  reduce 97
+	END  reduce 97
+	ELSE_  reduce 97
+	CASE  reduce 97
+	DEFAULT  reduce 97
+	DOWNTO  reduce 97
+	TO  reduce 97
+	DO  reduce 97
+	SEMICOLON  reduce 97
+	COLON  reduce 97
+	COMMA  reduce 97
+	CLOSE_PARENTHESIS  reduce 97
+	CLOSE_BRACKETS  reduce 97
+	ADD  reduce 97
+	SUB  reduce 97
+	OR  reduce 97
+	AND  reduce 97
+	LESS_THEN  reduce 97
+	BIGGER_THEN  reduce 97
+	EQUAL_LOGIC  reduce 97
+	NOT_EQUAL  reduce 97
+	LESS_EQUAL  reduce 97
+	BIGGER_EQUAL  reduce 97
 
 	factor_tail  goto 118
 
 
 state 100
-	negation_unsub_tail : NEG negation_unsub .  (96)
+	negation_unsub_tail : NEG negation_unsub .  (99)
 
-	.  reduce 96
+	.  reduce 99
 
 
 state 101
@@ -1783,8 +1788,7 @@ state 102
 
 
 state 103
-	block : declaration BEG . command END  (15)
-	block : declaration BEG . commands END  (33)
+	block : declaration BEG . commands END  (32)
 
 	IDENTIFIER  shift 121
 	RETURN  shift 122
@@ -1809,97 +1813,97 @@ state 103
 
 
 state 104
-	arr_exp_aux : COMMA literal . arr_exp_aux  (103)
-	arr_exp_aux : .  (104)
+	arr_exp_aux : COMMA literal . arr_exp_aux  (106)
+	arr_exp_aux : .  (107)
 
 	COMMA  shift 85
-	CLOSE_BRACES  reduce 104
+	CLOSE_BRACES  reduce 107
 
 	arr_exp_aux  goto 139
 
 
 state 105
-	arr_exp : OPEN_BRACES literal arr_exp_aux CLOSE_BRACES .  (102)
+	arr_exp : OPEN_BRACES literal arr_exp_aux CLOSE_BRACES .  (105)
 
-	.  reduce 102
+	.  reduce 105
 
 
 state 106
-	term_or_tail : OR term_or term_or_tail .  (71)
-
-	.  reduce 71
-
-
-state 107
-	term_and_tail : AND term_and term_and_tail .  (74)
+	term_or_tail : OR term_or term_or_tail .  (74)
 
 	.  reduce 74
 
 
-state 108
-	term_bool_comparison_tail : EQUAL_LOGIC term_bool_comparison term_bool_comparison_tail .  (77)
+state 107
+	term_and_tail : AND term_and term_and_tail .  (77)
 
 	.  reduce 77
 
 
+state 108
+	term_bool_comparison_tail : EQUAL_LOGIC term_bool_comparison term_bool_comparison_tail .  (80)
+
+	.  reduce 80
+
+
 state 109
-	term_bool_comparison_tail : NOT_EQUAL term_bool_comparison term_bool_comparison_tail .  (78)
-
-	.  reduce 78
-
-
-state 110
-	term_arit_comparison_tail : LESS_THEN term_arit_comparison term_arit_comparison_tail .  (81)
+	term_bool_comparison_tail : NOT_EQUAL term_bool_comparison term_bool_comparison_tail .  (81)
 
 	.  reduce 81
 
 
-state 111
-	term_arit_comparison_tail : BIGGER_THEN term_arit_comparison term_arit_comparison_tail .  (82)
-
-	.  reduce 82
-
-
-state 112
-	term_arit_comparison_tail : LESS_EQUAL term_arit_comparison term_arit_comparison_tail .  (83)
-
-	.  reduce 83
-
-
-state 113
-	term_arit_comparison_tail : BIGGER_EQUAL term_arit_comparison term_arit_comparison_tail .  (84)
+state 110
+	term_arit_comparison_tail : LESS_THEN term_arit_comparison term_arit_comparison_tail .  (84)
 
 	.  reduce 84
 
 
-state 114
-	term_tail : ADD term term_tail .  (87)
+state 111
+	term_arit_comparison_tail : BIGGER_THEN term_arit_comparison term_arit_comparison_tail .  (85)
+
+	.  reduce 85
+
+
+state 112
+	term_arit_comparison_tail : LESS_EQUAL term_arit_comparison term_arit_comparison_tail .  (86)
+
+	.  reduce 86
+
+
+state 113
+	term_arit_comparison_tail : BIGGER_EQUAL term_arit_comparison term_arit_comparison_tail .  (87)
 
 	.  reduce 87
 
 
+state 114
+	term_tail : ADD term term_tail .  (90)
+
+	.  reduce 90
+
+
 state 115
-	term_tail : SUB term term_tail .  (88)
-
-	.  reduce 88
-
-
-state 116
-	factor_tail : MULT factor factor_tail .  (91)
+	term_tail : SUB term term_tail .  (91)
 
 	.  reduce 91
 
 
-state 117
-	factor_tail : DIV factor factor_tail .  (92)
+state 116
+	factor_tail : MULT factor factor_tail .  (94)
 
-	.  reduce 92
+	.  reduce 94
+
+
+state 117
+	factor_tail : DIV factor factor_tail .  (95)
+
+	.  reduce 95
 
 
 state 118
-	factor_tail : MOD factor factor_tail .  (93)
+	factor_tail : MOD factor factor_tail .  (96)
 
-	.  reduce 93
+	.  reduce 96
 
 
 state 119
@@ -1934,19 +1938,19 @@ state 120
 
 
 state 121
-	access_n_call : IDENTIFIER . access_n_call_aux  (37)
-	access : .  (43)
+	access_n_call : IDENTIFIER . access_n_call_aux  (36)
+	access : .  (42)
 
 	DOT  shift 141
 	OPEN_PARENTHESIS  shift 142
 	OPEN_BRACKETS  shift 143
 	EQUAL  shift 144
-	END  reduce 43
-	ELSE  reduce 43
-	CASE  reduce 43
-	DEFAULT  reduce 43
-	SEMICOLON  reduce 43
-	CLOSE_PARENTHESIS  reduce 43
+	END  reduce 42
+	ELSE_  reduce 42
+	CASE  reduce 42
+	DEFAULT  reduce 42
+	SEMICOLON  reduce 42
+	CLOSE_PARENTHESIS  reduce 42
 
 	access_n_call_aux  goto 145
 	access  goto 146
@@ -1955,8 +1959,8 @@ state 121
 
 
 state 122
-	return : RETURN . return_aux  (54)
-	return_aux : .  (56)
+	return : RETURN . return_aux  (53)
+	return_aux : .  (55)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -1966,11 +1970,11 @@ state 122
 	FALSE  shift 32
 	OPEN_PARENTHESIS  shift 33
 	OPEN_BRACES  shift 34
-	END  reduce 56
-	ELSE  reduce 56
-	CASE  reduce 56
-	DEFAULT  reduce 56
-	SEMICOLON  reduce 56
+	END  reduce 55
+	ELSE_  reduce 55
+	CASE  reduce 55
+	DEFAULT  reduce 55
+	SEMICOLON  reduce 55
 
 	expression  goto 149
 	return_aux  goto 150
@@ -1986,34 +1990,36 @@ state 122
 
 
 state 123
-	break : BREAK .  (57)
+	break : BREAK .  (56)
 
-	.  reduce 57
+	.  reduce 56
 
 
 state 124
-	if : IF . OPEN_PARENTHESIS expression CLOSE_PARENTHESIS THEN cb else  (58)
+	if : IF . $$1 OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS $$3 THEN $$4 cb else  (61)
+	$$1 : .  (57)
 
-	OPEN_PARENTHESIS  shift 151
-	.  error
+	.  reduce 57
+
+	$$1  goto 151
 
 
 state 125
-	switch : SWITCH . OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist default END  (61)
+	switch : SWITCH . OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist default END  (64)
 
 	OPEN_PARENTHESIS  shift 152
 	.  error
 
 
 state 126
-	for : FOR . IDENTIFIER EQUAL expression for_aux expression DO cb  (65)
+	for : FOR . IDENTIFIER EQUAL expression for_aux expression DO cb  (68)
 
 	IDENTIFIER  shift 153
 	.  error
 
 
 state 127
-	loop : LOOP . commands END  (68)
+	loop : LOOP . commands END  (71)
 
 	IDENTIFIER  shift 121
 	RETURN  shift 122
@@ -2025,7 +2031,7 @@ state 127
 	EXIT  shift 128
 	.  error
 
-	command  goto 154
+	command  goto 129
 	access_n_call  goto 130
 	return  goto 131
 	break  goto 132
@@ -2034,87 +2040,85 @@ state 127
 	loop  goto 135
 	exit  goto 136
 	for  goto 137
-	commands  goto 155
+	commands  goto 154
 
 
 state 128
-	exit : EXIT . WHEN OPEN_PARENTHESIS expression CLOSE_PARENTHESIS  (69)
+	exit : EXIT . WHEN OPEN_PARENTHESIS expression CLOSE_PARENTHESIS  (72)
 
-	WHEN  shift 156
+	WHEN  shift 155
 	.  error
 
 
-129: shift/reduce conflict (shift 157, reduce 36) on END
 state 129
-	block : declaration BEG command . END  (15)
-	commands : command . commands_aux  (34)
-	commands_aux : .  (36)
+	commands : command . commands_aux  (33)
+	commands_aux : .  (35)
 
-	END  shift 157
-	SEMICOLON  shift 158
+	SEMICOLON  shift 156
+	END  reduce 35
 
-	commands_aux  goto 159
+	commands_aux  goto 157
 
 
 state 130
-	command : access_n_call .  (25)
+	command : access_n_call .  (24)
+
+	.  reduce 24
+
+
+state 131
+	command : return .  (25)
 
 	.  reduce 25
 
 
-state 131
-	command : return .  (26)
+state 132
+	command : break .  (26)
 
 	.  reduce 26
 
 
-state 132
-	command : break .  (27)
+state 133
+	command : if .  (27)
 
 	.  reduce 27
 
 
-state 133
-	command : if .  (28)
+state 134
+	command : switch .  (28)
 
 	.  reduce 28
 
 
-state 134
-	command : switch .  (29)
+state 135
+	command : loop .  (29)
 
 	.  reduce 29
 
 
-state 135
-	command : loop .  (30)
+state 136
+	command : exit .  (30)
 
 	.  reduce 30
 
 
-state 136
-	command : exit .  (31)
+state 137
+	command : for .  (31)
 
 	.  reduce 31
 
 
-state 137
-	command : for .  (32)
-
-	.  reduce 32
-
-
 state 138
-	block : declaration BEG commands . END  (33)
+	block : declaration BEG commands . END  (32)
 
-	END  shift 160
+	END  shift 158
 	.  error
 
 
 state 139
-	arr_exp_aux : COMMA literal arr_exp_aux .  (103)
+	arr_exp_aux : COMMA literal arr_exp_aux .  (106)
 
-	.  reduce 103
+	.  reduce 106
 
 
 state 140
@@ -2129,33 +2133,33 @@ state 140
 	CONST  reduce 12
 	BEG  reduce 12
 
-	const_aux  goto 161
+	const_aux  goto 159
 
 
 state 141
-	access : DOT . IDENTIFIER access_n_call_aux  (41)
+	access : DOT . IDENTIFIER access_n_call_aux  (40)
 
-	IDENTIFIER  shift 162
+	IDENTIFIER  shift 160
 	.  error
 
 
 state 142
-	subprogram_call : OPEN_PARENTHESIS . real_parameter_list CLOSE_PARENTHESIS  (45)
-	real_parameter_list : .  (48)
+	subprogram_call : OPEN_PARENTHESIS . real_parameter_list CLOSE_PARENTHESIS  (44)
+	real_parameter_list : .  (47)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
 	NUMBER_INT  shift 29
 	NUMBER_REAL  shift 30
-	REF  shift 163
+	REF  shift 161
 	TRUE  shift 31
 	FALSE  shift 32
 	OPEN_PARENTHESIS  shift 33
 	OPEN_BRACES  shift 34
-	CLOSE_PARENTHESIS  reduce 48
+	CLOSE_PARENTHESIS  reduce 47
 
-	expression  goto 164
-	real_parameter_list  goto 165
+	expression  goto 162
+	real_parameter_list  goto 163
 	term_or  goto 36
 	term_and  goto 37
 	term_bool_comparison  goto 38
@@ -2168,7 +2172,7 @@ state 142
 
 
 state 143
-	access : OPEN_BRACKETS . l_exp CLOSE_BRACKETS access_n_call_aux  (42)
+	access : OPEN_BRACKETS . l_exp CLOSE_BRACKETS access_n_call_aux  (41)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -2180,8 +2184,8 @@ state 143
 	OPEN_BRACES  shift 34
 	.  error
 
-	expression  goto 166
-	l_exp  goto 167
+	expression  goto 164
+	l_exp  goto 165
 	term_or  goto 36
 	term_and  goto 37
 	term_bool_comparison  goto 38
@@ -2194,382 +2198,7 @@ state 143
 
 
 state 144
-	attribuition : EQUAL . expression  (44)
-
-	IDENTIFIER  shift 27
-	STRING_LIT  shift 28
-	NUMBER_INT  shift 29
-	NUMBER_REAL  shift 30
-	TRUE  shift 31
-	FALSE  shift 32
-	OPEN_PARENTHESIS  shift 33
-	OPEN_BRACES  shift 34
-	.  error
-
-	expression  goto 168
-	term_or  goto 36
-	term_and  goto 37
-	term_bool_comparison  goto 38
-	term_arit_comparison  goto 39
-	term  goto 40
-	factor  goto 41
-	negation_unsub  goto 42
-	arr_exp  goto 43
-	literal  goto 44
-
-
-state 145
-	access_n_call : IDENTIFIER access_n_call_aux .  (37)
-
-	.  reduce 37
-
-
-state 146
-	access_n_call_aux : access .  (38)
-
-	.  reduce 38
-
-
-state 147
-	access_n_call_aux : attribuition .  (39)
-
-	.  reduce 39
-
-
-state 148
-	access_n_call_aux : subprogram_call .  (40)
-
-	.  reduce 40
-
-
-state 149
-	return_aux : expression .  (55)
-
-	.  reduce 55
-
-
-state 150
-	return : RETURN return_aux .  (54)
-
-	.  reduce 54
-
-
-state 151
-	if : IF OPEN_PARENTHESIS . expression CLOSE_PARENTHESIS THEN cb else  (58)
-
-	IDENTIFIER  shift 27
-	STRING_LIT  shift 28
-	NUMBER_INT  shift 29
-	NUMBER_REAL  shift 30
-	TRUE  shift 31
-	FALSE  shift 32
-	OPEN_PARENTHESIS  shift 33
-	OPEN_BRACES  shift 34
-	.  error
-
-	expression  goto 169
-	term_or  goto 36
-	term_and  goto 37
-	term_bool_comparison  goto 38
-	term_arit_comparison  goto 39
-	term  goto 40
-	factor  goto 41
-	negation_unsub  goto 42
-	arr_exp  goto 43
-	literal  goto 44
-
-
-state 152
-	switch : SWITCH OPEN_PARENTHESIS . access_n_call CLOSE_PARENTHESIS BEG caselist default END  (61)
-
-	IDENTIFIER  shift 121
-	.  error
-
-	access_n_call  goto 170
-
-
-state 153
-	for : FOR IDENTIFIER . EQUAL expression for_aux expression DO cb  (65)
-
-	EQUAL  shift 171
-	.  error
-
-
-state 154
-	commands : command . commands_aux  (34)
-	commands_aux : .  (36)
-
-	SEMICOLON  shift 158
-	END  reduce 36
-
-	commands_aux  goto 159
-
-
-state 155
-	loop : LOOP commands . END  (68)
-
-	END  shift 172
-	.  error
-
-
-state 156
-	exit : EXIT WHEN . OPEN_PARENTHESIS expression CLOSE_PARENTHESIS  (69)
-
-	OPEN_PARENTHESIS  shift 173
-	.  error
-
-
-state 157
-	block : declaration BEG command END .  (15)
-
-	.  reduce 15
-
-
-state 158
-	commands_aux : SEMICOLON . commands  (35)
-
-	IDENTIFIER  shift 121
-	RETURN  shift 122
-	BREAK  shift 123
-	IF  shift 124
-	SWITCH  shift 125
-	FOR  shift 126
-	LOOP  shift 127
-	EXIT  shift 128
-	.  error
-
-	command  goto 154
-	access_n_call  goto 130
-	return  goto 131
-	break  goto 132
-	if  goto 133
-	switch  goto 134
-	loop  goto 135
-	exit  goto 136
-	for  goto 137
-	commands  goto 174
-
-
-state 159
-	commands : command commands_aux .  (34)
-
-	.  reduce 34
-
-
-state 160
-	block : declaration BEG commands END .  (33)
-
-	.  reduce 33
-
-
-state 161
-	const_aux : COMMA IDENTIFIER EQUAL expression const_aux .  (11)
-
-	.  reduce 11
-
-
-state 162
-	access : DOT IDENTIFIER . access_n_call_aux  (41)
-	access : .  (43)
-
-	DOT  shift 141
-	OPEN_PARENTHESIS  shift 142
-	OPEN_BRACKETS  shift 143
-	EQUAL  shift 144
-	END  reduce 43
-	ELSE  reduce 43
-	CASE  reduce 43
-	DEFAULT  reduce 43
-	SEMICOLON  reduce 43
-	CLOSE_PARENTHESIS  reduce 43
-
-	access_n_call_aux  goto 175
-	access  goto 146
-	attribuition  goto 147
-	subprogram_call  goto 148
-
-
-state 163
-	real_parameter_list : REF . IDENTIFIER real_parameter_list_aux  (46)
-
-	IDENTIFIER  shift 176
-	.  error
-
-
-state 164
-	real_parameter_list : expression . real_parameter_list_aux  (47)
-	real_parameter_list_aux : .  (50)
-
-	COMMA  shift 177
-	CLOSE_PARENTHESIS  reduce 50
-
-	real_parameter_list_aux  goto 178
-
-
-state 165
-	subprogram_call : OPEN_PARENTHESIS real_parameter_list . CLOSE_PARENTHESIS  (45)
-
-	CLOSE_PARENTHESIS  shift 179
-	.  error
-
-
-state 166
-	l_exp : expression . l_exp_aux  (51)
-	l_exp_aux : .  (53)
-
-	COMMA  shift 180
-	CLOSE_BRACKETS  reduce 53
-
-	l_exp_aux  goto 181
-
-
-state 167
-	access : OPEN_BRACKETS l_exp . CLOSE_BRACKETS access_n_call_aux  (42)
-
-	CLOSE_BRACKETS  shift 182
-	.  error
-
-
-state 168
-	attribuition : EQUAL expression .  (44)
-
-	.  reduce 44
-
-
-state 169
-	if : IF OPEN_PARENTHESIS expression . CLOSE_PARENTHESIS THEN cb else  (58)
-
-	CLOSE_PARENTHESIS  shift 183
-	.  error
-
-
-state 170
-	switch : SWITCH OPEN_PARENTHESIS access_n_call . CLOSE_PARENTHESIS BEG caselist default END  (61)
-
-	CLOSE_PARENTHESIS  shift 184
-	.  error
-
-
-state 171
-	for : FOR IDENTIFIER EQUAL . expression for_aux expression DO cb  (65)
-
-	IDENTIFIER  shift 27
-	STRING_LIT  shift 28
-	NUMBER_INT  shift 29
-	NUMBER_REAL  shift 30
-	TRUE  shift 31
-	FALSE  shift 32
-	OPEN_PARENTHESIS  shift 33
-	OPEN_BRACES  shift 34
-	.  error
-
-	expression  goto 185
-	term_or  goto 36
-	term_and  goto 37
-	term_bool_comparison  goto 38
-	term_arit_comparison  goto 39
-	term  goto 40
-	factor  goto 41
-	negation_unsub  goto 42
-	arr_exp  goto 43
-	literal  goto 44
-
-
-state 172
-	loop : LOOP commands END .  (68)
-
-	.  reduce 68
-
-
-state 173
-	exit : EXIT WHEN OPEN_PARENTHESIS . expression CLOSE_PARENTHESIS  (69)
-
-	IDENTIFIER  shift 27
-	STRING_LIT  shift 28
-	NUMBER_INT  shift 29
-	NUMBER_REAL  shift 30
-	TRUE  shift 31
-	FALSE  shift 32
-	OPEN_PARENTHESIS  shift 33
-	OPEN_BRACES  shift 34
-	.  error
-
-	expression  goto 186
-	term_or  goto 36
-	term_and  goto 37
-	term_bool_comparison  goto 38
-	term_arit_comparison  goto 39
-	term  goto 40
-	factor  goto 41
-	negation_unsub  goto 42
-	arr_exp  goto 43
-	literal  goto 44
-
-
-state 174
-	commands_aux : SEMICOLON commands .  (35)
-
-	.  reduce 35
-
-
-state 175
-	access : DOT IDENTIFIER access_n_call_aux .  (41)
-
-	.  reduce 41
-
-
-state 176
-	real_parameter_list : REF IDENTIFIER . real_parameter_list_aux  (46)
-	real_parameter_list_aux : .  (50)
-
-	COMMA  shift 177
-	CLOSE_PARENTHESIS  reduce 50
-
-	real_parameter_list_aux  goto 187
-
-
-state 177
-	real_parameter_list_aux : COMMA . real_parameter_list  (49)
-	real_parameter_list : .  (48)
-
-	IDENTIFIER  shift 27
-	STRING_LIT  shift 28
-	NUMBER_INT  shift 29
-	NUMBER_REAL  shift 30
-	REF  shift 163
-	TRUE  shift 31
-	FALSE  shift 32
-	OPEN_PARENTHESIS  shift 33
-	OPEN_BRACES  shift 34
-	CLOSE_PARENTHESIS  reduce 48
-
-	expression  goto 164
-	real_parameter_list  goto 188
-	term_or  goto 36
-	term_and  goto 37
-	term_bool_comparison  goto 38
-	term_arit_comparison  goto 39
-	term  goto 40
-	factor  goto 41
-	negation_unsub  goto 42
-	arr_exp  goto 43
-	literal  goto 44
-
-
-state 178
-	real_parameter_list : expression real_parameter_list_aux .  (47)
-
-	.  reduce 47
-
-
-state 179
-	subprogram_call : OPEN_PARENTHESIS real_parameter_list CLOSE_PARENTHESIS .  (45)
-
-	.  reduce 45
-
-
-state 180
-	l_exp_aux : COMMA . l_exp  (52)
+	attribuition : EQUAL . expression  (43)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -2582,7 +2211,6 @@ state 180
 	.  error
 
 	expression  goto 166
-	l_exp  goto 189
 	term_or  goto 36
 	term_and  goto 37
 	term_bool_comparison  goto 38
@@ -2594,97 +2222,83 @@ state 180
 	literal  goto 44
 
 
-state 181
-	l_exp : expression l_exp_aux .  (51)
+state 145
+	access_n_call : IDENTIFIER access_n_call_aux .  (36)
 
-	.  reduce 51
-
-
-state 182
-	access : OPEN_BRACKETS l_exp CLOSE_BRACKETS . access_n_call_aux  (42)
-	access : .  (43)
-
-	DOT  shift 141
-	OPEN_PARENTHESIS  shift 142
-	OPEN_BRACKETS  shift 143
-	EQUAL  shift 144
-	END  reduce 43
-	ELSE  reduce 43
-	CASE  reduce 43
-	DEFAULT  reduce 43
-	SEMICOLON  reduce 43
-	CLOSE_PARENTHESIS  reduce 43
-
-	access_n_call_aux  goto 190
-	access  goto 146
-	attribuition  goto 147
-	subprogram_call  goto 148
+	.  reduce 36
 
 
-state 183
-	if : IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS . THEN cb else  (58)
+state 146
+	access_n_call_aux : access .  (37)
 
-	THEN  shift 191
+	.  reduce 37
+
+
+state 147
+	access_n_call_aux : attribuition .  (38)
+
+	.  reduce 38
+
+
+state 148
+	access_n_call_aux : subprogram_call .  (39)
+
+	.  reduce 39
+
+
+state 149
+	return_aux : expression .  (54)
+
+	.  reduce 54
+
+
+state 150
+	return : RETURN return_aux .  (53)
+
+	.  reduce 53
+
+
+state 151
+	if : IF $$1 . OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS $$3 THEN $$4 cb else  (61)
+
+	OPEN_PARENTHESIS  shift 167
 	.  error
 
 
-state 184
-	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS . BEG caselist default END  (61)
-
-	BEG  shift 192
-	.  error
-
-
-state 185
-	for : FOR IDENTIFIER EQUAL expression . for_aux expression DO cb  (65)
-
-	DOWNTO  shift 193
-	TO  shift 194
-	.  error
-
-	for_aux  goto 195
-
-
-state 186
-	exit : EXIT WHEN OPEN_PARENTHESIS expression . CLOSE_PARENTHESIS  (69)
-
-	CLOSE_PARENTHESIS  shift 196
-	.  error
-
-
-state 187
-	real_parameter_list : REF IDENTIFIER real_parameter_list_aux .  (46)
-
-	.  reduce 46
-
-
-state 188
-	real_parameter_list_aux : COMMA real_parameter_list .  (49)
-
-	.  reduce 49
-
-
-state 189
-	l_exp_aux : COMMA l_exp .  (52)
-
-	.  reduce 52
-
-
-state 190
-	access : OPEN_BRACKETS l_exp CLOSE_BRACKETS access_n_call_aux .  (42)
-
-	.  reduce 42
-
-
-state 191
-	if : IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS THEN . cb else  (58)
-	declaration : .  (4)
+state 152
+	switch : SWITCH OPEN_PARENTHESIS . access_n_call CLOSE_PARENTHESIS BEG caselist default END  (64)
 
 	IDENTIFIER  shift 121
-	PROCEDURE  shift 1
-	FUNCTION  shift 2
-	VAR  shift 3
-	CONST  shift 4
+	.  error
+
+	access_n_call  goto 168
+
+
+state 153
+	for : FOR IDENTIFIER . EQUAL expression for_aux expression DO cb  (68)
+
+	EQUAL  shift 169
+	.  error
+
+
+state 154
+	loop : LOOP commands . END  (71)
+
+	END  shift 170
+	.  error
+
+
+state 155
+	exit : EXIT WHEN . OPEN_PARENTHESIS expression CLOSE_PARENTHESIS  (72)
+
+	OPEN_PARENTHESIS  shift 171
+	.  error
+
+
+state 156
+	commands_aux : SEMICOLON . commands  (34)
+
+	IDENTIFIER  shift 121
 	RETURN  shift 122
 	BREAK  shift 123
 	IF  shift 124
@@ -2692,17 +2306,9 @@ state 191
 	FOR  shift 126
 	LOOP  shift 127
 	EXIT  shift 128
-	BEG  reduce 4
+	.  error
 
-	declaration  goto 81
-	var  goto 6
-	const  goto 7
-	subprogram  goto 8
-	procedure  goto 9
-	function  goto 10
-	block  goto 197
-	command  goto 198
-	cb  goto 199
+	command  goto 129
 	access_n_call  goto 130
 	return  goto 131
 	break  goto 132
@@ -2711,32 +2317,113 @@ state 191
 	loop  goto 135
 	exit  goto 136
 	for  goto 137
+	commands  goto 172
 
 
-state 192
-	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG . caselist default END  (61)
-	caselist : .  (63)
+state 157
+	commands : command commands_aux .  (33)
 
-	CASE  shift 200
-	DEFAULT  reduce 63
-
-	caselist  goto 201
+	.  reduce 33
 
 
-state 193
-	for_aux : DOWNTO .  (67)
+state 158
+	block : declaration BEG commands END .  (32)
 
-	.  reduce 67
-
-
-state 194
-	for_aux : TO .  (66)
-
-	.  reduce 66
+	.  reduce 32
 
 
-state 195
-	for : FOR IDENTIFIER EQUAL expression for_aux . expression DO cb  (65)
+state 159
+	const_aux : COMMA IDENTIFIER EQUAL expression const_aux .  (11)
+
+	.  reduce 11
+
+
+state 160
+	access : DOT IDENTIFIER . access_n_call_aux  (40)
+	access : .  (42)
+
+	DOT  shift 141
+	OPEN_PARENTHESIS  shift 142
+	OPEN_BRACKETS  shift 143
+	EQUAL  shift 144
+	END  reduce 42
+	ELSE_  reduce 42
+	CASE  reduce 42
+	DEFAULT  reduce 42
+	SEMICOLON  reduce 42
+	CLOSE_PARENTHESIS  reduce 42
+
+	access_n_call_aux  goto 173
+	access  goto 146
+	attribuition  goto 147
+	subprogram_call  goto 148
+
+
+state 161
+	real_parameter_list : REF . IDENTIFIER real_parameter_list_aux  (45)
+
+	IDENTIFIER  shift 174
+	.  error
+
+
+state 162
+	real_parameter_list : expression . real_parameter_list_aux  (46)
+	real_parameter_list_aux : .  (49)
+
+	COMMA  shift 175
+	CLOSE_PARENTHESIS  reduce 49
+
+	real_parameter_list_aux  goto 176
+
+
+state 163
+	subprogram_call : OPEN_PARENTHESIS real_parameter_list . CLOSE_PARENTHESIS  (44)
+
+	CLOSE_PARENTHESIS  shift 177
+	.  error
+
+
+state 164
+	l_exp : expression . l_exp_aux  (50)
+	l_exp_aux : .  (52)
+
+	COMMA  shift 178
+	CLOSE_BRACKETS  reduce 52
+
+	l_exp_aux  goto 179
+
+
+state 165
+	access : OPEN_BRACKETS l_exp . CLOSE_BRACKETS access_n_call_aux  (41)
+
+	CLOSE_BRACKETS  shift 180
+	.  error
+
+
+state 166
+	attribuition : EQUAL expression .  (43)
+
+	.  reduce 43
+
+
+state 167
+	if : IF $$1 OPEN_PARENTHESIS . $$2 expression CLOSE_PARENTHESIS $$3 THEN $$4 cb else  (61)
+	$$2 : .  (58)
+
+	.  reduce 58
+
+	$$2  goto 181
+
+
+state 168
+	switch : SWITCH OPEN_PARENTHESIS access_n_call . CLOSE_PARENTHESIS BEG caselist default END  (64)
+
+	CLOSE_PARENTHESIS  shift 182
+	.  error
+
+
+state 169
+	for : FOR IDENTIFIER EQUAL . expression for_aux expression DO cb  (68)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -2748,7 +2435,7 @@ state 195
 	OPEN_BRACES  shift 34
 	.  error
 
-	expression  goto 202
+	expression  goto 183
 	term_or  goto 36
 	term_and  goto 37
 	term_bool_comparison  goto 38
@@ -2760,40 +2447,256 @@ state 195
 	literal  goto 44
 
 
-state 196
-	exit : EXIT WHEN OPEN_PARENTHESIS expression CLOSE_PARENTHESIS .  (69)
+state 170
+	loop : LOOP commands END .  (71)
+
+	.  reduce 71
+
+
+state 171
+	exit : EXIT WHEN OPEN_PARENTHESIS . expression CLOSE_PARENTHESIS  (72)
+
+	IDENTIFIER  shift 27
+	STRING_LIT  shift 28
+	NUMBER_INT  shift 29
+	NUMBER_REAL  shift 30
+	TRUE  shift 31
+	FALSE  shift 32
+	OPEN_PARENTHESIS  shift 33
+	OPEN_BRACES  shift 34
+	.  error
+
+	expression  goto 184
+	term_or  goto 36
+	term_and  goto 37
+	term_bool_comparison  goto 38
+	term_arit_comparison  goto 39
+	term  goto 40
+	factor  goto 41
+	negation_unsub  goto 42
+	arr_exp  goto 43
+	literal  goto 44
+
+
+state 172
+	commands_aux : SEMICOLON commands .  (34)
+
+	.  reduce 34
+
+
+state 173
+	access : DOT IDENTIFIER access_n_call_aux .  (40)
+
+	.  reduce 40
+
+
+state 174
+	real_parameter_list : REF IDENTIFIER . real_parameter_list_aux  (45)
+	real_parameter_list_aux : .  (49)
+
+	COMMA  shift 175
+	CLOSE_PARENTHESIS  reduce 49
+
+	real_parameter_list_aux  goto 185
+
+
+state 175
+	real_parameter_list_aux : COMMA . real_parameter_list  (48)
+	real_parameter_list : .  (47)
+
+	IDENTIFIER  shift 27
+	STRING_LIT  shift 28
+	NUMBER_INT  shift 29
+	NUMBER_REAL  shift 30
+	REF  shift 161
+	TRUE  shift 31
+	FALSE  shift 32
+	OPEN_PARENTHESIS  shift 33
+	OPEN_BRACES  shift 34
+	CLOSE_PARENTHESIS  reduce 47
+
+	expression  goto 162
+	real_parameter_list  goto 186
+	term_or  goto 36
+	term_and  goto 37
+	term_bool_comparison  goto 38
+	term_arit_comparison  goto 39
+	term  goto 40
+	factor  goto 41
+	negation_unsub  goto 42
+	arr_exp  goto 43
+	literal  goto 44
+
+
+state 176
+	real_parameter_list : expression real_parameter_list_aux .  (46)
+
+	.  reduce 46
+
+
+state 177
+	subprogram_call : OPEN_PARENTHESIS real_parameter_list CLOSE_PARENTHESIS .  (44)
+
+	.  reduce 44
+
+
+state 178
+	l_exp_aux : COMMA . l_exp  (51)
+
+	IDENTIFIER  shift 27
+	STRING_LIT  shift 28
+	NUMBER_INT  shift 29
+	NUMBER_REAL  shift 30
+	TRUE  shift 31
+	FALSE  shift 32
+	OPEN_PARENTHESIS  shift 33
+	OPEN_BRACES  shift 34
+	.  error
+
+	expression  goto 164
+	l_exp  goto 187
+	term_or  goto 36
+	term_and  goto 37
+	term_bool_comparison  goto 38
+	term_arit_comparison  goto 39
+	term  goto 40
+	factor  goto 41
+	negation_unsub  goto 42
+	arr_exp  goto 43
+	literal  goto 44
+
+
+state 179
+	l_exp : expression l_exp_aux .  (50)
+
+	.  reduce 50
+
+
+state 180
+	access : OPEN_BRACKETS l_exp CLOSE_BRACKETS . access_n_call_aux  (41)
+	access : .  (42)
+
+	DOT  shift 141
+	OPEN_PARENTHESIS  shift 142
+	OPEN_BRACKETS  shift 143
+	EQUAL  shift 144
+	END  reduce 42
+	ELSE_  reduce 42
+	CASE  reduce 42
+	DEFAULT  reduce 42
+	SEMICOLON  reduce 42
+	CLOSE_PARENTHESIS  reduce 42
+
+	access_n_call_aux  goto 188
+	access  goto 146
+	attribuition  goto 147
+	subprogram_call  goto 148
+
+
+state 181
+	if : IF $$1 OPEN_PARENTHESIS $$2 . expression CLOSE_PARENTHESIS $$3 THEN $$4 cb else  (61)
+
+	IDENTIFIER  shift 27
+	STRING_LIT  shift 28
+	NUMBER_INT  shift 29
+	NUMBER_REAL  shift 30
+	TRUE  shift 31
+	FALSE  shift 32
+	OPEN_PARENTHESIS  shift 33
+	OPEN_BRACES  shift 34
+	.  error
+
+	expression  goto 189
+	term_or  goto 36
+	term_and  goto 37
+	term_bool_comparison  goto 38
+	term_arit_comparison  goto 39
+	term  goto 40
+	factor  goto 41
+	negation_unsub  goto 42
+	arr_exp  goto 43
+	literal  goto 44
+
+
+state 182
+	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS . BEG caselist default END  (64)
+
+	BEG  shift 190
+	.  error
+
+
+state 183
+	for : FOR IDENTIFIER EQUAL expression . for_aux expression DO cb  (68)
+
+	DOWNTO  shift 191
+	TO  shift 192
+	.  error
+
+	for_aux  goto 193
+
+
+state 184
+	exit : EXIT WHEN OPEN_PARENTHESIS expression . CLOSE_PARENTHESIS  (72)
+
+	CLOSE_PARENTHESIS  shift 194
+	.  error
+
+
+state 185
+	real_parameter_list : REF IDENTIFIER real_parameter_list_aux .  (45)
+
+	.  reduce 45
+
+
+state 186
+	real_parameter_list_aux : COMMA real_parameter_list .  (48)
+
+	.  reduce 48
+
+
+state 187
+	l_exp_aux : COMMA l_exp .  (51)
+
+	.  reduce 51
+
+
+state 188
+	access : OPEN_BRACKETS l_exp CLOSE_BRACKETS access_n_call_aux .  (41)
+
+	.  reduce 41
+
+
+state 189
+	if : IF $$1 OPEN_PARENTHESIS $$2 expression . CLOSE_PARENTHESIS $$3 THEN $$4 cb else  (61)
+
+	CLOSE_PARENTHESIS  shift 195
+	.  error
+
+
+state 190
+	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG . caselist default END  (64)
+	caselist : .  (66)
+
+	CASE  shift 196
+	DEFAULT  reduce 66
+
+	caselist  goto 197
+
+
+state 191
+	for_aux : DOWNTO .  (70)
+
+	.  reduce 70
+
+
+state 192
+	for_aux : TO .  (69)
 
 	.  reduce 69
 
 
-state 197
-	cb : block .  (24)
-
-	.  reduce 24
-
-
-state 198
-	cb : command .  (23)
-
-	.  reduce 23
-
-
-199: shift/reduce conflict (shift 203, reduce 60) on ELSE
-state 199
-	if : IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS THEN cb . else  (58)
-	else : .  (60)
-
-	ELSE  shift 203
-	END  reduce 60
-	CASE  reduce 60
-	DEFAULT  reduce 60
-	SEMICOLON  reduce 60
-
-	else  goto 204
-
-
-state 200
-	caselist : CASE . expression COLON cb caselist  (62)
+state 193
+	for : FOR IDENTIFIER EQUAL expression for_aux . expression DO cb  (68)
 
 	IDENTIFIER  shift 27
 	STRING_LIT  shift 28
@@ -2805,7 +2708,7 @@ state 200
 	OPEN_BRACES  shift 34
 	.  error
 
-	expression  goto 205
+	expression  goto 198
 	term_or  goto 36
 	term_and  goto 37
 	term_bool_comparison  goto 38
@@ -2817,24 +2720,92 @@ state 200
 	literal  goto 44
 
 
-state 201
-	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist . default END  (61)
+state 194
+	exit : EXIT WHEN OPEN_PARENTHESIS expression CLOSE_PARENTHESIS .  (72)
 
-	DEFAULT  shift 206
+	.  reduce 72
+
+
+state 195
+	if : IF $$1 OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS . $$3 THEN $$4 cb else  (61)
+	$$3 : .  (59)
+
+	.  reduce 59
+
+	$$3  goto 199
+
+
+state 196
+	caselist : CASE . expression COLON cb caselist  (65)
+
+	IDENTIFIER  shift 27
+	STRING_LIT  shift 28
+	NUMBER_INT  shift 29
+	NUMBER_REAL  shift 30
+	TRUE  shift 31
+	FALSE  shift 32
+	OPEN_PARENTHESIS  shift 33
+	OPEN_BRACES  shift 34
 	.  error
 
-	default  goto 207
+	expression  goto 200
+	term_or  goto 36
+	term_and  goto 37
+	term_bool_comparison  goto 38
+	term_arit_comparison  goto 39
+	term  goto 40
+	factor  goto 41
+	negation_unsub  goto 42
+	arr_exp  goto 43
+	literal  goto 44
+
+
+state 197
+	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist . default END  (64)
+
+	DEFAULT  shift 201
+	.  error
+
+	default  goto 202
+
+
+state 198
+	for : FOR IDENTIFIER EQUAL expression for_aux expression . DO cb  (68)
+
+	DO  shift 203
+	.  error
+
+
+state 199
+	if : IF $$1 OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS $$3 . THEN $$4 cb else  (61)
+
+	THEN  shift 204
+	.  error
+
+
+state 200
+	caselist : CASE expression . COLON cb caselist  (65)
+
+	COLON  shift 205
+	.  error
+
+
+state 201
+	default : DEFAULT . COLON cb  (67)
+
+	COLON  shift 206
+	.  error
 
 
 state 202
-	for : FOR IDENTIFIER EQUAL expression for_aux expression . DO cb  (65)
+	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist default . END  (64)
 
-	DO  shift 208
+	END  shift 207
 	.  error
 
 
 state 203
-	else : ELSE . cb  (59)
+	for : FOR IDENTIFIER EQUAL expression for_aux expression DO . cb  (68)
 	declaration : .  (4)
 
 	IDENTIFIER  shift 121
@@ -2857,9 +2828,9 @@ state 203
 	subprogram  goto 8
 	procedure  goto 9
 	function  goto 10
-	block  goto 197
-	command  goto 198
+	block  goto 208
 	cb  goto 209
+	command  goto 210
 	access_n_call  goto 130
 	return  goto 131
 	break  goto 132
@@ -2871,114 +2842,114 @@ state 203
 
 
 state 204
-	if : IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS THEN cb else .  (58)
+	if : IF $$1 OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS $$3 THEN . $$4 cb else  (61)
+	$$4 : .  (60)
 
-	.  reduce 58
+	.  reduce 60
+
+	$$4  goto 211
 
 
 state 205
-	caselist : CASE expression . COLON cb caselist  (62)
+	caselist : CASE expression COLON . cb caselist  (65)
+	declaration : .  (4)
 
-	COLON  shift 210
-	.  error
+	IDENTIFIER  shift 121
+	PROCEDURE  shift 1
+	FUNCTION  shift 2
+	VAR  shift 3
+	CONST  shift 4
+	RETURN  shift 122
+	BREAK  shift 123
+	IF  shift 124
+	SWITCH  shift 125
+	FOR  shift 126
+	LOOP  shift 127
+	EXIT  shift 128
+	BEG  reduce 4
+
+	declaration  goto 81
+	var  goto 6
+	const  goto 7
+	subprogram  goto 8
+	procedure  goto 9
+	function  goto 10
+	block  goto 208
+	cb  goto 212
+	command  goto 210
+	access_n_call  goto 130
+	return  goto 131
+	break  goto 132
+	if  goto 133
+	switch  goto 134
+	loop  goto 135
+	exit  goto 136
+	for  goto 137
 
 
 state 206
-	default : DEFAULT . COLON cb  (64)
+	default : DEFAULT COLON . cb  (67)
+	declaration : .  (4)
 
-	COLON  shift 211
-	.  error
+	IDENTIFIER  shift 121
+	PROCEDURE  shift 1
+	FUNCTION  shift 2
+	VAR  shift 3
+	CONST  shift 4
+	RETURN  shift 122
+	BREAK  shift 123
+	IF  shift 124
+	SWITCH  shift 125
+	FOR  shift 126
+	LOOP  shift 127
+	EXIT  shift 128
+	BEG  reduce 4
+
+	declaration  goto 81
+	var  goto 6
+	const  goto 7
+	subprogram  goto 8
+	procedure  goto 9
+	function  goto 10
+	block  goto 208
+	cb  goto 213
+	command  goto 210
+	access_n_call  goto 130
+	return  goto 131
+	break  goto 132
+	if  goto 133
+	switch  goto 134
+	loop  goto 135
+	exit  goto 136
+	for  goto 137
 
 
 state 207
-	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist default . END  (61)
+	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist default END .  (64)
 
-	END  shift 212
-	.  error
+	.  reduce 64
 
 
 state 208
-	for : FOR IDENTIFIER EQUAL expression for_aux expression DO . cb  (65)
-	declaration : .  (4)
+	cb : block .  (23)
 
-	IDENTIFIER  shift 121
-	PROCEDURE  shift 1
-	FUNCTION  shift 2
-	VAR  shift 3
-	CONST  shift 4
-	RETURN  shift 122
-	BREAK  shift 123
-	IF  shift 124
-	SWITCH  shift 125
-	FOR  shift 126
-	LOOP  shift 127
-	EXIT  shift 128
-	BEG  reduce 4
-
-	declaration  goto 81
-	var  goto 6
-	const  goto 7
-	subprogram  goto 8
-	procedure  goto 9
-	function  goto 10
-	block  goto 197
-	command  goto 198
-	cb  goto 213
-	access_n_call  goto 130
-	return  goto 131
-	break  goto 132
-	if  goto 133
-	switch  goto 134
-	loop  goto 135
-	exit  goto 136
-	for  goto 137
+	.  reduce 23
 
 
 state 209
-	else : ELSE cb .  (59)
+	for : FOR IDENTIFIER EQUAL expression for_aux expression DO cb .  (68)
 
-	.  reduce 59
+	.  reduce 68
 
 
 state 210
-	caselist : CASE expression COLON . cb caselist  (62)
-	declaration : .  (4)
+	cb : command .  (22)
 
-	IDENTIFIER  shift 121
-	PROCEDURE  shift 1
-	FUNCTION  shift 2
-	VAR  shift 3
-	CONST  shift 4
-	RETURN  shift 122
-	BREAK  shift 123
-	IF  shift 124
-	SWITCH  shift 125
-	FOR  shift 126
-	LOOP  shift 127
-	EXIT  shift 128
-	BEG  reduce 4
-
-	declaration  goto 81
-	var  goto 6
-	const  goto 7
-	subprogram  goto 8
-	procedure  goto 9
-	function  goto 10
-	block  goto 197
-	command  goto 198
-	cb  goto 214
-	access_n_call  goto 130
-	return  goto 131
-	break  goto 132
-	if  goto 133
-	switch  goto 134
-	loop  goto 135
-	exit  goto 136
-	for  goto 137
+	.  reduce 22
 
 
 state 211
-	default : DEFAULT COLON . cb  (64)
+	if : IF $$1 OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS $$3 THEN $$4 . cb else  (61)
 	declaration : .  (4)
 
 	IDENTIFIER  shift 121
@@ -3001,9 +2972,9 @@ state 211
 	subprogram  goto 8
 	procedure  goto 9
 	function  goto 10
-	block  goto 197
-	command  goto 198
-	cb  goto 215
+	block  goto 208
+	cb  goto 214
+	command  goto 210
 	access_n_call  goto 130
 	return  goto 131
 	break  goto 132
@@ -3015,42 +2986,92 @@ state 211
 
 
 state 212
-	switch : SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS BEG caselist default END .  (61)
+	caselist : CASE expression COLON cb . caselist  (65)
+	caselist : .  (66)
 
-	.  reduce 61
+	CASE  shift 196
+	DEFAULT  reduce 66
+
+	caselist  goto 215
 
 
 state 213
-	for : FOR IDENTIFIER EQUAL expression for_aux expression DO cb .  (65)
+	default : DEFAULT COLON cb .  (67)
+
+	.  reduce 67
+
+
+214: shift/reduce conflict (shift 216, reduce 63) on ELSE_
+state 214
+	if : IF $$1 OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS $$3 THEN $$4 cb . else  (61)
+	else : .  (63)
+
+	ELSE_  shift 216
+	END  reduce 63
+	CASE  reduce 63
+	DEFAULT  reduce 63
+	SEMICOLON  reduce 63
+
+	else  goto 217
+
+
+state 215
+	caselist : CASE expression COLON cb caselist .  (65)
 
 	.  reduce 65
 
 
-state 214
-	caselist : CASE expression COLON cb . caselist  (62)
-	caselist : .  (63)
-
-	CASE  shift 200
-	DEFAULT  reduce 63
-
-	caselist  goto 216
-
-
-state 215
-	default : DEFAULT COLON cb .  (64)
-
-	.  reduce 64
-
-
 state 216
-	caselist : CASE expression COLON cb caselist .  (62)
+	else : ELSE_ . cb  (62)
+	declaration : .  (4)
+
+	IDENTIFIER  shift 121
+	PROCEDURE  shift 1
+	FUNCTION  shift 2
+	VAR  shift 3
+	CONST  shift 4
+	RETURN  shift 122
+	BREAK  shift 123
+	IF  shift 124
+	SWITCH  shift 125
+	FOR  shift 126
+	LOOP  shift 127
+	EXIT  shift 128
+	BEG  reduce 4
+
+	declaration  goto 81
+	var  goto 6
+	const  goto 7
+	subprogram  goto 8
+	procedure  goto 9
+	function  goto 10
+	block  goto 208
+	cb  goto 218
+	command  goto 210
+	access_n_call  goto 130
+	return  goto 131
+	break  goto 132
+	if  goto 133
+	switch  goto 134
+	loop  goto 135
+	exit  goto 136
+	for  goto 137
+
+
+state 217
+	if : IF $$1 OPEN_PARENTHESIS $$2 expression CLOSE_PARENTHESIS $$3 THEN $$4 cb else .  (61)
+
+	.  reduce 61
+
+
+state 218
+	else : ELSE_ cb .  (62)
 
 	.  reduce 62
 
 
-State 129 contains 1 shift/reduce conflict.
-State 199 contains 1 shift/reduce conflict.
+State 214 contains 1 shift/reduce conflict.
 
 
-63 terminals, 56 nonterminals
-110 grammar rules, 217 states
+63 terminals, 60 nonterminals
+113 grammar rules, 219 states

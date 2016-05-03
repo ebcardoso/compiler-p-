@@ -23,21 +23,12 @@
 
 COMMENT  /* */
 
-PROCEDURE 
-FUNCTION 
+PROCEDURE FUNCTION 
 
-REF 
-VAR 
+REF VAR 
 
-CONST 
-INT 
-REAL 
-STRING 
-BOOLEAN 
-
-TRUE 
-FALSE 
-NIL 
+CONST INT 
+REAL STRING BOOLEAN TRUE FALSE NIL 
 //VAL_STRING 
 
 BEG  // begin
@@ -48,7 +39,7 @@ BREAK
 
 IF 
 THEN 
-ELSE 
+ELSE_ 
 
 SWITCH 
 CASE 
@@ -134,10 +125,6 @@ const_aux :
 subprogram :
 	procedure
 	| function
-	;
-
-block :
-	declaration BEG command END
 	;
 
 procedure :
@@ -252,15 +239,15 @@ break :
 	;
 
 if :
-	IF OPEN_PARENTHESIS expression CLOSE_PARENTHESIS THEN
+	IF {printf("if ");} OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(") ");} THEN {printf("then");}
 		cb
-		else
+	else
 	;
 
 else :
-	ELSE
+	ELSE_
 		cb
-	|
+	| 
 	;
 
 switch :

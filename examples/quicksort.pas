@@ -21,9 +21,7 @@ begin
 	end;
 
 	if (pivo-1 >= esq) then
-	begin
-		quick(vet, esq, (pivo-1))
-	end;
+		quick(vet, esq, (pivo-1));
 
 	if (pivo+1 <= dir) then
 		function pivo()
