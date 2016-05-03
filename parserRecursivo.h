@@ -32,13 +32,8 @@ void parse(char *src) {  /*  parses and translates expression list  */
 	yyin = file;
 	lookahead = yylex();
 
-	program(); //início da compilação
-}
-
-void program() {
 	declaration();
 	printf("\n");
-	//eat(EOF);
 }
 
 void declaration() {

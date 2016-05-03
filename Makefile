@@ -1,3 +1,9 @@
+parserBottomUp: parserBottomUp.y
+	yacc -y parserBottomUp.y
+
+conflicts: parserBottomUp.y
+	yacc -v parserBottomUp.y
+
 lexicAnalyzer: lexicAnalyzer.l
 	clear
 	lex lexicAnalyzer.l

@@ -260,7 +260,6 @@ if :
 else :
 	ELSE
 		cb
-	|
 	;
 
 switch :

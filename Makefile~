@@ -1,16 +1,19 @@
+parserBottomUp: parserBottomUp.y
+	yacc -y parserBottomUp.y
+
 lexicAnalyzer: lexicAnalyzer.l
 	clear
 	lex lexicAnalyzer.l
 	cc main.c parserRecursivo.h parserEmitter.h parserTokens.h lex.yy.c -ll -o recursiveParser
 
 test: lexicAnalyzer
-	./recursiveParser examples/test.ppp
+	./recursiveParser examples/test.pas
 
 quick: lexicAnalyzer
-	./recursiveParser examples/quicksort.ppp
+	./recursiveParser examples/quicksort.pas
 
 merge: lexicAnalyzer
-	./recursiveParser examples/mergesort.ppp
+	./recursiveParser examples/mergesort.pas
 
 .PHONY: clean
 clean:

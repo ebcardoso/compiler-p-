@@ -1,4 +1,4 @@
-procedure mergeSort(ref vetor, posicaoInicio, posicaoFim)
+procedure mergeSort(vetor, posicaoInicio, posicaoFim)
 	var i, j, k, metadeTamanho, vetorTemp
 	var vetorTemp
 begin
@@ -25,11 +25,11 @@ begin
 		else
 			begin
 				if (j == posicaoFim + 1) then
-					begin
-						vetorTemp[k] = vetor[i];
-						i = i + 1;
-						k = k + 1
-					end
+					vetorTemp[k] = vetor[i];
+					if (j == 0) then
+						j = 3;
+					i = i + 1;
+					k = k + 1
 				else
 					begin
 						if (vetor[i] < vetor[j]) then

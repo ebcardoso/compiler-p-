@@ -32,13 +32,7 @@ void parse(char *src) {  /*  parses and translates expression list  */
 	yyin = file;
 	lookahead = yylex();
 
-	program(); //início da compilação
-}
-
-void program() {
 	declaration();
-	printf("\n");
-	//eat(EOF);
 }
 
 void declaration() {
@@ -60,6 +54,8 @@ void declaration() {
 		case BEG:
 			break;
 		default:
+			printf("\n---------------------\n");
+			printf("RECEBIDO: %d  ESPERADO: {VAR, CONST, PROCEDURE ou BEGIN}", lookahead);
 			error();
 	}
 }
@@ -127,19 +123,19 @@ void parameter_list_aux() {
 void command() {
 	switch (lookahead) {
 		case BEG:
-			block(); command();
+			block(); command_aux();
 			break;
 		case VAR:
-			block(); command();
+			block(); command_aux();
 			break;
 		case CONST:
-			block(); command();
+			block(); command_aux();
 			break;
 		case PROCEDURE:
-			block(); command();
+			block(); command_aux();
 			break;
 		case FUNCTION:
-			block(); command();
+			block(); command_aux();
 			break;
 		case ID:
 			printf("\n");
@@ -152,19 +148,19 @@ void command() {
 			return_(); command_aux();
 			break;
 		case IF:
-			if_(); command();
+			if_(); command_aux();
 			break;
 		case SWITCH:
-			switch_(); command();
+			switch_(); command_aux();
 			break;
 		case LOOP:
-			loop(); command();
+			loop(); command_aux();
 			break;
 		case EXIT:
 			exit_(); command_aux();
 			break;
 		case FOR:
-			for_(); command();
+			for_(); command_aux();
 			break;
 			
 	}
@@ -301,6 +297,8 @@ void caselist() {
 				eat(VAL_STRING);
 				break;
 			default:
+				printf("\n---------------------\n");
+				printf("RECEBIDO: %d  ESPERADO: {NUMBER ou STRING}\n", lookahead);
 				error();
 		}
 		eat(COLON);
@@ -340,6 +338,8 @@ void for_aux() {
 			eat(DOWNTO);
 			break;
 		default:
+			printf("\n---------------------\n");
+			printf("RECEBIDO: %d  ESPERADO: {TO ou DOWNTO}\n", lookahead);
 			error();
 	}
 }
