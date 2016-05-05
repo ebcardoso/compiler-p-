@@ -5,8 +5,8 @@
 	Equipe: Breno Cardoso, Lucas Simonetti, Renato Higor, Sidemar Fideles
 */
 
-	#include "parserTokens.h"
-	#include "symbolTable.h"
+	#include "parserBottomUp.tab.h"
+	//#include "symbolTable.h"
 	int nchar, nline, nword;
 	#define ACCOUNTABLE nword++;nchar+=yyleng;
 
@@ -31,7 +31,7 @@ ID	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 "//".* { return COMMENT; ACCOUNTABLE } 
 
-\"(\\.|[^\\"])*\" { return VAL_STRING; ACCOUNTABLE } 
+\"(\\.|[^\\"])*\" { return STRING_LIT; ACCOUNTABLE } 
 
 \"(\\.|[^\\"])* { printf("%s: unmatched string error\n", yytext); ACCOUNTABLE }
 
@@ -41,7 +41,7 @@ function { return FUNCTION; ACCOUNTABLE }
 ref { return REF; ACCOUNTABLE }
 var {
 	return VAR;
-	canInsert = 1;
+	//canInsert = 1;
 	ACCOUNTABLE
 }
 const { return CONST; ACCOUNTABLE }
@@ -62,7 +62,7 @@ return { return RETURN; ACCOUNTABLE }
 break { return BREAK; ACCOUNTABLE }
 if { return IF; ACCOUNTABLE }
 then { return THEN; ACCOUNTABLE }
-else { return ELSE; ACCOUNTABLE }
+else { return ELSE_; ACCOUNTABLE }
 switch { return SWITCH; ACCOUNTABLE }
 case { return CASE; ACCOUNTABLE }
 default { return DEFAULT; ACCOUNTABLE }
@@ -75,12 +75,12 @@ exit { return EXIT; ACCOUNTABLE }
 when { return WHEN; ACCOUNTABLE }
 
 {ID} {
-	return ID ;
-	char *p = (char*)malloc(  (strlen(yytext) + 1) * sizeof(char));
+	return IDENTIFIER ;
+	/*char *p = (char*)malloc(  (strlen(yytext) + 1) * sizeof(char));
 	strcpy(p,yytext);
 	printf("%s: ppptoken ID \n", p);
 	if (canInsert)
-		push(p, "", 0, 0, head); //consertar essa pate
+		push(p, "", 0, 0, head);*/ //consertar essa pate
 	ACCOUNTABLE
 }
 {NUMBER_INT} { return NUMBER_INT ; ACCOUNTABLE }
@@ -88,7 +88,7 @@ when { return WHEN; ACCOUNTABLE }
 
 ";" {
 	return SEMICOLON;
-	canInsert = 0;
+	//canInsert = 0;
 	ACCOUNTABLE
 }
 ":" { return COLON ; ACCOUNTABLE }		
@@ -160,3 +160,7 @@ char **argv;
 int yywrap() {
 	return(1);
 }
+
+ void yyerror (char const *s) {
+   fprintf (stderr, "%s\n", s);
+ }

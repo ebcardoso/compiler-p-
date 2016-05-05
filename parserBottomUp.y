@@ -100,25 +100,25 @@ declaration :
 	;
 
 var :
-	VAR IDENTIFIER id_exp ids_exps
+	VAR {printf("var ");} IDENTIFIER id_exp ids_exps {printf("\n");}
 	;
 
 id_exp :
-	EQUAL expression
+	EQUAL {printf("= ");} expression
 	|
 	;
 
 ids_exps :
-	COMMA IDENTIFIER id_exp ids_exps
+	COMMA {printf(", ");} IDENTIFIER id_exp ids_exps
 	|
 	;
 
 const :
-	CONST IDENTIFIER EQUAL expression const_aux
+	CONST { printf("const "); } IDENTIFIER EQUAL {printf("= ");} expression const_aux {printf("\n");}
 	;
 
 const_aux :
-	COMMA IDENTIFIER EQUAL expression const_aux
+	COMMA {printf(", ");} IDENTIFIER EQUAL {printf("= ");} expression const_aux
 	|
 	;
 
@@ -128,12 +128,12 @@ subprogram :
 	;
 
 procedure :
-	PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS
+	PROCEDURE { printf("procedure "); } IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS { printf("\n"); }
 		block
 	;
 
 function :
-	FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS
+	FUNCTION { printf("function "); } IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS { printf("\n"); }
 		block
 	;
 
