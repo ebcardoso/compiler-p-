@@ -1,6 +1,7 @@
 var x, y = "breno", z = (8 + k)
 const a = 7, b = "breno"
 var c = "compiler", d = (3+x*3)
+const n = true
 
 procedure varrer()
 	function fatorial(x)

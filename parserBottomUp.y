@@ -1,12 +1,8 @@
 %{
 	#include <stdio.h>
-
 	int yyerror (char *s);
-
 	int yylex();
-
 %}
-
 
 %union {
 	int 	iValue;
@@ -31,28 +27,13 @@ CONST INT
 REAL STRING BOOLEAN TRUE FALSE NIL 
 //VAL_STRING 
 
-BEG  // begin
-END 
-
-RETURN 
-BREAK 
-
-IF 
-THEN 
-ELSE_ 
-
-SWITCH 
-CASE 
-DEFAULT 
-
-FOR 
-DOWNTO 
-TO 
-DO 
-
-LOOP 
-EXIT 
-WHEN 
+END BEG  // begin
+ 
+RETURN BREAK 
+IF THEN ELSE_ 
+SWITCH CASE DEFAULT 
+FOR DOWNTO TO DO
+LOOP EXIT WHEN 
 
 //ID 
 //NUMBER_INT 
@@ -89,7 +70,6 @@ NOT_EQUAL // !=
 LESS_EQUAL // <=
 BIGGER_EQUAL // >=
 
-
 %%
 
 declaration :
@@ -100,7 +80,7 @@ declaration :
 	;
 
 var :
-	VAR {printf("var ");} IDENTIFIER id_exp ids_exps {printf("\n");}
+	VAR {printf("var ");} IDENTIFIER {printf("%s ", $3);} id_exp ids_exps {printf("\n");}
 	;
 
 id_exp :
@@ -114,11 +94,11 @@ ids_exps :
 	;
 
 const :
-	CONST { printf("const "); } IDENTIFIER EQUAL {printf("= ");} expression const_aux {printf("\n");}
+	CONST {printf("const ");} IDENTIFIER {printf("%s ", $3);} EQUAL {printf("= ");} expression const_aux {printf("\n");}
 	;
 
 const_aux :
-	COMMA {printf(", ");} IDENTIFIER EQUAL {printf("= ");} expression const_aux
+	COMMA {printf(", ");} IDENTIFIER {printf("%s ", $3);} EQUAL {printf("= ");} expression const_aux
 	|
 	;
 
@@ -128,23 +108,23 @@ subprogram :
 	;
 
 procedure :
-	PROCEDURE { printf("procedure "); } IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS { printf("\n"); }
+	PROCEDURE {printf("procedure ");} IDENTIFIER {printf("%s", $3);} OPEN_PARENTHESIS {printf("(");} parameter_list CLOSE_PARENTHESIS {printf(")\n");}
 		block
 	;
 
 function :
-	FUNCTION { printf("function "); } IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS { printf("\n"); }
+	FUNCTION {printf("function ");} IDENTIFIER {printf("%s", $3);} OPEN_PARENTHESIS {printf("(");} parameter_list CLOSE_PARENTHESIS {printf(")\n");}
 		block
 	;
 
 parameter_list :
-	IDENTIFIER parameter_list_aux
-	| REF IDENTIFIER parameter_list_aux
+	IDENTIFIER {printf("%s", $1);} parameter_list_aux
+	| REF {printf("ref ");} IDENTIFIER {printf("%s", $3);} parameter_list_aux
 	|
 	;
 
 parameter_list_aux :
-	COMMA parameter_list
+	COMMA {printf(", ");} parameter_list
 	|
 	;
 
@@ -167,7 +147,7 @@ command :
 	;
 
 block :
-	declaration BEG commands END
+	declaration BEG {printf("begin\n");} commands END {printf("end\n");}
 	;
 
 commands :
@@ -175,14 +155,14 @@ commands :
 	;
 
 commands_aux :
-	SEMICOLON commands
+	SEMICOLON {printf(";\n");} commands
 	|
 	;
 
 
 
 access_n_call : 
-	IDENTIFIER access_n_call_aux
+	IDENTIFIER {printf("%s ", $1);} access_n_call_aux
 	;
 
 access_n_call_aux :
@@ -192,27 +172,27 @@ access_n_call_aux :
 	;
 
 access :
-	DOT IDENTIFIER access_n_call_aux
-	| OPEN_BRACKETS l_exp CLOSE_BRACKETS access_n_call_aux
+	DOT {printf(".");} IDENTIFIER {printf("%s ", $3);} access_n_call_aux
+	| OPEN_BRACKETS {printf("[");} l_exp CLOSE_BRACKETS {printf("]");} access_n_call_aux
 	|
 	;
 
 attribuition :
-	EQUAL expression
+	EQUAL {printf(" = ");} expression
 	;
 
 subprogram_call :
-	OPEN_PARENTHESIS real_parameter_list CLOSE_PARENTHESIS
+	OPEN_PARENTHESIS {printf("(");} real_parameter_list CLOSE_PARENTHESIS
 	;
 
 real_parameter_list :
-	REF IDENTIFIER real_parameter_list_aux
+	REF {printf("ref ");} IDENTIFIER {printf("%s ", $3);} real_parameter_list_aux
 	| expression real_parameter_list_aux
 	|
 	; 
 
 real_parameter_list_aux :
-	COMMA real_parameter_list
+	COMMA {printf(", ");} real_parameter_list
 	| 
 	;
 
@@ -221,12 +201,12 @@ l_exp :
 	;
 
 l_exp_aux :
-	COMMA l_exp
+	COMMA {printf(", ");} l_exp
 	|
 	;
 
 return :
-	RETURN return_aux
+	RETURN {printf("return ");} return_aux {printf("\n");}
 	;
 
 return_aux :
@@ -235,7 +215,7 @@ return_aux :
 	;
 
 break :
-	BREAK
+	BREAK {printf("break\n");}
 	;
 
 if :
@@ -245,49 +225,49 @@ if :
 	;
 
 else :
-	ELSE_
+	ELSE_ {printf("else\n");}
 		cb
 	| 
 	;
 
 switch :
-	SWITCH OPEN_PARENTHESIS access_n_call CLOSE_PARENTHESIS
-		BEG
+	SWITCH {printf("switch ");} OPEN_PARENTHESIS {printf("(");} access_n_call CLOSE_PARENTHESIS {printf(")\n");}
+		BEG {printf("begin");}
 			caselist
 			default
-		END
+		END {printf("end");}
 	;
 
 caselist :
-	CASE expression COLON
+	CASE {printf("case ");} expression COLON {printf(":\n");}
 		cb
 	caselist
 	| 
 	;
 
 default :
-	DEFAULT COLON
+	DEFAULT {printf("default");} COLON {printf(":");}
 		cb
 	;
 
 for :
-	FOR IDENTIFIER EQUAL expression for_aux expression DO
+	FOR {printf("for ");} IDENTIFIER {printf("%s", $3);} EQUAL {printf(" = ");} expression for_aux expression DO {printf(" do\n");}
 		cb
 	;
 
 for_aux :
-	TO
-	| DOWNTO
+	TO {printf(" to ");}
+	| DOWNTO {printf(" downto ");}
 	;
 
 loop :
-	LOOP
+	LOOP {printf("loop\n");}
 		commands
-	END
+	END {printf("end\n");}
 	;
 
 exit : 
-	EXIT WHEN OPEN_PARENTHESIS expression CLOSE_PARENTHESIS
+	EXIT {printf("exit ");} WHEN {printf("when ");} OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(")");}
 	;
 
 expression :
@@ -295,7 +275,7 @@ expression :
 	;
 
 term_or_tail :
-	OR term_or term_or_tail
+	OR {printf("||");} term_or term_or_tail
 	|
 	;
 
@@ -304,7 +284,7 @@ term_or :
 	;
 
 term_and_tail :
-	AND term_and term_and_tail
+	AND {printf("&&");} term_and term_and_tail
 	|
 	;
 
@@ -313,8 +293,8 @@ term_and :
 	;
 
 term_bool_comparison_tail :
-	EQUAL_LOGIC term_bool_comparison term_bool_comparison_tail
-	| NOT_EQUAL term_bool_comparison term_bool_comparison_tail
+	EQUAL_LOGIC {printf("==");} term_bool_comparison term_bool_comparison_tail
+	| NOT_EQUAL {printf("!=");} term_bool_comparison term_bool_comparison_tail
 	| 
 	;
 
@@ -323,10 +303,10 @@ term_bool_comparison :
 	;
 
 term_arit_comparison_tail :
-	LESS_THEN term_arit_comparison term_arit_comparison_tail
-	| BIGGER_THEN term_arit_comparison term_arit_comparison_tail
-	| LESS_EQUAL term_arit_comparison term_arit_comparison_tail
-	| BIGGER_EQUAL term_arit_comparison term_arit_comparison_tail
+	LESS_THEN {printf("<");} term_arit_comparison term_arit_comparison_tail
+	| BIGGER_THEN {printf(">");} term_arit_comparison term_arit_comparison_tail
+	| LESS_EQUAL {printf("<=");} term_arit_comparison term_arit_comparison_tail
+	| BIGGER_EQUAL {printf(">=");} term_arit_comparison term_arit_comparison_tail
 	| 
 	;
 
@@ -335,8 +315,8 @@ term_arit_comparison :
 	;
 
 term_tail :
-	ADD term term_tail
-	| SUB term term_tail
+	ADD {printf(" - ");} term term_tail
+	| SUB {printf(" + ");} term term_tail
 	|
 	;
 
@@ -345,9 +325,9 @@ term :
 	;
 
 factor_tail :
-	MULT factor factor_tail
-	| DIV factor factor_tail
-	| MOD factor factor_tail
+	MULT {printf("*");} factor factor_tail
+	| DIV {printf("/");} factor factor_tail
+	| MOD {printf("%");} factor factor_tail
 	|
 	;
 
@@ -356,11 +336,11 @@ factor :
 	;
 
 negation_unsub_tail :
-	NEG negation_unsub
+	NEG {printf("!");} negation_unsub
 	| ;
 
 negation_unsub : 
-	IDENTIFIER | arr_exp | literal | OPEN_PARENTHESIS expression CLOSE_PARENTHESIS
+	IDENTIFIER {printf("%s", $1);} | arr_exp | literal | OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(")");}
 	;
 
 arr_exp :
@@ -373,7 +353,7 @@ arr_exp_aux :
 	;
 
 literal :
-	STRING_LIT | NUMBER_INT | NUMBER_REAL | TRUE | FALSE
+	STRING_LIT {printf("%s", $1);} | NUMBER_INT {printf("%i", $1);} | NUMBER_REAL {printf("%f", $1);}  | TRUE {printf("true");} | FALSE {printf("false");}
 	;
 
 

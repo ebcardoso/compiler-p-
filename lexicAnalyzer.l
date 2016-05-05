@@ -16,7 +16,7 @@ LETTER				[a-zA-Z]
 DIGIT				[0-9]
 NUMBER_INT			{DIGIT}+
 NUMBER_REAL 			{NUMBER_INT}"."{NUMBER_INT}(e{NUMBER_INT})?
-ID	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
+IDENTIFIER	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 
 %%
@@ -74,7 +74,8 @@ loop { return LOOP; ACCOUNTABLE }
 exit { return EXIT; ACCOUNTABLE }
 when { return WHEN; ACCOUNTABLE }
 
-{ID} {
+{IDENTIFIER} {
+	yylval.sValue = strdup(yytext);
 	return IDENTIFIER ;
 	/*char *p = (char*)malloc(  (strlen(yytext) + 1) * sizeof(char));
 	strcpy(p,yytext);
@@ -83,8 +84,14 @@ when { return WHEN; ACCOUNTABLE }
 		push(p, "", 0, 0, head);*/ //consertar essa pate
 	ACCOUNTABLE
 }
-{NUMBER_INT} { return NUMBER_INT ; ACCOUNTABLE }
-{NUMBER_REAL} { return NUMBER_REAL ; ACCOUNTABLE }
+{NUMBER_INT} { 
+	yylval.iValue = atoi(yytext);
+	return NUMBER_INT ; ACCOUNTABLE
+}
+{NUMBER_REAL} {
+	yylval.dValue = atof(yytext);
+	return NUMBER_REAL ; ACCOUNTABLE
+}
 
 ";" {
 	return SEMICOLON;
