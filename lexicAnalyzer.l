@@ -29,9 +29,13 @@ IDENTIFIER	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 \n		{nline++;nchar++;}
 
-"//".* { return COMMENT; ACCOUNTABLE } 
+"//".* { yylval.sValue = strdup(yytext); return COMMENT; ACCOUNTABLE } 
 
-\"(\\.|[^\\"])*\" { return STRING_LIT; ACCOUNTABLE } 
+\"(\\.|[^\\"])*\" {
+	yylval.sValue = strdup(yytext);
+	return STRING_LIT;
+	ACCOUNTABLE
+} 
 
 \"(\\.|[^\\"])* { printf("%s: unmatched string error\n", yytext); ACCOUNTABLE }
 

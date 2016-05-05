@@ -915,38 +915,42 @@ YY_RULE_SETUP
 case 5:
 YY_RULE_SETUP
 #line 32 "lexicAnalyzer.l"
-{ return COMMENT; ACCOUNTABLE } 
+{ yylval.sValue = strdup(yytext); return COMMENT; ACCOUNTABLE } 
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
 #line 34 "lexicAnalyzer.l"
-{ return STRING_LIT; ACCOUNTABLE } 
+{
+	yylval.sValue = strdup(yytext);
+	return STRING_LIT;
+	ACCOUNTABLE
+} 
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 36 "lexicAnalyzer.l"
+#line 40 "lexicAnalyzer.l"
 { printf("%s: unmatched string error\n", yytext); ACCOUNTABLE }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 38 "lexicAnalyzer.l"
+#line 42 "lexicAnalyzer.l"
 { return PROCEDURE; ACCOUNTABLE }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 39 "lexicAnalyzer.l"
+#line 43 "lexicAnalyzer.l"
 { return FUNCTION; ACCOUNTABLE }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 41 "lexicAnalyzer.l"
+#line 45 "lexicAnalyzer.l"
 { return REF; ACCOUNTABLE }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 42 "lexicAnalyzer.l"
+#line 46 "lexicAnalyzer.l"
 {
 	return VAR;
 	//canInsert = 1;
@@ -955,132 +959,132 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 47 "lexicAnalyzer.l"
+#line 51 "lexicAnalyzer.l"
 { return CONST; ACCOUNTABLE }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 48 "lexicAnalyzer.l"
+#line 52 "lexicAnalyzer.l"
 { return INT; ACCOUNTABLE }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 49 "lexicAnalyzer.l"
+#line 53 "lexicAnalyzer.l"
 { return REAL; ACCOUNTABLE }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 50 "lexicAnalyzer.l"
+#line 54 "lexicAnalyzer.l"
 { return STRING; ACCOUNTABLE }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 51 "lexicAnalyzer.l"
+#line 55 "lexicAnalyzer.l"
 { return BOOLEAN; ACCOUNTABLE }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 53 "lexicAnalyzer.l"
+#line 57 "lexicAnalyzer.l"
 { return TRUE; ACCOUNTABLE }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 54 "lexicAnalyzer.l"
+#line 58 "lexicAnalyzer.l"
 { return FALSE; ACCOUNTABLE }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 56 "lexicAnalyzer.l"
+#line 60 "lexicAnalyzer.l"
 {return NIL ; ACCOUNTABLE }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 58 "lexicAnalyzer.l"
+#line 62 "lexicAnalyzer.l"
 { return BEG; ACCOUNTABLE }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 59 "lexicAnalyzer.l"
+#line 63 "lexicAnalyzer.l"
 { return END; ACCOUNTABLE }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 61 "lexicAnalyzer.l"
+#line 65 "lexicAnalyzer.l"
 { return RETURN; ACCOUNTABLE }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 62 "lexicAnalyzer.l"
+#line 66 "lexicAnalyzer.l"
 { return BREAK; ACCOUNTABLE }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 63 "lexicAnalyzer.l"
+#line 67 "lexicAnalyzer.l"
 { return IF; ACCOUNTABLE }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 64 "lexicAnalyzer.l"
+#line 68 "lexicAnalyzer.l"
 { return THEN; ACCOUNTABLE }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 65 "lexicAnalyzer.l"
+#line 69 "lexicAnalyzer.l"
 { return ELSE_; ACCOUNTABLE }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 66 "lexicAnalyzer.l"
+#line 70 "lexicAnalyzer.l"
 { return SWITCH; ACCOUNTABLE }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 67 "lexicAnalyzer.l"
+#line 71 "lexicAnalyzer.l"
 { return CASE; ACCOUNTABLE }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 68 "lexicAnalyzer.l"
+#line 72 "lexicAnalyzer.l"
 { return DEFAULT; ACCOUNTABLE }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 69 "lexicAnalyzer.l"
+#line 73 "lexicAnalyzer.l"
 { return FOR; ACCOUNTABLE }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 70 "lexicAnalyzer.l"
+#line 74 "lexicAnalyzer.l"
 { return DOWNTO; ACCOUNTABLE }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 71 "lexicAnalyzer.l"
+#line 75 "lexicAnalyzer.l"
 { return TO; ACCOUNTABLE }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 72 "lexicAnalyzer.l"
+#line 76 "lexicAnalyzer.l"
 { return DO; ACCOUNTABLE }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 73 "lexicAnalyzer.l"
+#line 77 "lexicAnalyzer.l"
 { return LOOP; ACCOUNTABLE }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 74 "lexicAnalyzer.l"
+#line 78 "lexicAnalyzer.l"
 { return EXIT; ACCOUNTABLE }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 75 "lexicAnalyzer.l"
+#line 79 "lexicAnalyzer.l"
 { return WHEN; ACCOUNTABLE }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 77 "lexicAnalyzer.l"
+#line 81 "lexicAnalyzer.l"
 {
 	yylval.sValue = strdup(yytext);
 	return IDENTIFIER ;
@@ -1094,7 +1098,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 87 "lexicAnalyzer.l"
+#line 91 "lexicAnalyzer.l"
 { 
 	yylval.iValue = atoi(yytext);
 	return NUMBER_INT ; ACCOUNTABLE
@@ -1102,7 +1106,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 91 "lexicAnalyzer.l"
+#line 95 "lexicAnalyzer.l"
 {
 	yylval.dValue = atof(yytext);
 	return NUMBER_REAL ; ACCOUNTABLE
@@ -1110,7 +1114,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 96 "lexicAnalyzer.l"
+#line 100 "lexicAnalyzer.l"
 {
 	return SEMICOLON;
 	//canInsert = 0;
@@ -1119,150 +1123,150 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 101 "lexicAnalyzer.l"
+#line 105 "lexicAnalyzer.l"
 { return COLON ; ACCOUNTABLE }		
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 102 "lexicAnalyzer.l"
+#line 106 "lexicAnalyzer.l"
 { return COMMA ; ACCOUNTABLE }		
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 103 "lexicAnalyzer.l"
+#line 107 "lexicAnalyzer.l"
 { return DOT; ACCOUNTABLE }		
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 104 "lexicAnalyzer.l"
+#line 108 "lexicAnalyzer.l"
 { return OPEN_PARENTHESIS; ACCOUNTABLE }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 105 "lexicAnalyzer.l"
+#line 109 "lexicAnalyzer.l"
 { return CLOSE_PARENTHESIS; ACCOUNTABLE }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 106 "lexicAnalyzer.l"
+#line 110 "lexicAnalyzer.l"
 { return OPEN_BRACKETS; ACCOUNTABLE }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 107 "lexicAnalyzer.l"
+#line 111 "lexicAnalyzer.l"
 { return CLOSE_BRACKETS; ACCOUNTABLE }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 108 "lexicAnalyzer.l"
+#line 112 "lexicAnalyzer.l"
 { return OPEN_BRACES; ACCOUNTABLE }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 109 "lexicAnalyzer.l"
+#line 113 "lexicAnalyzer.l"
 { return CLOSE_BRACES; ACCOUNTABLE }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 112 "lexicAnalyzer.l"
+#line 116 "lexicAnalyzer.l"
 { return ADD; ACCOUNTABLE }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 113 "lexicAnalyzer.l"
+#line 117 "lexicAnalyzer.l"
 { return SUB; ACCOUNTABLE }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 114 "lexicAnalyzer.l"
+#line 118 "lexicAnalyzer.l"
 { return MULT; ACCOUNTABLE }	
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 115 "lexicAnalyzer.l"
+#line 119 "lexicAnalyzer.l"
 { return DIV; ACCOUNTABLE  }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 116 "lexicAnalyzer.l"
+#line 120 "lexicAnalyzer.l"
 { return EQUAL; ACCOUNTABLE }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 117 "lexicAnalyzer.l"
+#line 121 "lexicAnalyzer.l"
 { return MOD; ACCOUNTABLE }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 118 "lexicAnalyzer.l"
+#line 122 "lexicAnalyzer.l"
 { return NEG; ACCOUNTABLE }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 119 "lexicAnalyzer.l"
+#line 123 "lexicAnalyzer.l"
 { return OR; ACCOUNTABLE }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 120 "lexicAnalyzer.l"
+#line 124 "lexicAnalyzer.l"
 { return AND; ACCOUNTABLE }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 121 "lexicAnalyzer.l"
+#line 125 "lexicAnalyzer.l"
 { return LESS_THEN; ACCOUNTABLE }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 122 "lexicAnalyzer.l"
+#line 126 "lexicAnalyzer.l"
 { return BIGGER_THEN; ACCOUNTABLE }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 123 "lexicAnalyzer.l"
+#line 127 "lexicAnalyzer.l"
 { return EQUAL_LOGIC; ACCOUNTABLE }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 124 "lexicAnalyzer.l"
+#line 128 "lexicAnalyzer.l"
 { return NOT_EQUAL; ACCOUNTABLE }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 125 "lexicAnalyzer.l"
+#line 129 "lexicAnalyzer.l"
 { return LESS_EQUAL; ACCOUNTABLE }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 126 "lexicAnalyzer.l"
+#line 130 "lexicAnalyzer.l"
 { return BIGGER_EQUAL; ACCOUNTABLE }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 127 "lexicAnalyzer.l"
+#line 131 "lexicAnalyzer.l"
 { return INCREMENT; ACCOUNTABLE }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 128 "lexicAnalyzer.l"
+#line 132 "lexicAnalyzer.l"
 { return DECREMENT; ACCOUNTABLE }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(IN_COMMENT):
-#line 130 "lexicAnalyzer.l"
+#line 134 "lexicAnalyzer.l"
 { return EOF; ACCOUNTABLE }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 132 "lexicAnalyzer.l"
+#line 136 "lexicAnalyzer.l"
 {nchar++;}
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 134 "lexicAnalyzer.l"
+#line 138 "lexicAnalyzer.l"
 ECHO;
 	YY_BREAK
-#line 1266 "lex.yy.c"
+#line 1270 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2261,7 +2265,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 134 "lexicAnalyzer.l"
+#line 138 "lexicAnalyzer.l"
 
 
 

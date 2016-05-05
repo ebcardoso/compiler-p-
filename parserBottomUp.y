@@ -89,7 +89,7 @@ id_exp :
 	;
 
 ids_exps :
-	COMMA {printf(", ");} IDENTIFIER id_exp ids_exps
+	COMMA {printf(", ");} IDENTIFIER {printf("%s ", $3);} id_exp ids_exps
 	|
 	;
 
@@ -340,20 +340,27 @@ negation_unsub_tail :
 	| ;
 
 negation_unsub : 
-	IDENTIFIER {printf("%s", $1);} | arr_exp | literal | OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(")");}
+	IDENTIFIER {printf("%s", $1);}
+	| arr_exp
+	| literal
+	| OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(")");}
 	;
 
 arr_exp :
-	OPEN_BRACES literal arr_exp_aux CLOSE_BRACES
+	OPEN_BRACES {printf("[");} literal arr_exp_aux CLOSE_BRACES {printf("]");}
 	;
 
 arr_exp_aux :
-	COMMA literal arr_exp_aux
+	COMMA {printf(",");} literal arr_exp_aux
 	| 
 	;
 
 literal :
-	STRING_LIT {printf("%s", $1);} | NUMBER_INT {printf("%i", $1);} | NUMBER_REAL {printf("%f", $1);}  | TRUE {printf("true");} | FALSE {printf("false");}
+	STRING_LIT {printf("%s", $1);}
+	| NUMBER_INT {printf("%i", $1);}
+	| NUMBER_REAL {printf("%f", $1);}
+	| TRUE {printf("true");}
+	| FALSE {printf("false");}
 	;
 
 
