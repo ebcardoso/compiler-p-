@@ -57,8 +57,8 @@ boolean { return BOOLEAN; ACCOUNTABLE }
 true { return TRUE; ACCOUNTABLE }
 false { return FALSE; ACCOUNTABLE }
 
-null {return NIL ; ACCOUNTABLE }
- 
+nil {return NIL ; ACCOUNTABLE }
+
 begin { return BEG; ACCOUNTABLE }
 end { return END; ACCOUNTABLE }
 

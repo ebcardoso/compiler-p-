@@ -1,6 +1,6 @@
-var x, y = "breno", z = (8 + k)
-const a = 7, b = "breno"
-var c = "compiler", d = (3+x*3)
+var x, b = "breno", z = (8.7 + k)
+const a = 7, c = "cardoso"
+var d1 = "compiler", d2 = (3+x*3)
 const n = true
 
 procedure varrer()

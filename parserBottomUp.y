@@ -128,11 +128,13 @@ parameter_list_aux :
 	|
 	;
 
-
-
 cb :
 	command
 	| block
+	;
+
+block :
+	declaration BEG {printf("begin\n");} commands END {printf("end\n");}
 	;
 
 command :
@@ -146,10 +148,6 @@ command :
 	| for
 	;
 
-block :
-	declaration BEG {printf("begin\n");} commands END {printf("end\n");}
-	;
-
 commands :
 	command commands_aux
 	;
@@ -158,8 +156,6 @@ commands_aux :
 	SEMICOLON {printf(";\n");} commands
 	|
 	;
-
-
 
 access_n_call : 
 	IDENTIFIER {printf("%s ", $1);} access_n_call_aux
@@ -315,8 +311,8 @@ term_arit_comparison :
 	;
 
 term_tail :
-	ADD {printf(" - ");} term term_tail
-	| SUB {printf(" + ");} term term_tail
+	ADD {printf(" + ");} term term_tail
+	| SUB {printf(" - ");} term term_tail
 	|
 	;
 
@@ -337,7 +333,8 @@ factor :
 
 negation_unsub_tail :
 	NEG {printf("!");} negation_unsub
-	| ;
+	|
+	;
 
 negation_unsub : 
 	IDENTIFIER {printf("%s", $1);}

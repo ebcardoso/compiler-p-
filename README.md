@@ -9,8 +9,8 @@ Sidemar Fideles.
 
 Comandos do Makefile:
 
-make
-make test
-make quick
-make merge
+make,
+make test,
+make quick,
+make merge,
 make clean
