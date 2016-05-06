@@ -11,7 +11,7 @@ begin
 		begin
 			ch = vet[j];
 			loop
-				exit when (!(j > pivo));
+				exit when (j <= pivo);
 				vet[j] = vet[j-1];
 				j = j + 1
 			end;

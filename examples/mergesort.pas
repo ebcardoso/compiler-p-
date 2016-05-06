@@ -15,7 +15,7 @@ begin
 	k = 0;
 
 	loop
-		exit when (!(i < metadeTamanho + 1 || j  < posicaoFim + 1));
+		exit when ( i >= metadeTamanho + 1 && j >= posicaoFim + 1 );
 		if (i == metadeTamanho + 1 ) then
 			begin
 				vetorTemp[k] = vetor[j];
