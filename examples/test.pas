@@ -32,8 +32,10 @@ function delta(a, b, c)
 begin
 	del = b*b - 4*a*c;
 	if (del < 0) then
-		raiz = sqrt(del);
-		return raiz
+		begin
+			raiz = sqrt(del);
+			return raiz
+		end
 	else
 		break
 end

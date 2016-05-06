@@ -231,19 +231,20 @@ switch :
 		INIT {printf("begin");}
 			caselist
 			default
-		FINAL {printf("end");}
+		FINAL {printf("end\n");}
 	;
 
 caselist :
 	CASE {printf("case ");} expression COLON {printf(":\n");}
-		cb
+		commands
 	caselist
 	| 
 	;
 
 default :
 	DEFAULT {printf("default");} COLON {printf(":");}
-		cb
+		commands
+	|
 	;
 
 for :
