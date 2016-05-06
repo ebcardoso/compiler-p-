@@ -5,7 +5,7 @@
 	Equipe: Breno Cardoso, Lucas Simonetti, Renato Higor, Sidemar Fideles
 */
 
-	#include "parserBottomUp.tab.h"
+	#include "y.tab.h"
 	//#include "symbolTable.h"
 	int nchar, nline, nword;
 	#define ACCOUNTABLE nword++;nchar+=yyleng;
@@ -15,8 +15,8 @@
 LETTER				[a-zA-Z]
 DIGIT				[0-9]
 NUMBER_INT			{DIGIT}+
-NUMBER_REAL 			{NUMBER_INT}"."{NUMBER_INT}(e{NUMBER_INT})?
-IDENTIFIER	 			({LETTER}|_)({LETTER}|{DIGIT}|_)*
+NUMBER_REAL 		{NUMBER_INT}"."{NUMBER_INT}(e{NUMBER_INT})?
+IDENTIFIER	 		({LETTER}|_)({LETTER}|{DIGIT}|_)*
 
 
 %%
@@ -59,8 +59,8 @@ false { return FALSE; ACCOUNTABLE }
 
 nil {return NIL ; ACCOUNTABLE }
 
-begin { return BEG; ACCOUNTABLE }
-end { return END; ACCOUNTABLE }
+begin {return INIT ; ACCOUNTABLE }
+end { return FINAL; ACCOUNTABLE }
 
 return { return RETURN; ACCOUNTABLE }
 break { return BREAK; ACCOUNTABLE }
@@ -119,7 +119,7 @@ when { return WHEN; ACCOUNTABLE }
 "/" { return DIV; ACCOUNTABLE  }
 "=" { return EQUAL; ACCOUNTABLE }
 "%" { return MOD; ACCOUNTABLE }
-"!" { return NEG; ACCOUNTABLE }
+"!" { return NEGATION; ACCOUNTABLE }
 "||" { return OR; ACCOUNTABLE }
 "&&" { return AND; ACCOUNTABLE }
 "<" { return LESS_THEN; ACCOUNTABLE }

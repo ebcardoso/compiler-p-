@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_PARSERBOTTOMUP_TAB_H_INCLUDED
-# define YY_YY_PARSERBOTTOMUP_TAB_H_INCLUDED
+#ifndef YY_YY_Y_TAB_H_INCLUDED
+# define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -62,8 +62,8 @@ extern int yydebug;
     TRUE = 272,
     FALSE = 273,
     NIL = 274,
-    BEG = 275,
-    END = 276,
+    INIT = 275,
+    FINAL = 276,
     RETURN = 277,
     BREAK = 278,
     IF = 279,
@@ -97,7 +97,7 @@ extern int yydebug;
     INCREMENT = 307,
     DECREMENT = 308,
     EQUAL = 309,
-    NEG = 310,
+    NEGATION = 310,
     OR = 311,
     AND = 312,
     LESS_THEN = 313,
@@ -108,19 +108,81 @@ extern int yydebug;
     BIGGER_EQUAL = 318
   };
 #endif
+/* Tokens.  */
+#define IDENTIFIER 258
+#define STRING_LIT 259
+#define NUMBER_INT 260
+#define NUMBER_REAL 261
+#define COMMENT 262
+#define PROCEDURE 263
+#define FUNCTION 264
+#define REF 265
+#define VAR 266
+#define CONST 267
+#define INT 268
+#define REAL 269
+#define STRING 270
+#define BOOLEAN 271
+#define TRUE 272
+#define FALSE 273
+#define NIL 274
+#define INIT 275
+#define FINAL 276
+#define RETURN 277
+#define BREAK 278
+#define IF 279
+#define THEN 280
+#define ELSE_ 281
+#define SWITCH 282
+#define CASE 283
+#define DEFAULT 284
+#define FOR 285
+#define DOWNTO 286
+#define TO 287
+#define DO 288
+#define LOOP 289
+#define EXIT 290
+#define WHEN 291
+#define SEMICOLON 292
+#define COLON 293
+#define COMMA 294
+#define DOT 295
+#define OPEN_PARENTHESIS 296
+#define CLOSE_PARENTHESIS 297
+#define OPEN_BRACKETS 298
+#define CLOSE_BRACKETS 299
+#define OPEN_BRACES 300
+#define CLOSE_BRACES 301
+#define ADD 302
+#define SUB 303
+#define MULT 304
+#define DIV 305
+#define MOD 306
+#define INCREMENT 307
+#define DECREMENT 308
+#define EQUAL 309
+#define NEGATION 310
+#define OR 311
+#define AND 312
+#define LESS_THEN 313
+#define BIGGER_THEN 314
+#define EQUAL_LOGIC 315
+#define NOT_EQUAL 316
+#define LESS_EQUAL 317
+#define BIGGER_EQUAL 318
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 11 "parserBottomUp.y" /* yacc.c:1909  */
+#line 7 "parserBottomUp.y" /* yacc.c:1909  */
 
 	int 	iValue;
 	double 	dValue; 	//
 	char * 	sValue;		//
 
-#line 124 "parserBottomUp.tab.h" /* yacc.c:1909  */
+#line 186 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -133,4 +195,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_PARSERBOTTOMUP_TAB_H_INCLUDED  */
+#endif /* !YY_YY_Y_TAB_H_INCLUDED  */

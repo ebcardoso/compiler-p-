@@ -19,21 +19,21 @@ procedure varrer()
 		loop
 			fat = fat * x;
 			x = x - 1;
-			exit when(x == 1);
+			exit when(x == 1)
 		end;
 		return x
 	end
 begin
-
+	x = 3
 end
 
 function delta(a, b, c)
-	var del, raiz
+	var raiz
 begin
 	del = b*b - 4*a*c;
-	if (!del < 0) then
+	if (del < 0) then
 		raiz = sqrt(del);
-		return del+0
+		return raiz
 	else
 		break
 end

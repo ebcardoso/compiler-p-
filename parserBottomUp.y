@@ -15,7 +15,7 @@
 %token <sValue> IDENTIFIER STRING_LIT
 %token <iValue> NUMBER_INT
 %token <dValue> NUMBER_REAL
-%token					
+%token
 
 COMMENT  /* */
 
@@ -27,7 +27,7 @@ CONST INT
 REAL STRING BOOLEAN TRUE FALSE NIL 
 //VAL_STRING 
 
-END BEG  // begin
+INIT FINAL
  
 RETURN BREAK 
 IF THEN ELSE_ 
@@ -54,13 +54,13 @@ CLOSE_BRACES // }
 ADD //+
 SUB //-
 MULT //*
-DIV // /
+DIV // /final
 MOD // %
 INCREMENT //++
 DECREMENT //--
 
-EQUAL //=
-NEG // !
+EQUAL //
+NEGATION // !
 OR // ||
 AND //&&
 LESS_THEN // <
@@ -134,7 +134,7 @@ cb :
 	;
 
 block :
-	declaration BEG {printf("begin\n");} commands END {printf("end\n");}
+	declaration INIT {printf("begin\n");} commands FINAL {printf("end\n");}
 	;
 
 command :
@@ -178,7 +178,7 @@ attribuition :
 	;
 
 subprogram_call :
-	OPEN_PARENTHESIS {printf("(");} real_parameter_list CLOSE_PARENTHESIS
+	OPEN_PARENTHESIS {printf("(");} real_parameter_list CLOSE_PARENTHESIS {printf(")");}
 	;
 
 real_parameter_list :
@@ -215,7 +215,7 @@ break :
 	;
 
 if :
-	IF {printf("if ");} OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(") ");} THEN {printf("then");}
+	IF {printf("if ");} OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(") ");} THEN {printf("then\n");}
 		cb
 	else
 	;
@@ -228,10 +228,10 @@ else :
 
 switch :
 	SWITCH {printf("switch ");} OPEN_PARENTHESIS {printf("(");} access_n_call CLOSE_PARENTHESIS {printf(")\n");}
-		BEG {printf("begin");}
+		INIT {printf("begin");}
 			caselist
 			default
-		END {printf("end");}
+		FINAL {printf("end");}
 	;
 
 caselist :
@@ -259,7 +259,7 @@ for_aux :
 loop :
 	LOOP {printf("loop\n");}
 		commands
-	END {printf("end\n");}
+	FINAL {printf("end\n");}
 	;
 
 exit : 
@@ -332,12 +332,12 @@ factor :
 	;
 
 negation_unsub_tail :
-	NEG {printf("!");} negation_unsub
+	NEGATION {printf("!");} negation_unsub
 	|
 	;
 
 negation_unsub : 
-	IDENTIFIER {printf("%s", $1);}
+	access_n_call
 	| arr_exp
 	| literal
 	| OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(")");}

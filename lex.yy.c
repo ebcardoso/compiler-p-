@@ -604,7 +604,7 @@ char *yytext;
 	Equipe: Breno Cardoso, Lucas Simonetti, Renato Higor, Sidemar Fideles
 */
 
-	#include "parserBottomUp.tab.h"
+	#include "y.tab.h"
 	//#include "symbolTable.h"
 	int nchar, nline, nword;
 	#define ACCOUNTABLE nword++;nchar+=yyleng;
@@ -1000,12 +1000,12 @@ YY_RULE_SETUP
 case 20:
 YY_RULE_SETUP
 #line 62 "lexicAnalyzer.l"
-{ return BEG; ACCOUNTABLE }
+{return INIT ; ACCOUNTABLE }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 63 "lexicAnalyzer.l"
-{ return END; ACCOUNTABLE }
+{ return FINAL; ACCOUNTABLE }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
@@ -1199,7 +1199,7 @@ YY_RULE_SETUP
 case 56:
 YY_RULE_SETUP
 #line 122 "lexicAnalyzer.l"
-{ return NEG; ACCOUNTABLE }
+{ return NEGATION; ACCOUNTABLE }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP

@@ -1,6 +1,6 @@
 lexicAnalyzer: lexicAnalyzer.l parserBottomUp.y
 	lex lexicAnalyzer.l
-	yacc -y parserBottomUp.y
+	yacc -d parserBottomUp.y
 	cc -ly y.tab.c lex.yy.c -o parserBottomUp
 	./parserBottomUp < examples/test.pas
 
