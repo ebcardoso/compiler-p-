@@ -12,6 +12,7 @@
 
 %start declaration
 
+
 %token <sValue> IDENTIFIER STRING_LIT
 %token <iValue> NUMBER_INT
 %token <dValue> NUMBER_REAL
@@ -69,6 +70,13 @@ EQUAL_LOGIC // ==
 NOT_EQUAL // !=
 LESS_EQUAL // <=
 BIGGER_EQUAL // >=
+
+%left '&&' '||'
+%nonassoc '=='
+%nonassoc '<' '>' '<=' '>='
+%left '+' '-'
+%left '*' '/' '\'
+%right UMINUS '!'
 
 %%
 
