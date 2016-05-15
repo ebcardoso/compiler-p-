@@ -71,14 +71,15 @@ NOT_EQUAL // !=
 LESS_EQUAL // <=
 BIGGER_EQUAL // >=
 
-%left '&&' '||'
-%nonassoc '=='
-%nonassoc '<' '>' '<=' '>='
-%left '+' '-'
-%left '*' '/' '\'
-%right UMINUS '!'
+%left AND OR
+%nonassoc EQUAL_LOGIC NOT_EQUAL
+%nonassoc LESS_THEN BIGGER_THEN LESS_EQUAL BIGGER_EQUAL
+%left ADD SUB
+%left MULT DIV MOD
+%right UMINUS NEGATION
 
 %%
+
 
 declaration :
 	var declaration
@@ -276,80 +277,25 @@ exit :
 	;
 
 expression :
-	term_or term_or_tail
-	;
-
-term_or_tail :
-	OR {printf("||");} term_or term_or_tail
-	|
-	;
-
-term_or :
-	term_and term_and_tail
-	;
-
-term_and_tail :
-	AND {printf("&&");} term_and term_and_tail
-	|
-	;
-
-term_and :
-	term_bool_comparison term_bool_comparison_tail
-	;
-
-term_bool_comparison_tail :
-	EQUAL_LOGIC {printf("==");} term_bool_comparison term_bool_comparison_tail
-	| NOT_EQUAL {printf("!=");} term_bool_comparison term_bool_comparison_tail
-	| 
-	;
-
-term_bool_comparison : 
-	term_arit_comparison term_arit_comparison_tail
-	;
-
-term_arit_comparison_tail :
-	LESS_THEN {printf("<");} term_arit_comparison term_arit_comparison_tail
-	| BIGGER_THEN {printf(">");} term_arit_comparison term_arit_comparison_tail
-	| LESS_EQUAL {printf("<=");} term_arit_comparison term_arit_comparison_tail
-	| BIGGER_EQUAL {printf(">=");} term_arit_comparison term_arit_comparison_tail
-	| 
-	;
-
-term_arit_comparison :
-	term term_tail
-	;
-
-term_tail :
-	ADD {printf(" + ");} term term_tail
-	| SUB {printf(" - ");} term term_tail
-	|
-	;
-
-term :
-	factor factor_tail
-	;
-
-factor_tail :
-	MULT {printf("*");} factor factor_tail
-	| DIV {printf("/");} factor factor_tail
-	| MOD {printf("%");} factor factor_tail
-	|
-	;
-
-factor :
-	negation_unsub negation_unsub_tail
-	;
-
-negation_unsub_tail :
-	NEGATION {printf("!");} negation_unsub
-	|
-	;
-
-negation_unsub : 
-	access_n_call
+	expression OR {printf("||");} expression
+	| expression AND {printf("&&");} expression
+	| expression EQUAL_LOGIC {printf("==");} expression
+	| expression NOT_EQUAL {printf("!=");}  expression
+	| expression LESS_THEN {printf("<");} expression
+	| expression BIGGER_THEN {printf(">");} expression
+	| expression LESS_EQUAL {printf("<=");} expression
+	| expression BIGGER_EQUAL {printf(">=");} expression
+	| expression ADD {printf(" + ");} expression
+	| expression SUB {printf(" - ");} expression
+	| expression MULT {printf("*");} expression
+	| expression DIV {printf("/");} expression
+	| expression MOD {printf("\\");}expression
+	| '-' %prec UMINUS {printf("-");} expression
+	| NEGATION {printf("!");} expression
+	| OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(")");}
+	| access_n_call	
 	| arr_exp
 	| literal
-	| OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(")");}
 	;
 
 arr_exp :

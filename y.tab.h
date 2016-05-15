@@ -105,7 +105,8 @@ extern int yydebug;
     EQUAL_LOGIC = 315,
     NOT_EQUAL = 316,
     LESS_EQUAL = 317,
-    BIGGER_EQUAL = 318
+    BIGGER_EQUAL = 318,
+    UMINUS = 319
   };
 #endif
 /* Tokens.  */
@@ -170,6 +171,7 @@ extern int yydebug;
 #define NOT_EQUAL 316
 #define LESS_EQUAL 317
 #define BIGGER_EQUAL 318
+#define UMINUS 319
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -182,7 +184,7 @@ union YYSTYPE
 	double 	dValue; 	//
 	char * 	sValue;		//
 
-#line 186 "y.tab.h" /* yacc.c:1909  */
+#line 188 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
