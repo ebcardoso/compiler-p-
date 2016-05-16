@@ -163,6 +163,7 @@ commands :
 
 commands_aux :
 	SEMICOLON {printf(";\n");} commands
+	| commands
 	|
 	;
 
@@ -183,7 +184,7 @@ access :
 	;
 
 attribuition :
-	EQUAL {printf(" = ");} expression
+	EQUAL {printf(" = ");} expression SEMICOLON {printf(";\n");}
 	;
 
 subprogram_call :
@@ -215,8 +216,8 @@ return :
 	;
 
 return_aux :
-	expression
-	| 
+	expression SEMICOLON {printf(";\n");}
+	| SEMICOLON {printf(";\n");}
 	;
 
 break :

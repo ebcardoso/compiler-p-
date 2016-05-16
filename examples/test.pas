@@ -9,7 +9,7 @@ procedure varrer()
 	begin
 		for i = x downto 2 do
 			fat = fat * i;
-		return x
+		return x;
 	end
 
 	function fatorial2(y)
@@ -21,10 +21,10 @@ procedure varrer()
 			x = x - 1;
 			exit when(x == 1)
 		end;
-		return x
+		return x;
 	end
 begin
-	x = 3
+	x = 3;
 end
 
 function delta(a, b, c)
@@ -34,7 +34,7 @@ begin
 	if (del < 0) then
 		begin
 			raiz = sqrt(del);
-			return raiz
+			return raiz;
 		end
 	else
 		break

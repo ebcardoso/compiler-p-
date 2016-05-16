@@ -10,8 +10,7 @@ Terminais sem uso na gramática
    DECREMENT
 
 
-Estado 151 conflitos: 13 de deslocamento/redução
-Estado 242 conflitos: 1 de deslocamento/redução
+Estado 246 conflitos: 1 de deslocamento/redução
 
 
 Gramática
@@ -118,279 +117,280 @@ Gramática
    58 $@25: %empty
 
    59 commands_aux: SEMICOLON $@25 commands
-   60             | %empty
+   60             | commands
+   61             | %empty
 
-   61 $@26: %empty
+   62 $@26: %empty
 
-   62 access_n_call: IDENTIFIER $@26 access_n_call_aux
+   63 access_n_call: IDENTIFIER $@26 access_n_call_aux
 
-   63 access_n_call_aux: access
-   64                  | attribuition
-   65                  | subprogram_call
+   64 access_n_call_aux: access
+   65                  | attribuition
+   66                  | subprogram_call
 
-   66 $@27: %empty
+   67 $@27: %empty
 
-   67 $@28: %empty
+   68 $@28: %empty
 
-   68 access: DOT $@27 IDENTIFIER $@28 access_n_call_aux
+   69 access: DOT $@27 IDENTIFIER $@28 access_n_call_aux
 
-   69 $@29: %empty
+   70 $@29: %empty
 
-   70 $@30: %empty
+   71 $@30: %empty
 
-   71 access: OPEN_BRACKETS $@29 l_exp CLOSE_BRACKETS $@30 access_n_call_aux
-   72       | %empty
+   72 access: OPEN_BRACKETS $@29 l_exp CLOSE_BRACKETS $@30 access_n_call_aux
+   73       | %empty
 
-   73 $@31: %empty
+   74 $@31: %empty
 
-   74 attribuition: EQUAL $@31 expression
+   75 attribuition: EQUAL $@31 expression SEMICOLON
 
-   75 $@32: %empty
+   76 $@32: %empty
 
-   76 subprogram_call: OPEN_PARENTHESIS $@32 real_parameter_list CLOSE_PARENTHESIS
+   77 subprogram_call: OPEN_PARENTHESIS $@32 real_parameter_list CLOSE_PARENTHESIS
 
-   77 $@33: %empty
+   78 $@33: %empty
 
-   78 $@34: %empty
+   79 $@34: %empty
 
-   79 real_parameter_list: REF $@33 IDENTIFIER $@34 real_parameter_list_aux
-   80                    | expression real_parameter_list_aux
-   81                    | %empty
+   80 real_parameter_list: REF $@33 IDENTIFIER $@34 real_parameter_list_aux
+   81                    | expression real_parameter_list_aux
+   82                    | %empty
 
-   82 $@35: %empty
+   83 $@35: %empty
 
-   83 real_parameter_list_aux: COMMA $@35 real_parameter_list
-   84                        | %empty
+   84 real_parameter_list_aux: COMMA $@35 real_parameter_list
+   85                        | %empty
 
-   85 l_exp: expression l_exp_aux
+   86 l_exp: expression l_exp_aux
 
-   86 $@36: %empty
+   87 $@36: %empty
 
-   87 l_exp_aux: COMMA $@36 l_exp
-   88          | %empty
+   88 l_exp_aux: COMMA $@36 l_exp
+   89          | %empty
 
-   89 $@37: %empty
+   90 $@37: %empty
 
-   90 return: RETURN $@37 return_aux
+   91 return: RETURN $@37 return_aux
 
-   91 return_aux: expression
-   92           | %empty
+   92 return_aux: expression SEMICOLON
+   93           | SEMICOLON
 
-   93 break: BREAK
+   94 break: BREAK
 
-   94 $@38: %empty
+   95 $@38: %empty
 
-   95 $@39: %empty
+   96 $@39: %empty
 
-   96 $@40: %empty
+   97 $@40: %empty
 
-   97 $@41: %empty
+   98 $@41: %empty
 
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
 
-   99 $@42: %empty
+  100 $@42: %empty
 
-  100 else: ELSE_ $@42 cb
-  101     | %empty
+  101 else: ELSE_ $@42 cb
+  102     | %empty
 
-  102 $@43: %empty
+  103 $@43: %empty
 
-  103 $@44: %empty
+  104 $@44: %empty
 
-  104 $@45: %empty
+  105 $@45: %empty
 
-  105 $@46: %empty
+  106 $@46: %empty
 
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
 
-  107 $@47: %empty
+  108 $@47: %empty
 
-  108 $@48: %empty
+  109 $@48: %empty
 
-  109 caselist: CASE $@47 expression COLON $@48 commands caselist
-  110         | %empty
+  110 caselist: CASE $@47 expression COLON $@48 commands caselist
+  111         | %empty
 
-  111 $@49: %empty
+  112 $@49: %empty
 
-  112 $@50: %empty
+  113 $@50: %empty
 
-  113 default: DEFAULT $@49 COLON $@50 commands
-  114        | %empty
+  114 default: DEFAULT $@49 COLON $@50 commands
+  115        | %empty
 
-  115 $@51: %empty
+  116 $@51: %empty
 
-  116 $@52: %empty
+  117 $@52: %empty
 
-  117 $@53: %empty
+  118 $@53: %empty
 
-  118 $@54: %empty
+  119 $@54: %empty
 
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 cb
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 cb
 
-  120 for_aux: TO
-  121        | DOWNTO
+  121 for_aux: TO
+  122        | DOWNTO
 
-  122 $@55: %empty
+  123 $@55: %empty
 
-  123 loop: LOOP $@55 commands FINAL
+  124 loop: LOOP $@55 commands FINAL
 
-  124 $@56: %empty
+  125 $@56: %empty
 
-  125 $@57: %empty
+  126 $@57: %empty
 
-  126 $@58: %empty
+  127 $@58: %empty
 
-  127 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
+  128 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
 
-  128 $@59: %empty
+  129 $@59: %empty
 
-  129 expression: expression OR $@59 expression
+  130 expression: expression OR $@59 expression
 
-  130 $@60: %empty
+  131 $@60: %empty
 
-  131 expression: expression AND $@60 expression
+  132 expression: expression AND $@60 expression
 
-  132 $@61: %empty
+  133 $@61: %empty
 
-  133 expression: expression EQUAL_LOGIC $@61 expression
+  134 expression: expression EQUAL_LOGIC $@61 expression
 
-  134 $@62: %empty
+  135 $@62: %empty
 
-  135 expression: expression NOT_EQUAL $@62 expression
+  136 expression: expression NOT_EQUAL $@62 expression
 
-  136 $@63: %empty
+  137 $@63: %empty
 
-  137 expression: expression LESS_THEN $@63 expression
+  138 expression: expression LESS_THEN $@63 expression
 
-  138 $@64: %empty
+  139 $@64: %empty
 
-  139 expression: expression BIGGER_THEN $@64 expression
+  140 expression: expression BIGGER_THEN $@64 expression
 
-  140 $@65: %empty
+  141 $@65: %empty
 
-  141 expression: expression LESS_EQUAL $@65 expression
+  142 expression: expression LESS_EQUAL $@65 expression
 
-  142 $@66: %empty
+  143 $@66: %empty
 
-  143 expression: expression BIGGER_EQUAL $@66 expression
+  144 expression: expression BIGGER_EQUAL $@66 expression
 
-  144 $@67: %empty
+  145 $@67: %empty
 
-  145 expression: expression ADD $@67 expression
+  146 expression: expression ADD $@67 expression
 
-  146 $@68: %empty
+  147 $@68: %empty
 
-  147 expression: expression SUB $@68 expression
+  148 expression: expression SUB $@68 expression
 
-  148 $@69: %empty
+  149 $@69: %empty
 
-  149 expression: expression MULT $@69 expression
+  150 expression: expression MULT $@69 expression
 
-  150 $@70: %empty
+  151 $@70: %empty
 
-  151 expression: expression DIV $@70 expression
+  152 expression: expression DIV $@70 expression
 
-  152 $@71: %empty
+  153 $@71: %empty
 
-  153 expression: expression MOD $@71 expression
+  154 expression: expression MOD $@71 expression
 
-  154 $@72: %empty
+  155 $@72: %empty
 
-  155 expression: '-' $@72 expression
+  156 expression: '-' $@72 expression
 
-  156 $@73: %empty
+  157 $@73: %empty
 
-  157 expression: NEGATION $@73 expression
+  158 expression: NEGATION $@73 expression
 
-  158 $@74: %empty
+  159 $@74: %empty
 
-  159 expression: OPEN_PARENTHESIS $@74 expression CLOSE_PARENTHESIS
-  160           | access_n_call
-  161           | arr_exp
-  162           | literal
+  160 expression: OPEN_PARENTHESIS $@74 expression CLOSE_PARENTHESIS
+  161           | access_n_call
+  162           | arr_exp
+  163           | literal
 
-  163 $@75: %empty
+  164 $@75: %empty
 
-  164 arr_exp: OPEN_BRACES $@75 literal arr_exp_aux CLOSE_BRACES
+  165 arr_exp: OPEN_BRACES $@75 literal arr_exp_aux CLOSE_BRACES
 
-  165 $@76: %empty
+  166 $@76: %empty
 
-  166 arr_exp_aux: COMMA $@76 literal arr_exp_aux
-  167            | %empty
+  167 arr_exp_aux: COMMA $@76 literal arr_exp_aux
+  168            | %empty
 
-  168 literal: STRING_LIT
-  169        | NUMBER_INT
-  170        | NUMBER_REAL
-  171        | TRUE
-  172        | FALSE
+  169 literal: STRING_LIT
+  170        | NUMBER_INT
+  171        | NUMBER_REAL
+  172        | TRUE
+  173        | FALSE
 
 
 Terminais, com as regras onde eles aparecem
 
 $end (0) 0
-'-' (45) 155
+'-' (45) 156
 error (256)
-IDENTIFIER (258) 7 13 18 22 30 35 37 40 62 68 79 119
-STRING_LIT (259) 168
-NUMBER_INT (260) 169
-NUMBER_REAL (261) 170
+IDENTIFIER (258) 7 13 18 22 30 35 37 40 63 69 80 120
+STRING_LIT (259) 169
+NUMBER_INT (260) 170
+NUMBER_REAL (261) 171
 COMMENT (262)
 PROCEDURE (263) 30
 FUNCTION (264) 35
-REF (265) 40 79
+REF (265) 40 80
 VAR (266) 7
 CONST (267) 18
 INT (268)
 REAL (269)
 STRING (270)
 BOOLEAN (271)
-TRUE (272) 171
-FALSE (273) 172
+TRUE (272) 172
+FALSE (273) 173
 NIL (274)
-INIT (275) 48 106
-FINAL (276) 48 106 123
-RETURN (277) 90
-BREAK (278) 93
-IF (279) 98
-THEN (280) 98
-ELSE_ (281) 100
-SWITCH (282) 106
-CASE (283) 109
-DEFAULT (284) 113
-FOR (285) 119
-DOWNTO (286) 121
-TO (287) 120
-DO (288) 119
-LOOP (289) 123
-EXIT (290) 127
-WHEN (291) 127
-SEMICOLON (292) 59
-COLON (293) 109 113
-COMMA (294) 13 22 43 83 87 166
-DOT (295) 68
-OPEN_PARENTHESIS (296) 30 35 76 98 106 127 159
-CLOSE_PARENTHESIS (297) 30 35 76 98 106 127 159
-OPEN_BRACKETS (298) 71
-CLOSE_BRACKETS (299) 71
-OPEN_BRACES (300) 164
-CLOSE_BRACES (301) 164
-ADD (302) 145
-SUB (303) 147
-MULT (304) 149
-DIV (305) 151
-MOD (306) 153
+INIT (275) 48 107
+FINAL (276) 48 107 124
+RETURN (277) 91
+BREAK (278) 94
+IF (279) 99
+THEN (280) 99
+ELSE_ (281) 101
+SWITCH (282) 107
+CASE (283) 110
+DEFAULT (284) 114
+FOR (285) 120
+DOWNTO (286) 122
+TO (287) 121
+DO (288) 120
+LOOP (289) 124
+EXIT (290) 128
+WHEN (291) 128
+SEMICOLON (292) 59 75 92 93
+COLON (293) 110 114
+COMMA (294) 13 22 43 84 88 167
+DOT (295) 69
+OPEN_PARENTHESIS (296) 30 35 77 99 107 128 160
+CLOSE_PARENTHESIS (297) 30 35 77 99 107 128 160
+OPEN_BRACKETS (298) 72
+CLOSE_BRACKETS (299) 72
+OPEN_BRACES (300) 165
+CLOSE_BRACES (301) 165
+ADD (302) 146
+SUB (303) 148
+MULT (304) 150
+DIV (305) 152
+MOD (306) 154
 INCREMENT (307)
 DECREMENT (308)
-EQUAL (309) 9 18 22 74 119
-NEGATION (310) 157
-OR (311) 129
-AND (312) 131
-LESS_THEN (313) 137
-BIGGER_THEN (314) 139
-EQUAL_LOGIC (315) 133
-NOT_EQUAL (316) 135
-LESS_EQUAL (317) 141
-BIGGER_EQUAL (318) 143
+EQUAL (309) 9 18 22 75 120
+NEGATION (310) 158
+OR (311) 130
+AND (312) 132
+LESS_THEN (313) 138
+BIGGER_THEN (314) 140
+EQUAL_LOGIC (315) 134
+NOT_EQUAL (316) 136
+LESS_EQUAL (317) 142
+BIGGER_EQUAL (318) 144
 UMINUS (319)
 
 
@@ -467,7 +467,7 @@ parameter_list_aux (99)
 $@23 (100)
     à esquerda: 42, à direita: 43
 cb (101)
-    à esquerda: 45 46, à direita: 98 100 119
+    à esquerda: 45 46, à direita: 99 101 120
 block (102)
     à esquerda: 48, à direita: 30 35 46
 $@24 (103)
@@ -475,166 +475,166 @@ $@24 (103)
 command (104)
     à esquerda: 49 50 51 52 53 54 55 56, à direita: 45 57
 commands (105)
-    à esquerda: 57, à direita: 48 59 109 113 123
+    à esquerda: 57, à direita: 48 59 60 110 114 124
 commands_aux (106)
-    à esquerda: 59 60, à direita: 57
+    à esquerda: 59 60 61, à direita: 57
 $@25 (107)
     à esquerda: 58, à direita: 59
 access_n_call (108)
-    à esquerda: 62, à direita: 49 106 160
+    à esquerda: 63, à direita: 49 107 161
 $@26 (109)
-    à esquerda: 61, à direita: 62
+    à esquerda: 62, à direita: 63
 access_n_call_aux (110)
-    à esquerda: 63 64 65, à direita: 62 68 71
+    à esquerda: 64 65 66, à direita: 63 69 72
 access (111)
-    à esquerda: 68 71 72, à direita: 63
+    à esquerda: 69 72 73, à direita: 64
 $@27 (112)
-    à esquerda: 66, à direita: 68
+    à esquerda: 67, à direita: 69
 $@28 (113)
-    à esquerda: 67, à direita: 68
+    à esquerda: 68, à direita: 69
 $@29 (114)
-    à esquerda: 69, à direita: 71
+    à esquerda: 70, à direita: 72
 $@30 (115)
-    à esquerda: 70, à direita: 71
+    à esquerda: 71, à direita: 72
 attribuition (116)
-    à esquerda: 74, à direita: 64
+    à esquerda: 75, à direita: 65
 $@31 (117)
-    à esquerda: 73, à direita: 74
+    à esquerda: 74, à direita: 75
 subprogram_call (118)
-    à esquerda: 76, à direita: 65
+    à esquerda: 77, à direita: 66
 $@32 (119)
-    à esquerda: 75, à direita: 76
+    à esquerda: 76, à direita: 77
 real_parameter_list (120)
-    à esquerda: 79 80 81, à direita: 76 83
+    à esquerda: 80 81 82, à direita: 77 84
 $@33 (121)
-    à esquerda: 77, à direita: 79
+    à esquerda: 78, à direita: 80
 $@34 (122)
-    à esquerda: 78, à direita: 79
+    à esquerda: 79, à direita: 80
 real_parameter_list_aux (123)
-    à esquerda: 83 84, à direita: 79 80
+    à esquerda: 84 85, à direita: 80 81
 $@35 (124)
-    à esquerda: 82, à direita: 83
+    à esquerda: 83, à direita: 84
 l_exp (125)
-    à esquerda: 85, à direita: 71 87
+    à esquerda: 86, à direita: 72 88
 l_exp_aux (126)
-    à esquerda: 87 88, à direita: 85
+    à esquerda: 88 89, à direita: 86
 $@36 (127)
-    à esquerda: 86, à direita: 87
+    à esquerda: 87, à direita: 88
 return (128)
-    à esquerda: 90, à direita: 50
+    à esquerda: 91, à direita: 50
 $@37 (129)
-    à esquerda: 89, à direita: 90
+    à esquerda: 90, à direita: 91
 return_aux (130)
-    à esquerda: 91 92, à direita: 90
+    à esquerda: 92 93, à direita: 91
 break (131)
-    à esquerda: 93, à direita: 51
+    à esquerda: 94, à direita: 51
 if (132)
-    à esquerda: 98, à direita: 52
+    à esquerda: 99, à direita: 52
 $@38 (133)
-    à esquerda: 94, à direita: 98
+    à esquerda: 95, à direita: 99
 $@39 (134)
-    à esquerda: 95, à direita: 98
+    à esquerda: 96, à direita: 99
 $@40 (135)
-    à esquerda: 96, à direita: 98
+    à esquerda: 97, à direita: 99
 $@41 (136)
-    à esquerda: 97, à direita: 98
+    à esquerda: 98, à direita: 99
 else (137)
-    à esquerda: 100 101, à direita: 98
+    à esquerda: 101 102, à direita: 99
 $@42 (138)
-    à esquerda: 99, à direita: 100
+    à esquerda: 100, à direita: 101
 switch (139)
-    à esquerda: 106, à direita: 53
+    à esquerda: 107, à direita: 53
 $@43 (140)
-    à esquerda: 102, à direita: 106
+    à esquerda: 103, à direita: 107
 $@44 (141)
-    à esquerda: 103, à direita: 106
+    à esquerda: 104, à direita: 107
 $@45 (142)
-    à esquerda: 104, à direita: 106
+    à esquerda: 105, à direita: 107
 $@46 (143)
-    à esquerda: 105, à direita: 106
+    à esquerda: 106, à direita: 107
 caselist (144)
-    à esquerda: 109 110, à direita: 106 109
+    à esquerda: 110 111, à direita: 107 110
 $@47 (145)
-    à esquerda: 107, à direita: 109
+    à esquerda: 108, à direita: 110
 $@48 (146)
-    à esquerda: 108, à direita: 109
+    à esquerda: 109, à direita: 110
 default (147)
-    à esquerda: 113 114, à direita: 106
+    à esquerda: 114 115, à direita: 107
 $@49 (148)
-    à esquerda: 111, à direita: 113
+    à esquerda: 112, à direita: 114
 $@50 (149)
-    à esquerda: 112, à direita: 113
+    à esquerda: 113, à direita: 114
 for (150)
-    à esquerda: 119, à direita: 56
+    à esquerda: 120, à direita: 56
 $@51 (151)
-    à esquerda: 115, à direita: 119
+    à esquerda: 116, à direita: 120
 $@52 (152)
-    à esquerda: 116, à direita: 119
+    à esquerda: 117, à direita: 120
 $@53 (153)
-    à esquerda: 117, à direita: 119
+    à esquerda: 118, à direita: 120
 $@54 (154)
-    à esquerda: 118, à direita: 119
+    à esquerda: 119, à direita: 120
 for_aux (155)
-    à esquerda: 120 121, à direita: 119
+    à esquerda: 121 122, à direita: 120
 loop (156)
-    à esquerda: 123, à direita: 54
+    à esquerda: 124, à direita: 54
 $@55 (157)
-    à esquerda: 122, à direita: 123
+    à esquerda: 123, à direita: 124
 exit (158)
-    à esquerda: 127, à direita: 55
+    à esquerda: 128, à direita: 55
 $@56 (159)
-    à esquerda: 124, à direita: 127
+    à esquerda: 125, à direita: 128
 $@57 (160)
-    à esquerda: 125, à direita: 127
+    à esquerda: 126, à direita: 128
 $@58 (161)
-    à esquerda: 126, à direita: 127
+    à esquerda: 127, à direita: 128
 expression (162)
-    à esquerda: 129 131 133 135 137 139 141 143 145 147 149 151 153
-    155 157 159 160 161 162, à direita: 9 18 22 74 80 85 91 98 109
-    119 127 129 131 133 135 137 139 141 143 145 147 149 151 153 155
-    157 159
+    à esquerda: 130 132 134 136 138 140 142 144 146 148 150 152 154
+    156 158 160 161 162 163, à direita: 9 18 22 75 81 86 92 99 110
+    120 128 130 132 134 136 138 140 142 144 146 148 150 152 154 156
+    158 160
 $@59 (163)
-    à esquerda: 128, à direita: 129
+    à esquerda: 129, à direita: 130
 $@60 (164)
-    à esquerda: 130, à direita: 131
+    à esquerda: 131, à direita: 132
 $@61 (165)
-    à esquerda: 132, à direita: 133
+    à esquerda: 133, à direita: 134
 $@62 (166)
-    à esquerda: 134, à direita: 135
+    à esquerda: 135, à direita: 136
 $@63 (167)
-    à esquerda: 136, à direita: 137
+    à esquerda: 137, à direita: 138
 $@64 (168)
-    à esquerda: 138, à direita: 139
+    à esquerda: 139, à direita: 140
 $@65 (169)
-    à esquerda: 140, à direita: 141
+    à esquerda: 141, à direita: 142
 $@66 (170)
-    à esquerda: 142, à direita: 143
+    à esquerda: 143, à direita: 144
 $@67 (171)
-    à esquerda: 144, à direita: 145
+    à esquerda: 145, à direita: 146
 $@68 (172)
-    à esquerda: 146, à direita: 147
+    à esquerda: 147, à direita: 148
 $@69 (173)
-    à esquerda: 148, à direita: 149
+    à esquerda: 149, à direita: 150
 $@70 (174)
-    à esquerda: 150, à direita: 151
+    à esquerda: 151, à direita: 152
 $@71 (175)
-    à esquerda: 152, à direita: 153
+    à esquerda: 153, à direita: 154
 $@72 (176)
-    à esquerda: 154, à direita: 155
+    à esquerda: 155, à direita: 156
 $@73 (177)
-    à esquerda: 156, à direita: 157
+    à esquerda: 157, à direita: 158
 $@74 (178)
-    à esquerda: 158, à direita: 159
+    à esquerda: 159, à direita: 160
 arr_exp (179)
-    à esquerda: 164, à direita: 161
+    à esquerda: 165, à direita: 162
 $@75 (180)
-    à esquerda: 163, à direita: 164
+    à esquerda: 164, à direita: 165
 arr_exp_aux (181)
-    à esquerda: 166 167, à direita: 164 166
+    à esquerda: 167 168, à direita: 165 167
 $@76 (182)
-    à esquerda: 165, à direita: 166
+    à esquerda: 166, à direita: 167
 literal (183)
-    à esquerda: 168 169 170 171 172, à direita: 162 164 166
+    à esquerda: 169 170 171 172 173, à direita: 163 165 167
 
 
 Estado 0
@@ -1057,107 +1057,107 @@ Estado 41
 
 Estado 42
 
-   62 access_n_call: IDENTIFIER . $@26 access_n_call_aux
+   63 access_n_call: IDENTIFIER . $@26 access_n_call_aux
 
-    $padrão  reduzir usando a regra 61 ($@26)
+    $padrão  reduzir usando a regra 62 ($@26)
 
     $@26  ir ao estado 62
 
 
 Estado 43
 
-  168 literal: STRING_LIT .
-
-    $padrão  reduzir usando a regra 168 (literal)
-
-
-Estado 44
-
-  169 literal: NUMBER_INT .
+  169 literal: STRING_LIT .
 
     $padrão  reduzir usando a regra 169 (literal)
 
 
-Estado 45
+Estado 44
 
-  170 literal: NUMBER_REAL .
+  170 literal: NUMBER_INT .
 
     $padrão  reduzir usando a regra 170 (literal)
 
 
-Estado 46
+Estado 45
 
-  171 literal: TRUE .
+  171 literal: NUMBER_REAL .
 
     $padrão  reduzir usando a regra 171 (literal)
 
 
-Estado 47
+Estado 46
 
-  172 literal: FALSE .
+  172 literal: TRUE .
 
     $padrão  reduzir usando a regra 172 (literal)
 
 
+Estado 47
+
+  173 literal: FALSE .
+
+    $padrão  reduzir usando a regra 173 (literal)
+
+
 Estado 48
 
-  159 expression: OPEN_PARENTHESIS . $@74 expression CLOSE_PARENTHESIS
+  160 expression: OPEN_PARENTHESIS . $@74 expression CLOSE_PARENTHESIS
 
-    $padrão  reduzir usando a regra 158 ($@74)
+    $padrão  reduzir usando a regra 159 ($@74)
 
     $@74  ir ao estado 63
 
 
 Estado 49
 
-  164 arr_exp: OPEN_BRACES . $@75 literal arr_exp_aux CLOSE_BRACES
+  165 arr_exp: OPEN_BRACES . $@75 literal arr_exp_aux CLOSE_BRACES
 
-    $padrão  reduzir usando a regra 163 ($@75)
+    $padrão  reduzir usando a regra 164 ($@75)
 
     $@75  ir ao estado 64
 
 
 Estado 50
 
-  157 expression: NEGATION . $@73 expression
+  158 expression: NEGATION . $@73 expression
 
-    $padrão  reduzir usando a regra 156 ($@73)
+    $padrão  reduzir usando a regra 157 ($@73)
 
     $@73  ir ao estado 65
 
 
 Estado 51
 
-  155 expression: '-' . $@72 expression
+  156 expression: '-' . $@72 expression
 
-    $padrão  reduzir usando a regra 154 ($@72)
+    $padrão  reduzir usando a regra 155 ($@72)
 
     $@72  ir ao estado 66
 
 
 Estado 52
 
-  160 expression: access_n_call .
+  161 expression: access_n_call .
 
-    $padrão  reduzir usando a regra 160 (expression)
+    $padrão  reduzir usando a regra 161 (expression)
 
 
 Estado 53
 
     9 id_exp: EQUAL $@3 expression .
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
@@ -1178,16 +1178,16 @@ Estado 53
 
 Estado 54
 
-  161 expression: arr_exp .
+  162 expression: arr_exp .
 
-    $padrão  reduzir usando a regra 161 (expression)
+    $padrão  reduzir usando a regra 162 (expression)
 
 
 Estado 55
 
-  162 expression: literal .
+  163 expression: literal .
 
-    $padrão  reduzir usando a regra 162 (expression)
+    $padrão  reduzir usando a regra 163 (expression)
 
 
 Estado 56
@@ -1200,19 +1200,19 @@ Estado 56
 Estado 57
 
    18 const: CONST $@6 IDENTIFIER $@7 EQUAL $@8 expression . const_aux
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     COMMA         deslocar, e ir ao estado 81
     ADD           deslocar, e ir ao estado 67
@@ -1272,14 +1272,14 @@ Estado 61
 
 Estado 62
 
-   62 access_n_call: IDENTIFIER $@26 . access_n_call_aux
+   63 access_n_call: IDENTIFIER $@26 . access_n_call_aux
 
     DOT               deslocar, e ir ao estado 88
     OPEN_PARENTHESIS  deslocar, e ir ao estado 89
     OPEN_BRACKETS     deslocar, e ir ao estado 90
     EQUAL             deslocar, e ir ao estado 91
 
-    $padrão  reduzir usando a regra 72 (access)
+    $padrão  reduzir usando a regra 73 (access)
 
     access_n_call_aux  ir ao estado 92
     access             ir ao estado 93
@@ -1289,7 +1289,7 @@ Estado 62
 
 Estado 63
 
-  159 expression: OPEN_PARENTHESIS $@74 . expression CLOSE_PARENTHESIS
+  160 expression: OPEN_PARENTHESIS $@74 . expression CLOSE_PARENTHESIS
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1310,7 +1310,7 @@ Estado 63
 
 Estado 64
 
-  164 arr_exp: OPEN_BRACES $@75 . literal arr_exp_aux CLOSE_BRACES
+  165 arr_exp: OPEN_BRACES $@75 . literal arr_exp_aux CLOSE_BRACES
 
     STRING_LIT   deslocar, e ir ao estado 43
     NUMBER_INT   deslocar, e ir ao estado 44
@@ -1323,7 +1323,7 @@ Estado 64
 
 Estado 65
 
-  157 expression: NEGATION $@73 . expression
+  158 expression: NEGATION $@73 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1344,7 +1344,7 @@ Estado 65
 
 Estado 66
 
-  155 expression: '-' $@72 . expression
+  156 expression: '-' $@72 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1365,117 +1365,117 @@ Estado 66
 
 Estado 67
 
-  145 expression: expression ADD . $@67 expression
+  146 expression: expression ADD . $@67 expression
 
-    $padrão  reduzir usando a regra 144 ($@67)
+    $padrão  reduzir usando a regra 145 ($@67)
 
     $@67  ir ao estado 100
 
 
 Estado 68
 
-  147 expression: expression SUB . $@68 expression
+  148 expression: expression SUB . $@68 expression
 
-    $padrão  reduzir usando a regra 146 ($@68)
+    $padrão  reduzir usando a regra 147 ($@68)
 
     $@68  ir ao estado 101
 
 
 Estado 69
 
-  149 expression: expression MULT . $@69 expression
+  150 expression: expression MULT . $@69 expression
 
-    $padrão  reduzir usando a regra 148 ($@69)
+    $padrão  reduzir usando a regra 149 ($@69)
 
     $@69  ir ao estado 102
 
 
 Estado 70
 
-  151 expression: expression DIV . $@70 expression
+  152 expression: expression DIV . $@70 expression
 
-    $padrão  reduzir usando a regra 150 ($@70)
+    $padrão  reduzir usando a regra 151 ($@70)
 
     $@70  ir ao estado 103
 
 
 Estado 71
 
-  153 expression: expression MOD . $@71 expression
+  154 expression: expression MOD . $@71 expression
 
-    $padrão  reduzir usando a regra 152 ($@71)
+    $padrão  reduzir usando a regra 153 ($@71)
 
     $@71  ir ao estado 104
 
 
 Estado 72
 
-  129 expression: expression OR . $@59 expression
+  130 expression: expression OR . $@59 expression
 
-    $padrão  reduzir usando a regra 128 ($@59)
+    $padrão  reduzir usando a regra 129 ($@59)
 
     $@59  ir ao estado 105
 
 
 Estado 73
 
-  131 expression: expression AND . $@60 expression
+  132 expression: expression AND . $@60 expression
 
-    $padrão  reduzir usando a regra 130 ($@60)
+    $padrão  reduzir usando a regra 131 ($@60)
 
     $@60  ir ao estado 106
 
 
 Estado 74
 
-  137 expression: expression LESS_THEN . $@63 expression
+  138 expression: expression LESS_THEN . $@63 expression
 
-    $padrão  reduzir usando a regra 136 ($@63)
+    $padrão  reduzir usando a regra 137 ($@63)
 
     $@63  ir ao estado 107
 
 
 Estado 75
 
-  139 expression: expression BIGGER_THEN . $@64 expression
+  140 expression: expression BIGGER_THEN . $@64 expression
 
-    $padrão  reduzir usando a regra 138 ($@64)
+    $padrão  reduzir usando a regra 139 ($@64)
 
     $@64  ir ao estado 108
 
 
 Estado 76
 
-  133 expression: expression EQUAL_LOGIC . $@61 expression
+  134 expression: expression EQUAL_LOGIC . $@61 expression
 
-    $padrão  reduzir usando a regra 132 ($@61)
+    $padrão  reduzir usando a regra 133 ($@61)
 
     $@61  ir ao estado 109
 
 
 Estado 77
 
-  135 expression: expression NOT_EQUAL . $@62 expression
+  136 expression: expression NOT_EQUAL . $@62 expression
 
-    $padrão  reduzir usando a regra 134 ($@62)
+    $padrão  reduzir usando a regra 135 ($@62)
 
     $@62  ir ao estado 110
 
 
 Estado 78
 
-  141 expression: expression LESS_EQUAL . $@65 expression
+  142 expression: expression LESS_EQUAL . $@65 expression
 
-    $padrão  reduzir usando a regra 140 ($@65)
+    $padrão  reduzir usando a regra 141 ($@65)
 
     $@65  ir ao estado 111
 
 
 Estado 79
 
-  143 expression: expression BIGGER_EQUAL . $@66 expression
+  144 expression: expression BIGGER_EQUAL . $@66 expression
 
-    $padrão  reduzir usando a regra 142 ($@66)
+    $padrão  reduzir usando a regra 143 ($@66)
 
     $@66  ir ao estado 112
 
@@ -1572,84 +1572,84 @@ Estado 87
 
 Estado 88
 
-   68 access: DOT . $@27 IDENTIFIER $@28 access_n_call_aux
+   69 access: DOT . $@27 IDENTIFIER $@28 access_n_call_aux
 
-    $padrão  reduzir usando a regra 66 ($@27)
+    $padrão  reduzir usando a regra 67 ($@27)
 
     $@27  ir ao estado 120
 
 
 Estado 89
 
-   76 subprogram_call: OPEN_PARENTHESIS . $@32 real_parameter_list CLOSE_PARENTHESIS
+   77 subprogram_call: OPEN_PARENTHESIS . $@32 real_parameter_list CLOSE_PARENTHESIS
 
-    $padrão  reduzir usando a regra 75 ($@32)
+    $padrão  reduzir usando a regra 76 ($@32)
 
     $@32  ir ao estado 121
 
 
 Estado 90
 
-   71 access: OPEN_BRACKETS . $@29 l_exp CLOSE_BRACKETS $@30 access_n_call_aux
+   72 access: OPEN_BRACKETS . $@29 l_exp CLOSE_BRACKETS $@30 access_n_call_aux
 
-    $padrão  reduzir usando a regra 69 ($@29)
+    $padrão  reduzir usando a regra 70 ($@29)
 
     $@29  ir ao estado 122
 
 
 Estado 91
 
-   74 attribuition: EQUAL . $@31 expression
+   75 attribuition: EQUAL . $@31 expression SEMICOLON
 
-    $padrão  reduzir usando a regra 73 ($@31)
+    $padrão  reduzir usando a regra 74 ($@31)
 
     $@31  ir ao estado 123
 
 
 Estado 92
 
-   62 access_n_call: IDENTIFIER $@26 access_n_call_aux .
+   63 access_n_call: IDENTIFIER $@26 access_n_call_aux .
 
-    $padrão  reduzir usando a regra 62 (access_n_call)
+    $padrão  reduzir usando a regra 63 (access_n_call)
 
 
 Estado 93
 
-   63 access_n_call_aux: access .
-
-    $padrão  reduzir usando a regra 63 (access_n_call_aux)
-
-
-Estado 94
-
-   64 access_n_call_aux: attribuition .
+   64 access_n_call_aux: access .
 
     $padrão  reduzir usando a regra 64 (access_n_call_aux)
 
 
-Estado 95
+Estado 94
 
-   65 access_n_call_aux: subprogram_call .
+   65 access_n_call_aux: attribuition .
 
     $padrão  reduzir usando a regra 65 (access_n_call_aux)
 
 
+Estado 95
+
+   66 access_n_call_aux: subprogram_call .
+
+    $padrão  reduzir usando a regra 66 (access_n_call_aux)
+
+
 Estado 96
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
-  159           | OPEN_PARENTHESIS $@74 expression . CLOSE_PARENTHESIS
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
+  160           | OPEN_PARENTHESIS $@74 expression . CLOSE_PARENTHESIS
 
     CLOSE_PARENTHESIS  deslocar, e ir ao estado 124
     ADD                deslocar, e ir ao estado 67
@@ -1669,58 +1669,58 @@ Estado 96
 
 Estado 97
 
-  164 arr_exp: OPEN_BRACES $@75 literal . arr_exp_aux CLOSE_BRACES
+  165 arr_exp: OPEN_BRACES $@75 literal . arr_exp_aux CLOSE_BRACES
 
     COMMA  deslocar, e ir ao estado 125
 
-    $padrão  reduzir usando a regra 167 (arr_exp_aux)
+    $padrão  reduzir usando a regra 168 (arr_exp_aux)
 
     arr_exp_aux  ir ao estado 126
 
 
 Estado 98
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
-  157           | NEGATION $@73 expression .
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
+  158           | NEGATION $@73 expression .
 
-    $padrão  reduzir usando a regra 157 (expression)
+    $padrão  reduzir usando a regra 158 (expression)
 
 
 Estado 99
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
-  155           | '-' $@72 expression .
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
+  156           | '-' $@72 expression .
 
-    $padrão  reduzir usando a regra 155 (expression)
+    $padrão  reduzir usando a regra 156 (expression)
 
 
 Estado 100
 
-  145 expression: expression ADD $@67 . expression
+  146 expression: expression ADD $@67 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1741,7 +1741,7 @@ Estado 100
 
 Estado 101
 
-  147 expression: expression SUB $@68 . expression
+  148 expression: expression SUB $@68 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1762,7 +1762,7 @@ Estado 101
 
 Estado 102
 
-  149 expression: expression MULT $@69 . expression
+  150 expression: expression MULT $@69 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1783,7 +1783,7 @@ Estado 102
 
 Estado 103
 
-  151 expression: expression DIV $@70 . expression
+  152 expression: expression DIV $@70 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1804,7 +1804,7 @@ Estado 103
 
 Estado 104
 
-  153 expression: expression MOD $@71 . expression
+  154 expression: expression MOD $@71 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1825,7 +1825,7 @@ Estado 104
 
 Estado 105
 
-  129 expression: expression OR $@59 . expression
+  130 expression: expression OR $@59 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1846,7 +1846,7 @@ Estado 105
 
 Estado 106
 
-  131 expression: expression AND $@60 . expression
+  132 expression: expression AND $@60 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1867,7 +1867,7 @@ Estado 106
 
 Estado 107
 
-  137 expression: expression LESS_THEN $@63 . expression
+  138 expression: expression LESS_THEN $@63 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1888,7 +1888,7 @@ Estado 107
 
 Estado 108
 
-  139 expression: expression BIGGER_THEN $@64 . expression
+  140 expression: expression BIGGER_THEN $@64 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1909,7 +1909,7 @@ Estado 108
 
 Estado 109
 
-  133 expression: expression EQUAL_LOGIC $@61 . expression
+  134 expression: expression EQUAL_LOGIC $@61 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1930,7 +1930,7 @@ Estado 109
 
 Estado 110
 
-  135 expression: expression NOT_EQUAL $@62 . expression
+  136 expression: expression NOT_EQUAL $@62 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1951,7 +1951,7 @@ Estado 110
 
 Estado 111
 
-  141 expression: expression LESS_EQUAL $@65 . expression
+  142 expression: expression LESS_EQUAL $@65 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -1972,7 +1972,7 @@ Estado 111
 
 Estado 112
 
-  143 expression: expression BIGGER_EQUAL $@66 . expression
+  144 expression: expression BIGGER_EQUAL $@66 . expression
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -2055,14 +2055,14 @@ Estado 119
 
 Estado 120
 
-   68 access: DOT $@27 . IDENTIFIER $@28 access_n_call_aux
+   69 access: DOT $@27 . IDENTIFIER $@28 access_n_call_aux
 
     IDENTIFIER  deslocar, e ir ao estado 145
 
 
 Estado 121
 
-   76 subprogram_call: OPEN_PARENTHESIS $@32 . real_parameter_list CLOSE_PARENTHESIS
+   77 subprogram_call: OPEN_PARENTHESIS $@32 . real_parameter_list CLOSE_PARENTHESIS
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -2076,7 +2076,7 @@ Estado 121
     NEGATION          deslocar, e ir ao estado 50
     '-'               deslocar, e ir ao estado 51
 
-    $padrão  reduzir usando a regra 81 (real_parameter_list)
+    $padrão  reduzir usando a regra 82 (real_parameter_list)
 
     access_n_call        ir ao estado 52
     real_parameter_list  ir ao estado 147
@@ -2087,7 +2087,7 @@ Estado 121
 
 Estado 122
 
-   71 access: OPEN_BRACKETS $@29 . l_exp CLOSE_BRACKETS $@30 access_n_call_aux
+   72 access: OPEN_BRACKETS $@29 . l_exp CLOSE_BRACKETS $@30 access_n_call_aux
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -2109,7 +2109,7 @@ Estado 122
 
 Estado 123
 
-   74 attribuition: EQUAL $@31 . expression
+   75 attribuition: EQUAL $@31 . expression SEMICOLON
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -2130,151 +2130,151 @@ Estado 123
 
 Estado 124
 
-  159 expression: OPEN_PARENTHESIS $@74 expression CLOSE_PARENTHESIS .
+  160 expression: OPEN_PARENTHESIS $@74 expression CLOSE_PARENTHESIS .
 
-    $padrão  reduzir usando a regra 159 (expression)
+    $padrão  reduzir usando a regra 160 (expression)
 
 
 Estado 125
 
-  166 arr_exp_aux: COMMA . $@76 literal arr_exp_aux
+  167 arr_exp_aux: COMMA . $@76 literal arr_exp_aux
 
-    $padrão  reduzir usando a regra 165 ($@76)
+    $padrão  reduzir usando a regra 166 ($@76)
 
     $@76  ir ao estado 152
 
 
 Estado 126
 
-  164 arr_exp: OPEN_BRACES $@75 literal arr_exp_aux . CLOSE_BRACES
+  165 arr_exp: OPEN_BRACES $@75 literal arr_exp_aux . CLOSE_BRACES
 
     CLOSE_BRACES  deslocar, e ir ao estado 153
 
 
 Estado 127
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  145           | expression ADD $@67 expression .
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  146           | expression ADD $@67 expression .
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     MULT  deslocar, e ir ao estado 69
     DIV   deslocar, e ir ao estado 70
     MOD   deslocar, e ir ao estado 71
 
-    $padrão  reduzir usando a regra 145 (expression)
+    $padrão  reduzir usando a regra 146 (expression)
 
 
 Estado 128
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  147           | expression SUB $@68 expression .
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  148           | expression SUB $@68 expression .
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     MULT  deslocar, e ir ao estado 69
     DIV   deslocar, e ir ao estado 70
     MOD   deslocar, e ir ao estado 71
 
-    $padrão  reduzir usando a regra 147 (expression)
+    $padrão  reduzir usando a regra 148 (expression)
 
 
 Estado 129
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  149           | expression MULT $@69 expression .
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  150           | expression MULT $@69 expression .
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
-    $padrão  reduzir usando a regra 149 (expression)
+    $padrão  reduzir usando a regra 150 (expression)
 
 
 Estado 130
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  151           | expression DIV $@70 expression .
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  152           | expression DIV $@70 expression .
+  154           | expression . MOD $@71 expression
 
-    $padrão  reduzir usando a regra 151 (expression)
+    $padrão  reduzir usando a regra 152 (expression)
 
 
 Estado 131
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
-  153           | expression MOD $@71 expression .
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
+  154           | expression MOD $@71 expression .
 
-    $padrão  reduzir usando a regra 153 (expression)
+    $padrão  reduzir usando a regra 154 (expression)
 
 
 Estado 132
 
-  129 expression: expression . OR $@59 expression
-  129           | expression OR $@59 expression .
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  130           | expression OR $@59 expression .
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
@@ -2288,25 +2288,25 @@ Estado 132
     LESS_EQUAL    deslocar, e ir ao estado 78
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
-    $padrão  reduzir usando a regra 129 (expression)
+    $padrão  reduzir usando a regra 130 (expression)
 
 
 Estado 133
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  131           | expression AND $@60 expression .
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  132           | expression AND $@60 expression .
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
@@ -2320,25 +2320,25 @@ Estado 133
     LESS_EQUAL    deslocar, e ir ao estado 78
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
-    $padrão  reduzir usando a regra 131 (expression)
+    $padrão  reduzir usando a regra 132 (expression)
 
 
 Estado 134
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  137           | expression LESS_THEN $@63 expression .
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  138           | expression LESS_THEN $@63 expression .
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD   deslocar, e ir ao estado 67
     SUB   deslocar, e ir ao estado 68
@@ -2351,25 +2351,25 @@ Estado 134
     LESS_EQUAL    erro (não associativo)
     BIGGER_EQUAL  erro (não associativo)
 
-    $padrão  reduzir usando a regra 137 (expression)
+    $padrão  reduzir usando a regra 138 (expression)
 
 
 Estado 135
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  139           | expression BIGGER_THEN $@64 expression .
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  140           | expression BIGGER_THEN $@64 expression .
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD   deslocar, e ir ao estado 67
     SUB   deslocar, e ir ao estado 68
@@ -2382,25 +2382,25 @@ Estado 135
     LESS_EQUAL    erro (não associativo)
     BIGGER_EQUAL  erro (não associativo)
 
-    $padrão  reduzir usando a regra 139 (expression)
+    $padrão  reduzir usando a regra 140 (expression)
 
 
 Estado 136
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  133           | expression EQUAL_LOGIC $@61 expression .
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  134           | expression EQUAL_LOGIC $@61 expression .
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
@@ -2415,25 +2415,25 @@ Estado 136
     EQUAL_LOGIC  erro (não associativo)
     NOT_EQUAL    erro (não associativo)
 
-    $padrão  reduzir usando a regra 133 (expression)
+    $padrão  reduzir usando a regra 134 (expression)
 
 
 Estado 137
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  135           | expression NOT_EQUAL $@62 expression .
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  136           | expression NOT_EQUAL $@62 expression .
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
@@ -2448,25 +2448,25 @@ Estado 137
     EQUAL_LOGIC  erro (não associativo)
     NOT_EQUAL    erro (não associativo)
 
-    $padrão  reduzir usando a regra 135 (expression)
+    $padrão  reduzir usando a regra 136 (expression)
 
 
 Estado 138
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  141           | expression LESS_EQUAL $@65 expression .
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  142           | expression LESS_EQUAL $@65 expression .
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD   deslocar, e ir ao estado 67
     SUB   deslocar, e ir ao estado 68
@@ -2479,25 +2479,25 @@ Estado 138
     LESS_EQUAL    erro (não associativo)
     BIGGER_EQUAL  erro (não associativo)
 
-    $padrão  reduzir usando a regra 141 (expression)
+    $padrão  reduzir usando a regra 142 (expression)
 
 
 Estado 139
 
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  143           | expression BIGGER_EQUAL $@66 expression .
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  144           | expression BIGGER_EQUAL $@66 expression .
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     ADD   deslocar, e ir ao estado 67
     SUB   deslocar, e ir ao estado 68
@@ -2510,7 +2510,7 @@ Estado 139
     LESS_EQUAL    erro (não associativo)
     BIGGER_EQUAL  erro (não associativo)
 
-    $padrão  reduzir usando a regra 143 (expression)
+    $padrão  reduzir usando a regra 144 (expression)
 
 
 Estado 140
@@ -2558,45 +2558,45 @@ Estado 144
 
 Estado 145
 
-   68 access: DOT $@27 IDENTIFIER . $@28 access_n_call_aux
+   69 access: DOT $@27 IDENTIFIER . $@28 access_n_call_aux
 
-    $padrão  reduzir usando a regra 67 ($@28)
+    $padrão  reduzir usando a regra 68 ($@28)
 
     $@28  ir ao estado 157
 
 
 Estado 146
 
-   79 real_parameter_list: REF . $@33 IDENTIFIER $@34 real_parameter_list_aux
+   80 real_parameter_list: REF . $@33 IDENTIFIER $@34 real_parameter_list_aux
 
-    $padrão  reduzir usando a regra 77 ($@33)
+    $padrão  reduzir usando a regra 78 ($@33)
 
     $@33  ir ao estado 158
 
 
 Estado 147
 
-   76 subprogram_call: OPEN_PARENTHESIS $@32 real_parameter_list . CLOSE_PARENTHESIS
+   77 subprogram_call: OPEN_PARENTHESIS $@32 real_parameter_list . CLOSE_PARENTHESIS
 
     CLOSE_PARENTHESIS  deslocar, e ir ao estado 159
 
 
 Estado 148
 
-   80 real_parameter_list: expression . real_parameter_list_aux
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+   81 real_parameter_list: expression . real_parameter_list_aux
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     COMMA         deslocar, e ir ao estado 160
     ADD           deslocar, e ir ao estado 67
@@ -2613,34 +2613,34 @@ Estado 148
     LESS_EQUAL    deslocar, e ir ao estado 78
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
-    $padrão  reduzir usando a regra 84 (real_parameter_list_aux)
+    $padrão  reduzir usando a regra 85 (real_parameter_list_aux)
 
     real_parameter_list_aux  ir ao estado 161
 
 
 Estado 149
 
-   71 access: OPEN_BRACKETS $@29 l_exp . CLOSE_BRACKETS $@30 access_n_call_aux
+   72 access: OPEN_BRACKETS $@29 l_exp . CLOSE_BRACKETS $@30 access_n_call_aux
 
     CLOSE_BRACKETS  deslocar, e ir ao estado 162
 
 
 Estado 150
 
-   85 l_exp: expression . l_exp_aux
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+   86 l_exp: expression . l_exp_aux
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     COMMA         deslocar, e ir ao estado 163
     ADD           deslocar, e ir ao estado 67
@@ -2657,28 +2657,29 @@ Estado 150
     LESS_EQUAL    deslocar, e ir ao estado 78
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
-    $padrão  reduzir usando a regra 88 (l_exp_aux)
+    $padrão  reduzir usando a regra 89 (l_exp_aux)
 
     l_exp_aux  ir ao estado 164
 
 
 Estado 151
 
-   74 attribuition: EQUAL $@31 expression .
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+   75 attribuition: EQUAL $@31 expression . SEMICOLON
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
+    SEMICOLON     deslocar, e ir ao estado 165
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
     MULT          deslocar, e ir ao estado 69
@@ -2693,25 +2694,10 @@ Estado 151
     LESS_EQUAL    deslocar, e ir ao estado 78
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
-    ADD           [reduzir usando a regra 74 (attribuition)]
-    SUB           [reduzir usando a regra 74 (attribuition)]
-    MULT          [reduzir usando a regra 74 (attribuition)]
-    DIV           [reduzir usando a regra 74 (attribuition)]
-    MOD           [reduzir usando a regra 74 (attribuition)]
-    OR            [reduzir usando a regra 74 (attribuition)]
-    AND           [reduzir usando a regra 74 (attribuition)]
-    LESS_THEN     [reduzir usando a regra 74 (attribuition)]
-    BIGGER_THEN   [reduzir usando a regra 74 (attribuition)]
-    EQUAL_LOGIC   [reduzir usando a regra 74 (attribuition)]
-    NOT_EQUAL     [reduzir usando a regra 74 (attribuition)]
-    LESS_EQUAL    [reduzir usando a regra 74 (attribuition)]
-    BIGGER_EQUAL  [reduzir usando a regra 74 (attribuition)]
-    $padrão      reduzir usando a regra 74 (attribuition)
-
 
 Estado 152
 
-  166 arr_exp_aux: COMMA $@76 . literal arr_exp_aux
+  167 arr_exp_aux: COMMA $@76 . literal arr_exp_aux
 
     STRING_LIT   deslocar, e ir ao estado 43
     NUMBER_INT   deslocar, e ir ao estado 44
@@ -2719,14 +2705,14 @@ Estado 152
     TRUE         deslocar, e ir ao estado 46
     FALSE        deslocar, e ir ao estado 47
 
-    literal  ir ao estado 165
+    literal  ir ao estado 166
 
 
 Estado 153
 
-  164 arr_exp: OPEN_BRACES $@75 literal arr_exp_aux CLOSE_BRACES .
+  165 arr_exp: OPEN_BRACES $@75 literal arr_exp_aux CLOSE_BRACES .
 
-    $padrão  reduzir usando a regra 164 (arr_exp)
+    $padrão  reduzir usando a regra 165 (arr_exp)
 
 
 Estado 154
@@ -2740,7 +2726,7 @@ Estado 155
 
    22 const_aux: COMMA $@9 IDENTIFIER $@10 . EQUAL $@11 expression const_aux
 
-    EQUAL  deslocar, e ir ao estado 166
+    EQUAL  deslocar, e ir ao estado 167
 
 
 Estado 156
@@ -2748,38 +2734,38 @@ Estado 156
    48 block: declaration INIT $@24 . commands FINAL
 
     IDENTIFIER  deslocar, e ir ao estado 42
-    RETURN      deslocar, e ir ao estado 167
-    BREAK       deslocar, e ir ao estado 168
-    IF          deslocar, e ir ao estado 169
-    SWITCH      deslocar, e ir ao estado 170
-    FOR         deslocar, e ir ao estado 171
-    LOOP        deslocar, e ir ao estado 172
-    EXIT        deslocar, e ir ao estado 173
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
 
-    command        ir ao estado 174
-    commands       ir ao estado 175
-    access_n_call  ir ao estado 176
-    return         ir ao estado 177
-    break          ir ao estado 178
-    if             ir ao estado 179
-    switch         ir ao estado 180
-    for            ir ao estado 181
-    loop           ir ao estado 182
-    exit           ir ao estado 183
+    command        ir ao estado 175
+    commands       ir ao estado 176
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
 
 
 Estado 157
 
-   68 access: DOT $@27 IDENTIFIER $@28 . access_n_call_aux
+   69 access: DOT $@27 IDENTIFIER $@28 . access_n_call_aux
 
     DOT               deslocar, e ir ao estado 88
     OPEN_PARENTHESIS  deslocar, e ir ao estado 89
     OPEN_BRACKETS     deslocar, e ir ao estado 90
     EQUAL             deslocar, e ir ao estado 91
 
-    $padrão  reduzir usando a regra 72 (access)
+    $padrão  reduzir usando a regra 73 (access)
 
-    access_n_call_aux  ir ao estado 184
+    access_n_call_aux  ir ao estado 185
     access             ir ao estado 93
     attribuition       ir ao estado 94
     subprogram_call    ir ao estado 95
@@ -2787,233 +2773,258 @@ Estado 157
 
 Estado 158
 
-   79 real_parameter_list: REF $@33 . IDENTIFIER $@34 real_parameter_list_aux
+   80 real_parameter_list: REF $@33 . IDENTIFIER $@34 real_parameter_list_aux
 
-    IDENTIFIER  deslocar, e ir ao estado 185
+    IDENTIFIER  deslocar, e ir ao estado 186
 
 
 Estado 159
 
-   76 subprogram_call: OPEN_PARENTHESIS $@32 real_parameter_list CLOSE_PARENTHESIS .
+   77 subprogram_call: OPEN_PARENTHESIS $@32 real_parameter_list CLOSE_PARENTHESIS .
 
-    $padrão  reduzir usando a regra 76 (subprogram_call)
+    $padrão  reduzir usando a regra 77 (subprogram_call)
 
 
 Estado 160
 
-   83 real_parameter_list_aux: COMMA . $@35 real_parameter_list
+   84 real_parameter_list_aux: COMMA . $@35 real_parameter_list
 
-    $padrão  reduzir usando a regra 82 ($@35)
+    $padrão  reduzir usando a regra 83 ($@35)
 
-    $@35  ir ao estado 186
+    $@35  ir ao estado 187
 
 
 Estado 161
 
-   80 real_parameter_list: expression real_parameter_list_aux .
+   81 real_parameter_list: expression real_parameter_list_aux .
 
-    $padrão  reduzir usando a regra 80 (real_parameter_list)
+    $padrão  reduzir usando a regra 81 (real_parameter_list)
 
 
 Estado 162
 
-   71 access: OPEN_BRACKETS $@29 l_exp CLOSE_BRACKETS . $@30 access_n_call_aux
+   72 access: OPEN_BRACKETS $@29 l_exp CLOSE_BRACKETS . $@30 access_n_call_aux
 
-    $padrão  reduzir usando a regra 70 ($@30)
+    $padrão  reduzir usando a regra 71 ($@30)
 
-    $@30  ir ao estado 187
+    $@30  ir ao estado 188
 
 
 Estado 163
 
-   87 l_exp_aux: COMMA . $@36 l_exp
+   88 l_exp_aux: COMMA . $@36 l_exp
 
-    $padrão  reduzir usando a regra 86 ($@36)
+    $padrão  reduzir usando a regra 87 ($@36)
 
-    $@36  ir ao estado 188
+    $@36  ir ao estado 189
 
 
 Estado 164
 
-   85 l_exp: expression l_exp_aux .
+   86 l_exp: expression l_exp_aux .
 
-    $padrão  reduzir usando a regra 85 (l_exp)
+    $padrão  reduzir usando a regra 86 (l_exp)
 
 
 Estado 165
 
-  166 arr_exp_aux: COMMA $@76 literal . arr_exp_aux
+   75 attribuition: EQUAL $@31 expression SEMICOLON .
 
-    COMMA  deslocar, e ir ao estado 125
-
-    $padrão  reduzir usando a regra 167 (arr_exp_aux)
-
-    arr_exp_aux  ir ao estado 189
+    $padrão  reduzir usando a regra 75 (attribuition)
 
 
 Estado 166
+
+  167 arr_exp_aux: COMMA $@76 literal . arr_exp_aux
+
+    COMMA  deslocar, e ir ao estado 125
+
+    $padrão  reduzir usando a regra 168 (arr_exp_aux)
+
+    arr_exp_aux  ir ao estado 190
+
+
+Estado 167
 
    22 const_aux: COMMA $@9 IDENTIFIER $@10 EQUAL . $@11 expression const_aux
 
     $padrão  reduzir usando a regra 21 ($@11)
 
-    $@11  ir ao estado 190
-
-
-Estado 167
-
-   90 return: RETURN . $@37 return_aux
-
-    $padrão  reduzir usando a regra 89 ($@37)
-
-    $@37  ir ao estado 191
+    $@11  ir ao estado 191
 
 
 Estado 168
 
-   93 break: BREAK .
+   91 return: RETURN . $@37 return_aux
 
-    $padrão  reduzir usando a regra 93 (break)
+    $padrão  reduzir usando a regra 90 ($@37)
+
+    $@37  ir ao estado 192
 
 
 Estado 169
 
-   98 if: IF . $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
+   94 break: BREAK .
 
-    $padrão  reduzir usando a regra 94 ($@38)
-
-    $@38  ir ao estado 192
+    $padrão  reduzir usando a regra 94 (break)
 
 
 Estado 170
 
-  106 switch: SWITCH . $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
+   99 if: IF . $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
 
-    $padrão  reduzir usando a regra 102 ($@43)
+    $padrão  reduzir usando a regra 95 ($@38)
 
-    $@43  ir ao estado 193
+    $@38  ir ao estado 193
 
 
 Estado 171
 
-  119 for: FOR . $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 cb
+  107 switch: SWITCH . $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
 
-    $padrão  reduzir usando a regra 115 ($@51)
+    $padrão  reduzir usando a regra 103 ($@43)
 
-    $@51  ir ao estado 194
+    $@43  ir ao estado 194
 
 
 Estado 172
 
-  123 loop: LOOP . $@55 commands FINAL
+  120 for: FOR . $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 cb
 
-    $padrão  reduzir usando a regra 122 ($@55)
+    $padrão  reduzir usando a regra 116 ($@51)
 
-    $@55  ir ao estado 195
+    $@51  ir ao estado 195
 
 
 Estado 173
 
-  127 exit: EXIT . $@56 WHEN $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
+  124 loop: LOOP . $@55 commands FINAL
 
-    $padrão  reduzir usando a regra 124 ($@56)
+    $padrão  reduzir usando a regra 123 ($@55)
 
-    $@56  ir ao estado 196
+    $@55  ir ao estado 196
 
 
 Estado 174
 
-   57 commands: command . commands_aux
+  128 exit: EXIT . $@56 WHEN $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
 
-    SEMICOLON  deslocar, e ir ao estado 197
+    $padrão  reduzir usando a regra 125 ($@56)
 
-    $padrão  reduzir usando a regra 60 (commands_aux)
-
-    commands_aux  ir ao estado 198
+    $@56  ir ao estado 197
 
 
 Estado 175
 
-   48 block: declaration INIT $@24 commands . FINAL
+   57 commands: command . commands_aux
 
-    FINAL  deslocar, e ir ao estado 199
+    IDENTIFIER  deslocar, e ir ao estado 42
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
+    SEMICOLON   deslocar, e ir ao estado 198
+
+    $padrão  reduzir usando a regra 61 (commands_aux)
+
+    command        ir ao estado 175
+    commands       ir ao estado 199
+    commands_aux   ir ao estado 200
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
 
 
 Estado 176
+
+   48 block: declaration INIT $@24 commands . FINAL
+
+    FINAL  deslocar, e ir ao estado 201
+
+
+Estado 177
 
    49 command: access_n_call .
 
     $padrão  reduzir usando a regra 49 (command)
 
 
-Estado 177
+Estado 178
 
    50 command: return .
 
     $padrão  reduzir usando a regra 50 (command)
 
 
-Estado 178
+Estado 179
 
    51 command: break .
 
     $padrão  reduzir usando a regra 51 (command)
 
 
-Estado 179
+Estado 180
 
    52 command: if .
 
     $padrão  reduzir usando a regra 52 (command)
 
 
-Estado 180
+Estado 181
 
    53 command: switch .
 
     $padrão  reduzir usando a regra 53 (command)
 
 
-Estado 181
+Estado 182
 
    56 command: for .
 
     $padrão  reduzir usando a regra 56 (command)
 
 
-Estado 182
+Estado 183
 
    54 command: loop .
 
     $padrão  reduzir usando a regra 54 (command)
 
 
-Estado 183
+Estado 184
 
    55 command: exit .
 
     $padrão  reduzir usando a regra 55 (command)
 
 
-Estado 184
-
-   68 access: DOT $@27 IDENTIFIER $@28 access_n_call_aux .
-
-    $padrão  reduzir usando a regra 68 (access)
-
-
 Estado 185
 
-   79 real_parameter_list: REF $@33 IDENTIFIER . $@34 real_parameter_list_aux
+   69 access: DOT $@27 IDENTIFIER $@28 access_n_call_aux .
 
-    $padrão  reduzir usando a regra 78 ($@34)
-
-    $@34  ir ao estado 200
+    $padrão  reduzir usando a regra 69 (access)
 
 
 Estado 186
 
-   83 real_parameter_list_aux: COMMA $@35 . real_parameter_list
+   80 real_parameter_list: REF $@33 IDENTIFIER . $@34 real_parameter_list_aux
+
+    $padrão  reduzir usando a regra 79 ($@34)
+
+    $@34  ir ao estado 202
+
+
+Estado 187
+
+   84 real_parameter_list_aux: COMMA $@35 . real_parameter_list
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -3027,35 +3038,35 @@ Estado 186
     NEGATION          deslocar, e ir ao estado 50
     '-'               deslocar, e ir ao estado 51
 
-    $padrão  reduzir usando a regra 81 (real_parameter_list)
+    $padrão  reduzir usando a regra 82 (real_parameter_list)
 
     access_n_call        ir ao estado 52
-    real_parameter_list  ir ao estado 201
+    real_parameter_list  ir ao estado 203
     expression           ir ao estado 148
     arr_exp              ir ao estado 54
     literal              ir ao estado 55
 
 
-Estado 187
+Estado 188
 
-   71 access: OPEN_BRACKETS $@29 l_exp CLOSE_BRACKETS $@30 . access_n_call_aux
+   72 access: OPEN_BRACKETS $@29 l_exp CLOSE_BRACKETS $@30 . access_n_call_aux
 
     DOT               deslocar, e ir ao estado 88
     OPEN_PARENTHESIS  deslocar, e ir ao estado 89
     OPEN_BRACKETS     deslocar, e ir ao estado 90
     EQUAL             deslocar, e ir ao estado 91
 
-    $padrão  reduzir usando a regra 72 (access)
+    $padrão  reduzir usando a regra 73 (access)
 
-    access_n_call_aux  ir ao estado 202
+    access_n_call_aux  ir ao estado 204
     access             ir ao estado 93
     attribuition       ir ao estado 94
     subprogram_call    ir ao estado 95
 
 
-Estado 188
+Estado 189
 
-   87 l_exp_aux: COMMA $@36 . l_exp
+   88 l_exp_aux: COMMA $@36 . l_exp
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -3069,20 +3080,20 @@ Estado 188
     '-'               deslocar, e ir ao estado 51
 
     access_n_call  ir ao estado 52
-    l_exp          ir ao estado 203
+    l_exp          ir ao estado 205
     expression     ir ao estado 150
     arr_exp        ir ao estado 54
     literal        ir ao estado 55
 
 
-Estado 189
-
-  166 arr_exp_aux: COMMA $@76 literal arr_exp_aux .
-
-    $padrão  reduzir usando a regra 166 (arr_exp_aux)
-
-
 Estado 190
+
+  167 arr_exp_aux: COMMA $@76 literal arr_exp_aux .
+
+    $padrão  reduzir usando a regra 167 (arr_exp_aux)
+
+
+Estado 191
 
    22 const_aux: COMMA $@9 IDENTIFIER $@10 EQUAL $@11 . expression const_aux
 
@@ -3098,30 +3109,6 @@ Estado 190
     '-'               deslocar, e ir ao estado 51
 
     access_n_call  ir ao estado 52
-    expression     ir ao estado 204
-    arr_exp        ir ao estado 54
-    literal        ir ao estado 55
-
-
-Estado 191
-
-   90 return: RETURN $@37 . return_aux
-
-    IDENTIFIER        deslocar, e ir ao estado 42
-    STRING_LIT        deslocar, e ir ao estado 43
-    NUMBER_INT        deslocar, e ir ao estado 44
-    NUMBER_REAL       deslocar, e ir ao estado 45
-    TRUE              deslocar, e ir ao estado 46
-    FALSE             deslocar, e ir ao estado 47
-    OPEN_PARENTHESIS  deslocar, e ir ao estado 48
-    OPEN_BRACES       deslocar, e ir ao estado 49
-    NEGATION          deslocar, e ir ao estado 50
-    '-'               deslocar, e ir ao estado 51
-
-    $padrão  reduzir usando a regra 92 (return_aux)
-
-    access_n_call  ir ao estado 52
-    return_aux     ir ao estado 205
     expression     ir ao estado 206
     arr_exp        ir ao estado 54
     literal        ir ao estado 55
@@ -3129,128 +3116,158 @@ Estado 191
 
 Estado 192
 
-   98 if: IF $@38 . OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
+   91 return: RETURN $@37 . return_aux
 
-    OPEN_PARENTHESIS  deslocar, e ir ao estado 207
+    IDENTIFIER        deslocar, e ir ao estado 42
+    STRING_LIT        deslocar, e ir ao estado 43
+    NUMBER_INT        deslocar, e ir ao estado 44
+    NUMBER_REAL       deslocar, e ir ao estado 45
+    TRUE              deslocar, e ir ao estado 46
+    FALSE             deslocar, e ir ao estado 47
+    SEMICOLON         deslocar, e ir ao estado 207
+    OPEN_PARENTHESIS  deslocar, e ir ao estado 48
+    OPEN_BRACES       deslocar, e ir ao estado 49
+    NEGATION          deslocar, e ir ao estado 50
+    '-'               deslocar, e ir ao estado 51
+
+    access_n_call  ir ao estado 52
+    return_aux     ir ao estado 208
+    expression     ir ao estado 209
+    arr_exp        ir ao estado 54
+    literal        ir ao estado 55
 
 
 Estado 193
 
-  106 switch: SWITCH $@43 . OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
+   99 if: IF $@38 . OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
 
-    OPEN_PARENTHESIS  deslocar, e ir ao estado 208
+    OPEN_PARENTHESIS  deslocar, e ir ao estado 210
 
 
 Estado 194
 
-  119 for: FOR $@51 . IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 cb
+  107 switch: SWITCH $@43 . OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
 
-    IDENTIFIER  deslocar, e ir ao estado 209
+    OPEN_PARENTHESIS  deslocar, e ir ao estado 211
 
 
 Estado 195
 
-  123 loop: LOOP $@55 . commands FINAL
+  120 for: FOR $@51 . IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 cb
 
-    IDENTIFIER  deslocar, e ir ao estado 42
-    RETURN      deslocar, e ir ao estado 167
-    BREAK       deslocar, e ir ao estado 168
-    IF          deslocar, e ir ao estado 169
-    SWITCH      deslocar, e ir ao estado 170
-    FOR         deslocar, e ir ao estado 171
-    LOOP        deslocar, e ir ao estado 172
-    EXIT        deslocar, e ir ao estado 173
-
-    command        ir ao estado 174
-    commands       ir ao estado 210
-    access_n_call  ir ao estado 176
-    return         ir ao estado 177
-    break          ir ao estado 178
-    if             ir ao estado 179
-    switch         ir ao estado 180
-    for            ir ao estado 181
-    loop           ir ao estado 182
-    exit           ir ao estado 183
+    IDENTIFIER  deslocar, e ir ao estado 212
 
 
 Estado 196
 
-  127 exit: EXIT $@56 . WHEN $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
+  124 loop: LOOP $@55 . commands FINAL
 
-    WHEN  deslocar, e ir ao estado 211
+    IDENTIFIER  deslocar, e ir ao estado 42
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
+
+    command        ir ao estado 175
+    commands       ir ao estado 213
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
 
 
 Estado 197
+
+  128 exit: EXIT $@56 . WHEN $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
+
+    WHEN  deslocar, e ir ao estado 214
+
+
+Estado 198
 
    59 commands_aux: SEMICOLON . $@25 commands
 
     $padrão  reduzir usando a regra 58 ($@25)
 
-    $@25  ir ao estado 212
+    $@25  ir ao estado 215
 
 
-Estado 198
+Estado 199
+
+   60 commands_aux: commands .
+
+    $padrão  reduzir usando a regra 60 (commands_aux)
+
+
+Estado 200
 
    57 commands: command commands_aux .
 
     $padrão  reduzir usando a regra 57 (commands)
 
 
-Estado 199
+Estado 201
 
    48 block: declaration INIT $@24 commands FINAL .
 
     $padrão  reduzir usando a regra 48 (block)
 
 
-Estado 200
+Estado 202
 
-   79 real_parameter_list: REF $@33 IDENTIFIER $@34 . real_parameter_list_aux
+   80 real_parameter_list: REF $@33 IDENTIFIER $@34 . real_parameter_list_aux
 
     COMMA  deslocar, e ir ao estado 160
 
-    $padrão  reduzir usando a regra 84 (real_parameter_list_aux)
+    $padrão  reduzir usando a regra 85 (real_parameter_list_aux)
 
-    real_parameter_list_aux  ir ao estado 213
-
-
-Estado 201
-
-   83 real_parameter_list_aux: COMMA $@35 real_parameter_list .
-
-    $padrão  reduzir usando a regra 83 (real_parameter_list_aux)
-
-
-Estado 202
-
-   71 access: OPEN_BRACKETS $@29 l_exp CLOSE_BRACKETS $@30 access_n_call_aux .
-
-    $padrão  reduzir usando a regra 71 (access)
+    real_parameter_list_aux  ir ao estado 216
 
 
 Estado 203
 
-   87 l_exp_aux: COMMA $@36 l_exp .
+   84 real_parameter_list_aux: COMMA $@35 real_parameter_list .
 
-    $padrão  reduzir usando a regra 87 (l_exp_aux)
+    $padrão  reduzir usando a regra 84 (real_parameter_list_aux)
 
 
 Estado 204
 
+   72 access: OPEN_BRACKETS $@29 l_exp CLOSE_BRACKETS $@30 access_n_call_aux .
+
+    $padrão  reduzir usando a regra 72 (access)
+
+
+Estado 205
+
+   88 l_exp_aux: COMMA $@36 l_exp .
+
+    $padrão  reduzir usando a regra 88 (l_exp_aux)
+
+
+Estado 206
+
    22 const_aux: COMMA $@9 IDENTIFIER $@10 EQUAL $@11 expression . const_aux
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
     COMMA         deslocar, e ir ao estado 81
     ADD           deslocar, e ir ao estado 67
@@ -3269,33 +3286,41 @@ Estado 204
 
     $padrão  reduzir usando a regra 23 (const_aux)
 
-    const_aux  ir ao estado 214
+    const_aux  ir ao estado 217
 
 
-Estado 205
+Estado 207
 
-   90 return: RETURN $@37 return_aux .
+   93 return_aux: SEMICOLON .
 
-    $padrão  reduzir usando a regra 90 (return)
+    $padrão  reduzir usando a regra 93 (return_aux)
 
 
-Estado 206
+Estado 208
 
-   91 return_aux: expression .
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+   91 return: RETURN $@37 return_aux .
 
+    $padrão  reduzir usando a regra 91 (return)
+
+
+Estado 209
+
+   92 return_aux: expression . SEMICOLON
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
+
+    SEMICOLON     deslocar, e ir ao estado 218
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
     MULT          deslocar, e ir ao estado 69
@@ -3310,94 +3335,99 @@ Estado 206
     LESS_EQUAL    deslocar, e ir ao estado 78
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
-    $padrão  reduzir usando a regra 91 (return_aux)
-
-
-Estado 207
-
-   98 if: IF $@38 OPEN_PARENTHESIS . $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
-
-    $padrão  reduzir usando a regra 95 ($@39)
-
-    $@39  ir ao estado 215
-
-
-Estado 208
-
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS . $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
-
-    $padrão  reduzir usando a regra 103 ($@44)
-
-    $@44  ir ao estado 216
-
-
-Estado 209
-
-  119 for: FOR $@51 IDENTIFIER . $@52 EQUAL $@53 expression for_aux expression DO $@54 cb
-
-    $padrão  reduzir usando a regra 116 ($@52)
-
-    $@52  ir ao estado 217
-
 
 Estado 210
 
-  123 loop: LOOP $@55 commands . FINAL
+   99 if: IF $@38 OPEN_PARENTHESIS . $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
 
-    FINAL  deslocar, e ir ao estado 218
+    $padrão  reduzir usando a regra 96 ($@39)
+
+    $@39  ir ao estado 219
 
 
 Estado 211
 
-  127 exit: EXIT $@56 WHEN . $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS . $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
 
-    $padrão  reduzir usando a regra 125 ($@57)
+    $padrão  reduzir usando a regra 104 ($@44)
 
-    $@57  ir ao estado 219
+    $@44  ir ao estado 220
 
 
 Estado 212
 
-   59 commands_aux: SEMICOLON $@25 . commands
+  120 for: FOR $@51 IDENTIFIER . $@52 EQUAL $@53 expression for_aux expression DO $@54 cb
 
-    IDENTIFIER  deslocar, e ir ao estado 42
-    RETURN      deslocar, e ir ao estado 167
-    BREAK       deslocar, e ir ao estado 168
-    IF          deslocar, e ir ao estado 169
-    SWITCH      deslocar, e ir ao estado 170
-    FOR         deslocar, e ir ao estado 171
-    LOOP        deslocar, e ir ao estado 172
-    EXIT        deslocar, e ir ao estado 173
+    $padrão  reduzir usando a regra 117 ($@52)
 
-    command        ir ao estado 174
-    commands       ir ao estado 220
-    access_n_call  ir ao estado 176
-    return         ir ao estado 177
-    break          ir ao estado 178
-    if             ir ao estado 179
-    switch         ir ao estado 180
-    for            ir ao estado 181
-    loop           ir ao estado 182
-    exit           ir ao estado 183
+    $@52  ir ao estado 221
 
 
 Estado 213
 
-   79 real_parameter_list: REF $@33 IDENTIFIER $@34 real_parameter_list_aux .
+  124 loop: LOOP $@55 commands . FINAL
 
-    $padrão  reduzir usando a regra 79 (real_parameter_list)
+    FINAL  deslocar, e ir ao estado 222
 
 
 Estado 214
+
+  128 exit: EXIT $@56 WHEN . $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
+
+    $padrão  reduzir usando a regra 126 ($@57)
+
+    $@57  ir ao estado 223
+
+
+Estado 215
+
+   59 commands_aux: SEMICOLON $@25 . commands
+
+    IDENTIFIER  deslocar, e ir ao estado 42
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
+
+    command        ir ao estado 175
+    commands       ir ao estado 224
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
+
+
+Estado 216
+
+   80 real_parameter_list: REF $@33 IDENTIFIER $@34 real_parameter_list_aux .
+
+    $padrão  reduzir usando a regra 80 (real_parameter_list)
+
+
+Estado 217
 
    22 const_aux: COMMA $@9 IDENTIFIER $@10 EQUAL $@11 expression const_aux .
 
     $padrão  reduzir usando a regra 22 (const_aux)
 
 
-Estado 215
+Estado 218
 
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 . expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
+   92 return_aux: expression SEMICOLON .
+
+    $padrão  reduzir usando a regra 92 (return_aux)
+
+
+Estado 219
+
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 . expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -3411,66 +3441,66 @@ Estado 215
     '-'               deslocar, e ir ao estado 51
 
     access_n_call  ir ao estado 52
-    expression     ir ao estado 221
+    expression     ir ao estado 225
     arr_exp        ir ao estado 54
     literal        ir ao estado 55
 
 
-Estado 216
+Estado 220
 
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 . access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 . access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
 
     IDENTIFIER  deslocar, e ir ao estado 42
 
-    access_n_call  ir ao estado 222
+    access_n_call  ir ao estado 226
 
 
-Estado 217
+Estado 221
 
-  119 for: FOR $@51 IDENTIFIER $@52 . EQUAL $@53 expression for_aux expression DO $@54 cb
+  120 for: FOR $@51 IDENTIFIER $@52 . EQUAL $@53 expression for_aux expression DO $@54 cb
 
-    EQUAL  deslocar, e ir ao estado 223
-
-
-Estado 218
-
-  123 loop: LOOP $@55 commands FINAL .
-
-    $padrão  reduzir usando a regra 123 (loop)
+    EQUAL  deslocar, e ir ao estado 227
 
 
-Estado 219
+Estado 222
 
-  127 exit: EXIT $@56 WHEN $@57 . OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
+  124 loop: LOOP $@55 commands FINAL .
 
-    OPEN_PARENTHESIS  deslocar, e ir ao estado 224
+    $padrão  reduzir usando a regra 124 (loop)
 
 
-Estado 220
+Estado 223
+
+  128 exit: EXIT $@56 WHEN $@57 . OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS
+
+    OPEN_PARENTHESIS  deslocar, e ir ao estado 228
+
+
+Estado 224
 
    59 commands_aux: SEMICOLON $@25 commands .
 
     $padrão  reduzir usando a regra 59 (commands_aux)
 
 
-Estado 221
+Estado 225
 
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 expression . CLOSE_PARENTHESIS $@40 THEN $@41 cb else
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 expression . CLOSE_PARENTHESIS $@40 THEN $@41 cb else
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
-    CLOSE_PARENTHESIS  deslocar, e ir ao estado 225
+    CLOSE_PARENTHESIS  deslocar, e ir ao estado 229
     ADD                deslocar, e ir ao estado 67
     SUB                deslocar, e ir ao estado 68
     MULT               deslocar, e ir ao estado 69
@@ -3486,73 +3516,52 @@ Estado 221
     BIGGER_EQUAL       deslocar, e ir ao estado 79
 
 
-Estado 222
-
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call . CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
-
-    CLOSE_PARENTHESIS  deslocar, e ir ao estado 226
-
-
-Estado 223
-
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL . $@53 expression for_aux expression DO $@54 cb
-
-    $padrão  reduzir usando a regra 117 ($@53)
-
-    $@53  ir ao estado 227
-
-
-Estado 224
-
-  127 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS . $@58 expression CLOSE_PARENTHESIS
-
-    $padrão  reduzir usando a regra 126 ($@58)
-
-    $@58  ir ao estado 228
-
-
-Estado 225
-
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS . $@40 THEN $@41 cb else
-
-    $padrão  reduzir usando a regra 96 ($@40)
-
-    $@40  ir ao estado 229
-
-
 Estado 226
 
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS . $@45 INIT $@46 caselist default FINAL
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call . CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL
 
-    $padrão  reduzir usando a regra 104 ($@45)
-
-    $@45  ir ao estado 230
+    CLOSE_PARENTHESIS  deslocar, e ir ao estado 230
 
 
 Estado 227
 
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 . expression for_aux expression DO $@54 cb
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL . $@53 expression for_aux expression DO $@54 cb
 
-    IDENTIFIER        deslocar, e ir ao estado 42
-    STRING_LIT        deslocar, e ir ao estado 43
-    NUMBER_INT        deslocar, e ir ao estado 44
-    NUMBER_REAL       deslocar, e ir ao estado 45
-    TRUE              deslocar, e ir ao estado 46
-    FALSE             deslocar, e ir ao estado 47
-    OPEN_PARENTHESIS  deslocar, e ir ao estado 48
-    OPEN_BRACES       deslocar, e ir ao estado 49
-    NEGATION          deslocar, e ir ao estado 50
-    '-'               deslocar, e ir ao estado 51
+    $padrão  reduzir usando a regra 118 ($@53)
 
-    access_n_call  ir ao estado 52
-    expression     ir ao estado 231
-    arr_exp        ir ao estado 54
-    literal        ir ao estado 55
+    $@53  ir ao estado 231
 
 
 Estado 228
 
-  127 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS $@58 . expression CLOSE_PARENTHESIS
+  128 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS . $@58 expression CLOSE_PARENTHESIS
+
+    $padrão  reduzir usando a regra 127 ($@58)
+
+    $@58  ir ao estado 232
+
+
+Estado 229
+
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS . $@40 THEN $@41 cb else
+
+    $padrão  reduzir usando a regra 97 ($@40)
+
+    $@40  ir ao estado 233
+
+
+Estado 230
+
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS . $@45 INIT $@46 caselist default FINAL
+
+    $padrão  reduzir usando a regra 105 ($@45)
+
+    $@45  ir ao estado 234
+
+
+Estado 231
+
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 . expression for_aux expression DO $@54 cb
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -3566,44 +3575,65 @@ Estado 228
     '-'               deslocar, e ir ao estado 51
 
     access_n_call  ir ao estado 52
-    expression     ir ao estado 232
+    expression     ir ao estado 235
     arr_exp        ir ao estado 54
     literal        ir ao estado 55
 
 
-Estado 229
+Estado 232
 
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 . THEN $@41 cb else
+  128 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS $@58 . expression CLOSE_PARENTHESIS
 
-    THEN  deslocar, e ir ao estado 233
+    IDENTIFIER        deslocar, e ir ao estado 42
+    STRING_LIT        deslocar, e ir ao estado 43
+    NUMBER_INT        deslocar, e ir ao estado 44
+    NUMBER_REAL       deslocar, e ir ao estado 45
+    TRUE              deslocar, e ir ao estado 46
+    FALSE             deslocar, e ir ao estado 47
+    OPEN_PARENTHESIS  deslocar, e ir ao estado 48
+    OPEN_BRACES       deslocar, e ir ao estado 49
+    NEGATION          deslocar, e ir ao estado 50
+    '-'               deslocar, e ir ao estado 51
+
+    access_n_call  ir ao estado 52
+    expression     ir ao estado 236
+    arr_exp        ir ao estado 54
+    literal        ir ao estado 55
 
 
-Estado 230
+Estado 233
 
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 . INIT $@46 caselist default FINAL
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 . THEN $@41 cb else
 
-    INIT  deslocar, e ir ao estado 234
+    THEN  deslocar, e ir ao estado 237
 
 
-Estado 231
+Estado 234
 
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression . for_aux expression DO $@54 cb
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 . INIT $@46 caselist default FINAL
 
-    DOWNTO        deslocar, e ir ao estado 235
-    TO            deslocar, e ir ao estado 236
+    INIT  deslocar, e ir ao estado 238
+
+
+Estado 235
+
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression . for_aux expression DO $@54 cb
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
+
+    DOWNTO        deslocar, e ir ao estado 239
+    TO            deslocar, e ir ao estado 240
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
     MULT          deslocar, e ir ao estado 69
@@ -3618,27 +3648,27 @@ Estado 231
     LESS_EQUAL    deslocar, e ir ao estado 78
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
-    for_aux  ir ao estado 237
+    for_aux  ir ao estado 241
 
 
-Estado 232
+Estado 236
 
-  127 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS $@58 expression . CLOSE_PARENTHESIS
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  128 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS $@58 expression . CLOSE_PARENTHESIS
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
-    CLOSE_PARENTHESIS  deslocar, e ir ao estado 238
+    CLOSE_PARENTHESIS  deslocar, e ir ao estado 242
     ADD                deslocar, e ir ao estado 67
     SUB                deslocar, e ir ao estado 68
     MULT               deslocar, e ir ao estado 69
@@ -3654,41 +3684,41 @@ Estado 232
     BIGGER_EQUAL       deslocar, e ir ao estado 79
 
 
-Estado 233
+Estado 237
 
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN . $@41 cb else
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN . $@41 cb else
 
-    $padrão  reduzir usando a regra 97 ($@41)
+    $padrão  reduzir usando a regra 98 ($@41)
 
-    $@41  ir ao estado 239
-
-
-Estado 234
-
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT . $@46 caselist default FINAL
-
-    $padrão  reduzir usando a regra 105 ($@46)
-
-    $@46  ir ao estado 240
+    $@41  ir ao estado 243
 
 
-Estado 235
+Estado 238
 
-  121 for_aux: DOWNTO .
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT . $@46 caselist default FINAL
+
+    $padrão  reduzir usando a regra 106 ($@46)
+
+    $@46  ir ao estado 244
+
+
+Estado 239
+
+  122 for_aux: DOWNTO .
+
+    $padrão  reduzir usando a regra 122 (for_aux)
+
+
+Estado 240
+
+  121 for_aux: TO .
 
     $padrão  reduzir usando a regra 121 (for_aux)
 
 
-Estado 236
+Estado 241
 
-  120 for_aux: TO .
-
-    $padrão  reduzir usando a regra 120 (for_aux)
-
-
-Estado 237
-
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux . expression DO $@54 cb
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux . expression DO $@54 cb
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -3702,34 +3732,34 @@ Estado 237
     '-'               deslocar, e ir ao estado 51
 
     access_n_call  ir ao estado 52
-    expression     ir ao estado 241
+    expression     ir ao estado 245
     arr_exp        ir ao estado 54
     literal        ir ao estado 55
 
 
-Estado 238
+Estado 242
 
-  127 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS .
+  128 exit: EXIT $@56 WHEN $@57 OPEN_PARENTHESIS $@58 expression CLOSE_PARENTHESIS .
 
-    $padrão  reduzir usando a regra 127 (exit)
+    $padrão  reduzir usando a regra 128 (exit)
 
 
-Estado 239
+Estado 243
 
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 . cb else
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 . cb else
 
     IDENTIFIER  deslocar, e ir ao estado 42
     PROCEDURE   deslocar, e ir ao estado 1
     FUNCTION    deslocar, e ir ao estado 2
     VAR         deslocar, e ir ao estado 3
     CONST       deslocar, e ir ao estado 4
-    RETURN      deslocar, e ir ao estado 167
-    BREAK       deslocar, e ir ao estado 168
-    IF          deslocar, e ir ao estado 169
-    SWITCH      deslocar, e ir ao estado 170
-    FOR         deslocar, e ir ao estado 171
-    LOOP        deslocar, e ir ao estado 172
-    EXIT        deslocar, e ir ao estado 173
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
 
     $padrão  reduzir usando a regra 4 (declaration)
 
@@ -3739,48 +3769,48 @@ Estado 239
     subprogram     ir ao estado 8
     procedure      ir ao estado 9
     function       ir ao estado 10
-    cb             ir ao estado 242
-    block          ir ao estado 243
-    command        ir ao estado 244
-    access_n_call  ir ao estado 176
-    return         ir ao estado 177
-    break          ir ao estado 178
-    if             ir ao estado 179
-    switch         ir ao estado 180
-    for            ir ao estado 181
-    loop           ir ao estado 182
-    exit           ir ao estado 183
+    cb             ir ao estado 246
+    block          ir ao estado 247
+    command        ir ao estado 248
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
 
 
-Estado 240
+Estado 244
 
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 . caselist default FINAL
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 . caselist default FINAL
 
-    CASE  deslocar, e ir ao estado 245
+    CASE  deslocar, e ir ao estado 249
 
-    $padrão  reduzir usando a regra 110 (caselist)
+    $padrão  reduzir usando a regra 111 (caselist)
 
-    caselist  ir ao estado 246
+    caselist  ir ao estado 250
 
 
-Estado 241
+Estado 245
 
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression . DO $@54 cb
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression . DO $@54 cb
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
 
-    DO            deslocar, e ir ao estado 247
+    DO            deslocar, e ir ao estado 251
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
     MULT          deslocar, e ir ao estado 69
@@ -3796,80 +3826,80 @@ Estado 241
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
 
-Estado 242
+Estado 246
 
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb . else
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb . else
 
-    ELSE_  deslocar, e ir ao estado 248
+    ELSE_  deslocar, e ir ao estado 252
 
-    ELSE_     [reduzir usando a regra 101 (else)]
-    $padrão  reduzir usando a regra 101 (else)
+    ELSE_     [reduzir usando a regra 102 (else)]
+    $padrão  reduzir usando a regra 102 (else)
 
-    else  ir ao estado 249
+    else  ir ao estado 253
 
 
-Estado 243
+Estado 247
 
    46 cb: block .
 
     $padrão  reduzir usando a regra 46 (cb)
 
 
-Estado 244
+Estado 248
 
    45 cb: command .
 
     $padrão  reduzir usando a regra 45 (cb)
 
 
-Estado 245
-
-  109 caselist: CASE . $@47 expression COLON $@48 commands caselist
-
-    $padrão  reduzir usando a regra 107 ($@47)
-
-    $@47  ir ao estado 250
-
-
-Estado 246
-
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist . default FINAL
-
-    DEFAULT  deslocar, e ir ao estado 251
-
-    $padrão  reduzir usando a regra 114 (default)
-
-    default  ir ao estado 252
-
-
-Estado 247
-
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO . $@54 cb
-
-    $padrão  reduzir usando a regra 118 ($@54)
-
-    $@54  ir ao estado 253
-
-
-Estado 248
-
-  100 else: ELSE_ . $@42 cb
-
-    $padrão  reduzir usando a regra 99 ($@42)
-
-    $@42  ir ao estado 254
-
-
 Estado 249
 
-   98 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else .
+  110 caselist: CASE . $@47 expression COLON $@48 commands caselist
 
-    $padrão  reduzir usando a regra 98 (if)
+    $padrão  reduzir usando a regra 108 ($@47)
+
+    $@47  ir ao estado 254
 
 
 Estado 250
 
-  109 caselist: CASE $@47 . expression COLON $@48 commands caselist
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist . default FINAL
+
+    DEFAULT  deslocar, e ir ao estado 255
+
+    $padrão  reduzir usando a regra 115 (default)
+
+    default  ir ao estado 256
+
+
+Estado 251
+
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO . $@54 cb
+
+    $padrão  reduzir usando a regra 119 ($@54)
+
+    $@54  ir ao estado 257
+
+
+Estado 252
+
+  101 else: ELSE_ . $@42 cb
+
+    $padrão  reduzir usando a regra 100 ($@42)
+
+    $@42  ir ao estado 258
+
+
+Estado 253
+
+   99 if: IF $@38 OPEN_PARENTHESIS $@39 expression CLOSE_PARENTHESIS $@40 THEN $@41 cb else .
+
+    $padrão  reduzir usando a regra 99 (if)
+
+
+Estado 254
+
+  110 caselist: CASE $@47 . expression COLON $@48 commands caselist
 
     IDENTIFIER        deslocar, e ir ao estado 42
     STRING_LIT        deslocar, e ir ao estado 43
@@ -3883,121 +3913,121 @@ Estado 250
     '-'               deslocar, e ir ao estado 51
 
     access_n_call  ir ao estado 52
-    expression     ir ao estado 255
+    expression     ir ao estado 259
     arr_exp        ir ao estado 54
     literal        ir ao estado 55
 
 
-Estado 251
-
-  113 default: DEFAULT . $@49 COLON $@50 commands
-
-    $padrão  reduzir usando a regra 111 ($@49)
-
-    $@49  ir ao estado 256
-
-
-Estado 252
-
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default . FINAL
-
-    FINAL  deslocar, e ir ao estado 257
-
-
-Estado 253
-
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 . cb
-
-    IDENTIFIER  deslocar, e ir ao estado 42
-    PROCEDURE   deslocar, e ir ao estado 1
-    FUNCTION    deslocar, e ir ao estado 2
-    VAR         deslocar, e ir ao estado 3
-    CONST       deslocar, e ir ao estado 4
-    RETURN      deslocar, e ir ao estado 167
-    BREAK       deslocar, e ir ao estado 168
-    IF          deslocar, e ir ao estado 169
-    SWITCH      deslocar, e ir ao estado 170
-    FOR         deslocar, e ir ao estado 171
-    LOOP        deslocar, e ir ao estado 172
-    EXIT        deslocar, e ir ao estado 173
-
-    $padrão  reduzir usando a regra 4 (declaration)
-
-    declaration    ir ao estado 117
-    var            ir ao estado 6
-    const          ir ao estado 7
-    subprogram     ir ao estado 8
-    procedure      ir ao estado 9
-    function       ir ao estado 10
-    cb             ir ao estado 258
-    block          ir ao estado 243
-    command        ir ao estado 244
-    access_n_call  ir ao estado 176
-    return         ir ao estado 177
-    break          ir ao estado 178
-    if             ir ao estado 179
-    switch         ir ao estado 180
-    for            ir ao estado 181
-    loop           ir ao estado 182
-    exit           ir ao estado 183
-
-
-Estado 254
-
-  100 else: ELSE_ $@42 . cb
-
-    IDENTIFIER  deslocar, e ir ao estado 42
-    PROCEDURE   deslocar, e ir ao estado 1
-    FUNCTION    deslocar, e ir ao estado 2
-    VAR         deslocar, e ir ao estado 3
-    CONST       deslocar, e ir ao estado 4
-    RETURN      deslocar, e ir ao estado 167
-    BREAK       deslocar, e ir ao estado 168
-    IF          deslocar, e ir ao estado 169
-    SWITCH      deslocar, e ir ao estado 170
-    FOR         deslocar, e ir ao estado 171
-    LOOP        deslocar, e ir ao estado 172
-    EXIT        deslocar, e ir ao estado 173
-
-    $padrão  reduzir usando a regra 4 (declaration)
-
-    declaration    ir ao estado 117
-    var            ir ao estado 6
-    const          ir ao estado 7
-    subprogram     ir ao estado 8
-    procedure      ir ao estado 9
-    function       ir ao estado 10
-    cb             ir ao estado 259
-    block          ir ao estado 243
-    command        ir ao estado 244
-    access_n_call  ir ao estado 176
-    return         ir ao estado 177
-    break          ir ao estado 178
-    if             ir ao estado 179
-    switch         ir ao estado 180
-    for            ir ao estado 181
-    loop           ir ao estado 182
-    exit           ir ao estado 183
-
-
 Estado 255
 
-  109 caselist: CASE $@47 expression . COLON $@48 commands caselist
-  129 expression: expression . OR $@59 expression
-  131           | expression . AND $@60 expression
-  133           | expression . EQUAL_LOGIC $@61 expression
-  135           | expression . NOT_EQUAL $@62 expression
-  137           | expression . LESS_THEN $@63 expression
-  139           | expression . BIGGER_THEN $@64 expression
-  141           | expression . LESS_EQUAL $@65 expression
-  143           | expression . BIGGER_EQUAL $@66 expression
-  145           | expression . ADD $@67 expression
-  147           | expression . SUB $@68 expression
-  149           | expression . MULT $@69 expression
-  151           | expression . DIV $@70 expression
-  153           | expression . MOD $@71 expression
+  114 default: DEFAULT . $@49 COLON $@50 commands
 
-    COLON         deslocar, e ir ao estado 260
+    $padrão  reduzir usando a regra 112 ($@49)
+
+    $@49  ir ao estado 260
+
+
+Estado 256
+
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default . FINAL
+
+    FINAL  deslocar, e ir ao estado 261
+
+
+Estado 257
+
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 . cb
+
+    IDENTIFIER  deslocar, e ir ao estado 42
+    PROCEDURE   deslocar, e ir ao estado 1
+    FUNCTION    deslocar, e ir ao estado 2
+    VAR         deslocar, e ir ao estado 3
+    CONST       deslocar, e ir ao estado 4
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
+
+    $padrão  reduzir usando a regra 4 (declaration)
+
+    declaration    ir ao estado 117
+    var            ir ao estado 6
+    const          ir ao estado 7
+    subprogram     ir ao estado 8
+    procedure      ir ao estado 9
+    function       ir ao estado 10
+    cb             ir ao estado 262
+    block          ir ao estado 247
+    command        ir ao estado 248
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
+
+
+Estado 258
+
+  101 else: ELSE_ $@42 . cb
+
+    IDENTIFIER  deslocar, e ir ao estado 42
+    PROCEDURE   deslocar, e ir ao estado 1
+    FUNCTION    deslocar, e ir ao estado 2
+    VAR         deslocar, e ir ao estado 3
+    CONST       deslocar, e ir ao estado 4
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
+
+    $padrão  reduzir usando a regra 4 (declaration)
+
+    declaration    ir ao estado 117
+    var            ir ao estado 6
+    const          ir ao estado 7
+    subprogram     ir ao estado 8
+    procedure      ir ao estado 9
+    function       ir ao estado 10
+    cb             ir ao estado 263
+    block          ir ao estado 247
+    command        ir ao estado 248
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
+
+
+Estado 259
+
+  110 caselist: CASE $@47 expression . COLON $@48 commands caselist
+  130 expression: expression . OR $@59 expression
+  132           | expression . AND $@60 expression
+  134           | expression . EQUAL_LOGIC $@61 expression
+  136           | expression . NOT_EQUAL $@62 expression
+  138           | expression . LESS_THEN $@63 expression
+  140           | expression . BIGGER_THEN $@64 expression
+  142           | expression . LESS_EQUAL $@65 expression
+  144           | expression . BIGGER_EQUAL $@66 expression
+  146           | expression . ADD $@67 expression
+  148           | expression . SUB $@68 expression
+  150           | expression . MULT $@69 expression
+  152           | expression . DIV $@70 expression
+  154           | expression . MOD $@71 expression
+
+    COLON         deslocar, e ir ao estado 264
     ADD           deslocar, e ir ao estado 67
     SUB           deslocar, e ir ao estado 68
     MULT          deslocar, e ir ao estado 69
@@ -4013,122 +4043,122 @@ Estado 255
     BIGGER_EQUAL  deslocar, e ir ao estado 79
 
 
-Estado 256
-
-  113 default: DEFAULT $@49 . COLON $@50 commands
-
-    COLON  deslocar, e ir ao estado 261
-
-
-Estado 257
-
-  106 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL .
-
-    $padrão  reduzir usando a regra 106 (switch)
-
-
-Estado 258
-
-  119 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 cb .
-
-    $padrão  reduzir usando a regra 119 (for)
-
-
-Estado 259
-
-  100 else: ELSE_ $@42 cb .
-
-    $padrão  reduzir usando a regra 100 (else)
-
-
 Estado 260
 
-  109 caselist: CASE $@47 expression COLON . $@48 commands caselist
+  114 default: DEFAULT $@49 . COLON $@50 commands
 
-    $padrão  reduzir usando a regra 108 ($@48)
-
-    $@48  ir ao estado 262
+    COLON  deslocar, e ir ao estado 265
 
 
 Estado 261
 
-  113 default: DEFAULT $@49 COLON . $@50 commands
+  107 switch: SWITCH $@43 OPEN_PARENTHESIS $@44 access_n_call CLOSE_PARENTHESIS $@45 INIT $@46 caselist default FINAL .
 
-    $padrão  reduzir usando a regra 112 ($@50)
-
-    $@50  ir ao estado 263
+    $padrão  reduzir usando a regra 107 (switch)
 
 
 Estado 262
 
-  109 caselist: CASE $@47 expression COLON $@48 . commands caselist
+  120 for: FOR $@51 IDENTIFIER $@52 EQUAL $@53 expression for_aux expression DO $@54 cb .
 
-    IDENTIFIER  deslocar, e ir ao estado 42
-    RETURN      deslocar, e ir ao estado 167
-    BREAK       deslocar, e ir ao estado 168
-    IF          deslocar, e ir ao estado 169
-    SWITCH      deslocar, e ir ao estado 170
-    FOR         deslocar, e ir ao estado 171
-    LOOP        deslocar, e ir ao estado 172
-    EXIT        deslocar, e ir ao estado 173
-
-    command        ir ao estado 174
-    commands       ir ao estado 264
-    access_n_call  ir ao estado 176
-    return         ir ao estado 177
-    break          ir ao estado 178
-    if             ir ao estado 179
-    switch         ir ao estado 180
-    for            ir ao estado 181
-    loop           ir ao estado 182
-    exit           ir ao estado 183
+    $padrão  reduzir usando a regra 120 (for)
 
 
 Estado 263
 
-  113 default: DEFAULT $@49 COLON $@50 . commands
+  101 else: ELSE_ $@42 cb .
 
-    IDENTIFIER  deslocar, e ir ao estado 42
-    RETURN      deslocar, e ir ao estado 167
-    BREAK       deslocar, e ir ao estado 168
-    IF          deslocar, e ir ao estado 169
-    SWITCH      deslocar, e ir ao estado 170
-    FOR         deslocar, e ir ao estado 171
-    LOOP        deslocar, e ir ao estado 172
-    EXIT        deslocar, e ir ao estado 173
-
-    command        ir ao estado 174
-    commands       ir ao estado 265
-    access_n_call  ir ao estado 176
-    return         ir ao estado 177
-    break          ir ao estado 178
-    if             ir ao estado 179
-    switch         ir ao estado 180
-    for            ir ao estado 181
-    loop           ir ao estado 182
-    exit           ir ao estado 183
+    $padrão  reduzir usando a regra 101 (else)
 
 
 Estado 264
 
-  109 caselist: CASE $@47 expression COLON $@48 commands . caselist
+  110 caselist: CASE $@47 expression COLON . $@48 commands caselist
 
-    CASE  deslocar, e ir ao estado 245
+    $padrão  reduzir usando a regra 109 ($@48)
 
-    $padrão  reduzir usando a regra 110 (caselist)
-
-    caselist  ir ao estado 266
+    $@48  ir ao estado 266
 
 
 Estado 265
 
-  113 default: DEFAULT $@49 COLON $@50 commands .
+  114 default: DEFAULT $@49 COLON . $@50 commands
 
-    $padrão  reduzir usando a regra 113 (default)
+    $padrão  reduzir usando a regra 113 ($@50)
+
+    $@50  ir ao estado 267
 
 
 Estado 266
 
-  109 caselist: CASE $@47 expression COLON $@48 commands caselist .
+  110 caselist: CASE $@47 expression COLON $@48 . commands caselist
 
-    $padrão  reduzir usando a regra 109 (caselist)
+    IDENTIFIER  deslocar, e ir ao estado 42
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
+
+    command        ir ao estado 175
+    commands       ir ao estado 268
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
+
+
+Estado 267
+
+  114 default: DEFAULT $@49 COLON $@50 . commands
+
+    IDENTIFIER  deslocar, e ir ao estado 42
+    RETURN      deslocar, e ir ao estado 168
+    BREAK       deslocar, e ir ao estado 169
+    IF          deslocar, e ir ao estado 170
+    SWITCH      deslocar, e ir ao estado 171
+    FOR         deslocar, e ir ao estado 172
+    LOOP        deslocar, e ir ao estado 173
+    EXIT        deslocar, e ir ao estado 174
+
+    command        ir ao estado 175
+    commands       ir ao estado 269
+    access_n_call  ir ao estado 177
+    return         ir ao estado 178
+    break          ir ao estado 179
+    if             ir ao estado 180
+    switch         ir ao estado 181
+    for            ir ao estado 182
+    loop           ir ao estado 183
+    exit           ir ao estado 184
+
+
+Estado 268
+
+  110 caselist: CASE $@47 expression COLON $@48 commands . caselist
+
+    CASE  deslocar, e ir ao estado 249
+
+    $padrão  reduzir usando a regra 111 (caselist)
+
+    caselist  ir ao estado 270
+
+
+Estado 269
+
+  114 default: DEFAULT $@49 COLON $@50 commands .
+
+    $padrão  reduzir usando a regra 114 (default)
+
+
+Estado 270
+
+  110 caselist: CASE $@47 expression COLON $@48 commands caselist .
+
+    $padrão  reduzir usando a regra 110 (caselist)
