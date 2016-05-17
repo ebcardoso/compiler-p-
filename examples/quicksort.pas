@@ -1,7 +1,7 @@
-const TAM = 10
+const TAM = 10;
 
 procedure quick(ref vet, esq, dir)
-	var pivo = esq,i,ch,j
+	var pivo = esq,i,ch,j;
 begin
 	for i = (esq+1) to dir do
 	begin

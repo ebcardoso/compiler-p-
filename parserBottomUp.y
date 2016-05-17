@@ -82,8 +82,8 @@ BIGGER_EQUAL // >=
 
 
 declaration :
-	var declaration
-	| const declaration
+	var SEMICOLON {printf(";\n");} declaration
+	| const SEMICOLON {printf(";\n");} declaration
 	| subprogram declaration
 	|
 	;
@@ -147,7 +147,6 @@ block :
 	;
 
 command :
-	access_n_call
 	| return 
 	| break
 	| if
@@ -155,6 +154,8 @@ command :
 	| loop
 	| exit
 	| for
+	| attribuition
+	| subprogram_call
 	;
 
 commands :
@@ -163,32 +164,21 @@ commands :
 
 commands_aux :
 	SEMICOLON {printf(";\n");} commands
-	| commands
 	|
 	;
 
-access_n_call : 
-	IDENTIFIER {printf("%s ", $1);} access_n_call_aux
-	;
-
-access_n_call_aux :
-	access
-	| attribuition
-	| subprogram_call
-	;
-
-access :
-	DOT {printf(".");} IDENTIFIER {printf("%s ", $3);} access_n_call_aux
-	| OPEN_BRACKETS {printf("[");} l_exp CLOSE_BRACKETS {printf("]");} access_n_call_aux
-	|
+access_id :
+	IDENTIFIER {printf("%s ", $1);}
+	| access_id DOT {printf(".");} IDENTIFIER {printf("%s ", $4);}
+	| access_id OPEN_BRACKETS {printf("[");} l_exp CLOSE_BRACKETS {printf("]");}
 	;
 
 attribuition :
-	EQUAL {printf(" = ");} expression SEMICOLON {printf(";\n");}
+	access_id EQUAL {printf(" = ");} expression
 	;
 
 subprogram_call :
-	OPEN_PARENTHESIS {printf("(");} real_parameter_list CLOSE_PARENTHESIS {printf(")");}
+	IDENTIFIER {printf("%s", $1);} OPEN_PARENTHESIS {printf("(");} real_parameter_list CLOSE_PARENTHESIS {printf(")");}
 	;
 
 real_parameter_list :
@@ -216,8 +206,8 @@ return :
 	;
 
 return_aux :
-	expression SEMICOLON {printf(";\n");}
-	| SEMICOLON {printf(";\n");}
+	expression
+	|
 	;
 
 break :
@@ -237,7 +227,7 @@ else :
 	;
 
 switch :
-	SWITCH {printf("switch ");} OPEN_PARENTHESIS {printf("(");} access_n_call CLOSE_PARENTHESIS {printf(")\n");}
+	SWITCH {printf("switch ");} OPEN_PARENTHESIS {printf("(");} access_id CLOSE_PARENTHESIS {printf(")\n");}
 		INIT {printf("begin");}
 			caselist
 			default
@@ -294,9 +284,10 @@ expression :
 	| '-' %prec UMINUS {printf("-");} expression
 	| NEGATION {printf("!");} expression
 	| OPEN_PARENTHESIS {printf("(");} expression CLOSE_PARENTHESIS {printf(")");}
-	| access_n_call	
+	| access_id
 	| arr_exp
 	| literal
+	| subprogram_call
 	;
 
 arr_exp :

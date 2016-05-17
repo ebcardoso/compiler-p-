@@ -1,6 +1,6 @@
 procedure mergeSort(vetor, posicaoInicio, posicaoFim)
-	var i, j, k, metadeTamanho, vetorTemp
-	var vetorTemp
+	var i, j, k, metadeTamanho, vetorTemp;
+	var vetorTemp;
 begin
 	if (posicaoInicio == posicaoFim) then
 		return 0;
