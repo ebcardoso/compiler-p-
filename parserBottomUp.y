@@ -1,5 +1,6 @@
 %{
 	#include <stdio.h>
+	#include "symbolTable.h"
 	int yyerror (char *s);
 	int yylex();
 %}
@@ -10,7 +11,7 @@
 	char * 	sValue;		//
 };
 
-%start declaration
+%start program
 
 
 %token <sValue> IDENTIFIER STRING_LIT
@@ -80,6 +81,11 @@ BIGGER_EQUAL // >=
 
 %%
 
+program:
+	{ head = (Tabela*) malloc(sizeof(Tabela)); }
+	declaration
+	;
+
 
 declaration :
 	var SEMICOLON {printf(";\n");} declaration
@@ -89,7 +95,7 @@ declaration :
 	;
 
 var :
-	VAR {printf("var ");} IDENTIFIER {printf("%s ", $3);} id_exp ids_exps {printf("\n");}
+	VAR {printf("var ");} IDENTIFIER {printf("%s ", $3); push($3, "int", 0, 0, head);} id_exp ids_exps {printf("\n");}
 	;
 
 id_exp :
